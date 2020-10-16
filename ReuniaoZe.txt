@@ -1,0 +1,91 @@
+---------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+
+Reuniao dia 06/04/2020
+
+aplicar Z-score no dataset ggplot. DONE
+
+Essas feateures seguem uma distribuição normal ? DONE
+
+qual correlação para uma coletanea de pearson ou spearman ? DONE
+
+
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+
+Reuniao dia 13/04/2020
+
+funcao uso coeficiente peasron e do spearman
+	- Pearson para somente dist.normal DONE
+	- Spearman para todas as variáveis DONE
+	
+olhar kendall tau e kappa para rank DONE
+
+
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+
+
+Reuniao 20/04/2020 
+
+(Ideia cris)
+
+Detectar e reportar em forma de relatório
+
+Avaliar média e desvio junto da mediana para averiguar a distribuição dos dados (warning)
+
+Perguntar...(remover ou deixar ficar)
+
+
+
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+
+Reuniao 28/04/2020
+
+Usar texto em ingles, aplicação vai usar essa língua
+
+Reformulação, criação e formatação de textos informativos da página para guiar o usuário 
+
+Redesenhar paginas de "step 1" e "step 4", alterar a ordem de 'upload' para 'statistical analysis'
+
+Tirar as abas do 'step4' e desmenbrar em várias páginas tabelas, distribuição dos dados e correlação
+
+No 'index' falar mais sobre a aplicação, passo-a-passo, o que espera como dado etc...quanto mais
+tiver como explicar a respeito ajudaria 
+
+How to Handle Missing Data with Python, NAN pode ser um problema ao trabalhar com o dado já que as
+plotagens ficarão sem serem  feitas
+
+
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+
+Reuniao 02/05/2020
+
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+
+Reuniao 06/05/2020
+
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+
+Reuniao 18/05/2020
+
+
+
+----------------------------------------------------------------------------------------------------
+------------------- Tabalhos futuros ---------------------------------------------------------------
+---------------------------------------------------------------------------------------------------- 
+
+Lidar com variáveis qualitativas -> Perguntar ao Juvêncio DONE
+
+
+
+-----------------------------------------------------------------------------------------------------
+
+
+
+-----------------------------------------------------------------------------------------------------
+

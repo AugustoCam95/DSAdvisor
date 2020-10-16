@@ -1,0 +1,52 @@
+- ela segue um guideline de um problema de um caso singular que pode ser expandido para outros datasets, em que não se sabem a abrangência em que o mesmo possa vir a funcionar
+
+- é uma forma de  padronizar o pré-processamento dos dados de uma forma que fique um consenso de como trabalhar com o dado levando em conta um pequeno estudo sobre 
+
+
+Questão de pesquisa: Existem ferramentas para dataset's supervisionados que dêem suporte a modelos preditivos. 
+
+(PAPER CRIS) In this paper, we firstly propose a practical guideline to support change-proneness prediction for optimal use of predictive models. 
+
+dataset não supervisionado, upload de csv's.
+
+Populaçãp = dataset supervisionado, 
+Intervenção = ferramenta
+Comparação =
+Outcome = o dado passe por uma padronização ou guia de boas práticas para melhores resultados
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Introdução - Fundamentação Teórica - Trabalhos Relacionados - Objetivos - Estado Atual - Cronograma
+
+Fundamentação teórica(Background): TENHA EM MENTE MINISTRAR UMA AULA SOBRE as bases do trabalho: apredizagem de máquina supervisionado(problemas de classificação e de regressão), técnicas de tutoria, estatísticas paramétricas e não paramétricas (Todo conhecimento utilizado para fazer a ferramenta)
+
+Trabalho relaciona: É o conjunto de trabalhos semelhantes ao proposto por mim (WEKA/ORANGE/OUTRAS SOLUÇÕES DE MACHINE LEARNING)
+Visualizar e demonstrar para a banca que conhece os trabalhos semelhantes que existem -> O que eles fazem, como eles fazem, comparar eles !
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Juvêncio 
+
+statistical analysis -> estatística descritiva / mineração dos dados
+	
+	best fit: melhor distribuição dentro de uma lista -> tese de dissertação gustavo( usar um algoritmo evolutivo
+	para um dado certo grupo de dados, problema de densidades não conhecidas)
+
+outlier detection
+	 referencia tema monografia de uma aluno, proposta de box plot para caudas pesadas()
+
+seleção de variáveis dependentes
+	dado a distribuição da coluna qual regressão ou método de classificação usar
+	homocedastico( a variancia não depende da média)
+	método de máxima verosimilhança
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+César
+
+
+
+
+

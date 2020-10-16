@@ -1,0 +1,9 @@
+.automlweb/
+.idea/
+.automlweb/
+venv-automlweb/
+__pycache__/
+Workflow/
+.ipnyb_checkpoints
+.vscode/
+

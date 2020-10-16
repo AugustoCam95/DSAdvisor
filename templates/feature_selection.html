@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block subtitulo %} Feature Selection {% endblock %}
+
+{% block content%}
+<div class="card mb-6" align="center">
+  <div class="card-body">
+      <h3 class="card-title">Feature Selection</h3>
+      
+
+      
+      {% if type_problem == "Classification"%}
+      <div class="mt-5">
+        <a class="btn btn-dark btn-lg" href="{{ url_for('resemple_techniques') }}">Next</a>
+      </div>
+      {%else%}
+      <div class="mt-5">
+        <a class="btn btn-dark btn-lg" href="{{ url_for('generate_models') }}">Next</a>
+      </div>
+      {%endif%}
+       
+  </div>  
+</div>
+{% endblock %}

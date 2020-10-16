@@ -1,0 +1,10 @@
+.card {
+	margin: 0 auto; /* Added */
+	float: none; /* Added */
+	margin-bottom: 10px; /* Added */
+	/* background: url("../images/principal.png"); */
+}
+
+.row_tables{
+    margin-top:20px;
+}

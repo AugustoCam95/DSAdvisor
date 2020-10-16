@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block subtitulo %} Step 9 {% endblock %}
+
+{% block content%}
+<div class="card mb-6" align="center">
+  <div class="card-body">
+      <h3 class="card-title">Apply normalization</h3>
+      <p align="justify"> 
+        In this step, we will normalize the data. This is a resource widely used in statistics that 
+        consists of subtracting the mean from a value in the data set and dividing this result by the 
+        standard deviation.The standardization is done through the equation below, where <strong>X</strong> represents 
+        the current value of the data, <strong>µx</strong>  the average of the <strong>X</strong> values ​​and <strong>σx</strong>  
+        the standard deviation. After this normalization, the average of the new data will be centered at 0 and its deviation at 1.
+      </p>
+      <img src="../static/logos/z-score.png">
+      <br>
+      <p align="justify">
+        But what is the importance of doing this whole process?<br>
+        It is essential to check that the columns are on the same scale. For example, two columns A and B 
+        can have two different numerical ranges: the first in a range between zero and one in the realm 
+        domain, while the second is in a range in the range 1 to 1000 in the realm of integers. Evidencing 
+        similar situations like this, it is highly recommended that normalization be performed, since it 
+        improves the performance of supervised learning algorithms, facilitates algorithms to search for 
+        optimal solutions such as descending gradients among other similar algorithms.
+      </p>
+
+      
+      <h3>Before normalization</h3>
+      <div style="overflow-x: scroll" align="center" id = "up">
+            
+      </div>
+      <br>
+      <br>
+
+      <h3>After normalization</h3>
+      <div style="overflow-x: scroll" align="center" id = "down">
+              
+      </div>
+    
+
+      <div class="mt-5">
+        <!-- <a class="btn btn-dark" href="{{ url_for('outlier_report') }}">Back</a> -->
+        <a class="btn btn-dark btn-lg" href="{{ url_for('feature_selection') }}">Next</a>
+      </div>
+         
+
+    <script>
+      d3.text("{{path1|safe}}").then(function(datasetText) {
+      var rows  = d3.csvParseRows(datasetText), 
+          table = d3.select('#up').append('table')
+              .style("border-collapse", "collapse")
+              .style("border", "2px black solid");
+
+          // headers
+          table.append("thead").append("tr")
+          .selectAll("th")
+          .data(rows[0])
+          .enter().append("th")
+          .text(function(d) { return d; })
+          .style("border", "1px black solid")
+          .style("padding", "5px")
+          .style("background-color", "lightgray")
+          .style("font-weight", "bold")
+          .style("text-transform", "uppercase");
+
+          // data
+          table.append("tbody")
+          .selectAll("tr").data(rows.slice(1))
+          .enter().append("tr")
+          .selectAll("td")
+          .data(function(d){return d;})
+          .enter().append("td")
+          .style("border", "1px black solid")
+          .style("padding", "5px")
+          .on("mouseover", function(){
+          d3.select(this).style("background-color", "powderblue");
+          })
+          .on("mouseout", function(){
+          d3.select(this).style("background-color", "white");
+          })
+          .text(function(d){return d;})
+          .style("font-size", "12px");
+        });
+    </script>
+
+    <script>
+      d3.text("{{path2|safe}}").then(function(datasetText) {
+      var rows  = d3.csvParseRows(datasetText), 
+          table = d3.select('#down').append('table')
+              .style("border-collapse", "collapse")
+              .style("border", "2px black solid");
+
+          // headers
+          table.append("thead").append("tr")
+          .selectAll("th")
+          .data(rows[0])
+          .enter().append("th")
+          .text(function(d) { return d; })
+          .style("border", "1px black solid")
+          .style("padding", "5px")
+          .style("background-color", "lightgray")
+          .style("font-weight", "bold")
+          .style("text-transform", "uppercase");
+
+          // data
+          table.append("tbody")
+          .selectAll("tr").data(rows.slice(1))
+          .enter().append("tr")
+          .selectAll("td")
+          .data(function(d){return d;})
+          .enter().append("td")
+          .style("border", "1px black solid")
+          .style("padding", "5px")
+          .on("mouseover", function(){
+          d3.select(this).style("background-color", "powderblue");
+          })
+          .on("mouseout", function(){
+          d3.select(this).style("background-color", "white");
+          })
+          .text(function(d){return d;})
+          .style("font-size", "12px");
+          });
+    </script>
+
+    
+
+
+
+   
+       
+  </div>  
+</div>
+{% endblock %}

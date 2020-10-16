@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block subtitulo %} Table of outliers {% endblock %}
+
+{% block content%}
+<div class="card mb-6" align="center">
+  <div class="card-body">
+      
+    
+      <h3>Table of outliers</h3>
+      <p align = "justify">
+        Below we have tables with values listed according to an algorithm used to try to find possible 
+        anomalies in the columns. These values are just a note for the user to check if they are correct, 
+        if it is necessary to make changes to the csv file it will be necessary to start the previous 
+        steps of ML-TUTOR again.
+      </p>
+
+      <p align = "justify">
+        The table below follows the following scheme:<br/>
+          <strong>column_name + "line" :</strong> refers to which line is the anomalous value.<br/>
+          <strong>column_name + "outlier candidate":</strong> It is the value that is believed to be a possible outlier, hence the name outilier candidate.<br/>        
+      </p>
+      <div class="row">
+        <div class="col-md-12">
+          <div style="overflow-x: scroll; overflow-y: scroll" align="center" id = "outlier">
+          </div>
+        </div>
+      </div>
+    
+
+
+
+      <script>
+        d3.text("{{path1|safe}}").then(function(datasetText) {
+        var rows  = d3.csvParseRows(datasetText), 
+            table = d3.select('#outlier').append('table')
+                .style("border-collapse", "collapse")
+                .style("border", "2px black solid");
+  
+            // headers
+            table.append("thead").append("tr")
+            .selectAll("th")
+            .data(rows[0])
+            .enter().append("th")
+            .text(function(d) { return d; })
+            .style("border", "1px black solid")
+            .style("padding", "5px")
+            .style("background-color", "lightgray")
+            .style("font-weight", "bold")
+            .style("text-transform", "uppercase");
+  
+            // data
+            table.append("tbody")
+            .selectAll("tr").data(rows.slice(1))
+            .enter().append("tr")
+            .selectAll("td")
+            .data(function(d){return d;})
+            .enter().append("td")
+            .style("border", "1px black solid")
+            .style("padding", "5px")
+            .on("mouseover", function(){
+            d3.select(this).style("background-color", "powderblue");
+            })
+            .on("mouseout", function(){
+            d3.select(this).style("background-color", "white");
+            })
+            .text(function(d){return d;})
+            .style("font-size", "12px");
+          });
+      </script>
+  
+       
+       
+  </div>  
+</div>
+{% endblock %}

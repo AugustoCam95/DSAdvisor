@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block subtitulo %} Resume Variables {% endblock %}
+
+{% block content%}
+<div class="card mb-6" >
+  <div class="card-body">
+
+      <div style="border-bottom: 2px solid black;">
+        <h3 class="card-title" align="center"> Resume Variables</h3>
+      </div>
+      
+      <div>
+        <br>
+        <p class="card-text" align="justify"> 
+          Listed below are the columns of data that can be divided into <strong>Categorical</strong> and <strong>Numeric</strong> variables.
+          If you need more information, <a href="https://www.abs.gov.au/websitedbs/a3121120.nsf/home/statistical+language+-+what+are+variables#:~:text=What%20is%20a%20variable%3F,type%20are%20examples%20of%20variables.">click here</a>.  
+          <ul>
+            <li>
+              <strong>Categorical variable</strong> is a variable that can assume a limited and generally fixed number of 
+              possible values, assigning each individual or other unit of observation to a particular group or nominal category, 
+              based on some qualitative property.
+            </li>
+            <li>
+              <strong>Numeric variables</strong>, we can divide ourselves into <strong>discrete variables</strong> 
+              and <strong>continuous variables</strong>. 
+              <ul>
+                <li>
+                  <strong>Discrete variables</strong> are used when a given set of possible results is finite or enumerable, a 
+              good example is the number of children, number of students in a school for example.
+                </li>
+                <li>
+                  <strong>Continuous variables</strong> are numerical variables that have an infinite number of values between any two values. 
+                  A continuous variable can be numeric or date / time. For example, the length of a piece or the date and time when a payment is received.
+                </li>
+              </ul>
+            </li>
+          </ul> 
+          
+        </p>
+        <br>
+  
+        <img src="../static/logos/variable_statistics.jpg" style="display: block; margin-left: auto; margin-right: auto; width: 50%;">
+        <br>
+      </div>
+      
+
+      <div style="border-bottom: 2px solid black;"></div>
+      <br>
+      
+      
+      <div style="width: 100%; height: auto; text-align:center;">
+          <h3>Categorical variables:</h3>
+          {% if string|count > 0  %}
+            <div style="width: 70%; height: auto; border-bottom: 2px solid black" class="container">
+              {% for column in string %}
+                <div class="row">
+                  <div class="col">
+                    
+                      <li>
+                        {{column}}
+                      </li>
+                    
+                  </div>
+                </div>
+              {% endfor %}
+              <br>
+            </div>
+          {% endif %}
+            
+          
+          <br>
+          <h3>Numeric Variables:</h3>
+          <br>
+          {% if int|count > 0  %}
+          <h4>Discrete variables:</h4>
+          <div style="width: 70%; height: auto;" class="container">
+            {% for column in int %}
+              <div class="row">
+                <div class="col">
+                    <li>
+                      {{column}}
+                    </li>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+          <br>
+        
+
+          {% if float|count > 0  %}
+          <h4>Continuos variables:</h4>
+          <div style="width: 70%; height: auto;" class="container">
+            {% for column in float %}
+              <div class="row">
+                <div class="col">
+                    <li>
+                      {{column}}
+                    </li>             
+                  </div>
+              </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+      </div>
+           
+      
+      <br/>
+      
+      <div style="border-top: 2px solid black;" class="mt-2" align="center">
+        <br>
+        <!-- <a class="btn btn-dark " href="{{ url_for('upload_csv') }} ">Back</a> -->
+        <a class="btn btn-dark btn-lg" href="{{ url_for('remove_columns') }} ">Next</a>
+      </div>
+           
+       
+  </div>
+</div>
+
+
+
+{% endblock %}
