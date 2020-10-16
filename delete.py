@@ -39,7 +39,7 @@ def delete_trash():
         print(folder3[i] + " removed !")
     os.chdir(start_point)
 
-    # Remover images png da pasta graficos
+    # Remover imagens jpg da pasta graficos
     os.chdir("static/images")
     folder4 = os.listdir()
     for i in range(len(folder4)):
@@ -47,7 +47,15 @@ def delete_trash():
             os.remove((folder4[i]))
     os.chdir(start_point)
 
-    # Remover images png da pasta correlations
+    # Remover imagens jpg da pasta boxplots
+    os.chdir("static/boxplots")
+    folder4 = os.listdir()
+    for i in range(len(folder4)):
+        if ".jpg" in folder4[i]:
+            os.remove((folder4[i]))
+    os.chdir(start_point)
+
+    # Remover imagens png da pasta correlations
     os.chdir("static/correlations")
     folder4 = os.listdir()
     for i in range(len(folder4)):
