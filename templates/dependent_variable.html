@@ -114,10 +114,10 @@
       
       {% else %}
       <div class="mt-3">
-            <h4 class="mt-3">Status: {{message}}  </h4>
+            <h4 class="alert alert-success" ">Status: Success  </h4>
             <br>
             
-            <div style="border-top: 5px solid black; border-bottom: 5px solid black;">
+            <div class="alert alert-success" style="border-top: 5px solid black; border-bottom: 5px solid black;">
               <br>
               <p>Please note that the column <strong>"{{user_answer}}"</strong> will be removed from the dataset. </p>
               {% if train_percent == 50 %}

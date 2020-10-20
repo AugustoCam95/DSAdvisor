@@ -142,10 +142,11 @@ def categorical_plots(df):
     for i in range(len(col_string)):
         for j in range(len(vetor[i])):
             array[i][j] = df[ df[ col_string[i] ] == vetor[i][j] ].shape[0]
-    colors = len(array)*[[]]
-    for i in range(len(array)):
-        npray = np.array(array[i])
-        colors[i] = cm.hsv(npray/ float(max(npray)))
+    # colors = len(array)*[[]]
+    # for i in range(len(array)):
+    #     n = len(set(array[0]))
+    #     colors[i] = [cm.hsv(i * 1.0 /n, 1) for i in range(n)]
+    my_colors = 'rgbkymc'
     for i in range(len(array)):    
         fig1, ax1 = plt.subplots(figsize=(10, 10))
         ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
@@ -154,7 +155,7 @@ def categorical_plots(df):
         plt.clf()
     for i in range(len(array)):    
         fig1, ax1 = plt.subplots(figsize=(10, 10))
-        ax1.bar(vetor[i], height=array[i], color = colors[i] )
+        ax1.bar(vetor[i], height=array[i], color = my_colors )
         plt.savefig("bar_"+col_string[i]+"_.jpg")
         plt.clf()
     os.chdir(start_point)
@@ -207,7 +208,7 @@ def corrdot_pearson(*args, **kwargs):
     corr_r = args[0].corr(args[1], 'pearson')
     corr_text = round(corr_r, 2)
     ax = plt.gca()
-    font_size = abs(corr_r) * 60 + 30
+    font_size = abs(corr_r) * 60 + 5
     ax.annotate(corr_text, [.5, .5,],  xycoords="axes fraction", ha='center', va='center', fontsize=font_size)
 
 def corrfunc_pearson(x, y, **kws):
@@ -220,13 +221,13 @@ def corrfunc_pearson(x, y, **kws):
     if p <= 0.001:
         p_stars = '***'
     ax = plt.gca()
-    ax.annotate(p_stars, xy=(0.65, 0.6), xycoords=ax.transAxes, color='red', fontsize=70)
+    ax.annotate(p_stars, xy=(0.65, 0.6), xycoords=ax.transAxes, color='red', fontsize= 55)
 
 def corrdot_spearman(*args, **kwargs):
     corr_r = args[0].corr(args[1], 'spearman')
     corr_text = round(corr_r, 2)
     ax = plt.gca()
-    font_size = abs(corr_r) * 60 + 30
+    font_size = abs(corr_r) * 60 + 5
     ax.annotate(corr_text, [.5, .5,],  xycoords="axes fraction", ha='center', va='center', fontsize=font_size)
 
 def corrfunc_spearman(x, y, **kws):
@@ -239,7 +240,7 @@ def corrfunc_spearman(x, y, **kws):
     if p <= 0.001:
         p_stars = '***'
     ax = plt.gca()
-    ax.annotate(p_stars, xy=(0.65, 0.6), xycoords=ax.transAxes, color='red', fontsize=70)
+    ax.annotate(p_stars, xy=(0.65, 0.6), xycoords=ax.transAxes, color='red', fontsize = 55)
 
 def generate_correlations_pearson(dataframe,text):
     start_point = os.getcwd()
@@ -470,9 +471,11 @@ def split_and_norm(choiced,df, text, test_percent):
             dataset = dataset.drop( columns = [col])
     X_train, X_test, y_train, y_test = train_test_split(dataset, label, test_size = test_percent)
     X_test, X_validate, y_test, y_validate = train_test_split(X_test, y_test, test_size=0.5)
-    X_train.to_csv(text+"train_data.csv", index = False)
-    z_score = st.zscore(X_train)
-    dataset_norm = pd.DataFrame(z_score,columns = X_train.columns)
+    train_set = X_train
+    train_set[y_train.columns[0]] = y_train
+    train_set.to_csv(text+"train_data.csv", index = False)
+    z_score = st.zscore(train_set)
+    dataset_norm = pd.DataFrame(z_score,columns = train_set.columns)
     aux = dataset_norm.head(n=20)
     aux.to_csv(text+"train_norm_data20.csv", index = False)
     dataset_norm.to_csv(text+"train_norm_data.csv", index = False)
@@ -579,6 +582,7 @@ def create_boxplots(df):
     for col in df.columns:
         fig1, ax1 = plt.subplots()
         ax1.boxplot(df[col])
+        plt.xlabel(col)
         plt.savefig(col+".jpg")
         plt.clf()
     os.chdir(start_point)

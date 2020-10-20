@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block subtitulo %} Outliers Analisys {% endblock %}
+{% block subtitulo %} Outliers Detection {% endblock %}
 
 {% block content%}
 <div class="card mb-6" align="center">
@@ -27,19 +27,19 @@
         <h3 style="text-align:center" > <strong>Column:</strong> {{dict_item['name'][0:-4]}}</h3>
       </div>
 
-      <div class="row">
+      <div align="center" class="row">
         
         
         <div class="column">
-          <img src="{{url_for('static', filename='boxplots/')}}{{dict_item['name']}}" width="500" height="500" alt="{{dict_item['name']}}">
+          <img src="{{url_for('static', filename='boxplots/')}}{{dict_item['name']}}" width="400" height="400" alt="{{dict_item['name']}}">
         </div>
         
         <div class="column">
           <br>
           <br>
-          <p style="font-size:30px" ><strong>Number of instances:</strong> {{dict_item['elements']}} </p>
-          <p style="font-size:30px" ><strong>Percent of outliers:</strong> {{dict_item['percent_outliers']}}%   </p>
-          <p style="font-size:30px" ><strong>Total outliers:</strong> {{dict_item['sum_outliers']}}     </p>
+          <p style="font-size:20px" ><strong>Number of instances:</strong> {{dict_item['elements']}} </p>
+          <p style="font-size:20px" ><strong>Percent of outliers:</strong> {{dict_item['percent_outliers']}}%   </p>
+          <p style="font-size:20px" ><strong>Total outliers:</strong> {{dict_item['sum_outliers']}}     </p>
         </div>
 
       </div>

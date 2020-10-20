@@ -280,14 +280,6 @@ def dependent_variable():
     return render_template("dependent_variable.html", message = "Waiting for choice" ,columns = dataframe.columns)
 
 
-# # @app.route('/type_problem', methods = [ "GET", "POST"])
-# # def type_problem():
-# #     if request.method == "POST":
-# #         user_answer = request.form["radiobutton"]
-# #         return render_template("type_problem.html" , message = "Success to choice", user_answer= user_answer)
-
-#     return render_template("type_problem.html", message = "Waiting for choice")
-
 @app.route('/outlier_report')
 def outlier_report():
     manipulate_csv.create_boxplots(X_train)

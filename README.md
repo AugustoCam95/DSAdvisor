@@ -1,5 +1,5 @@
-# AutoMLWeb
-A web aplication fully implemented in python and flask api
+# DSAdvisor
+A guideline implemented in python with flask to predicted tasks
 
 ## component pages:
 base.html

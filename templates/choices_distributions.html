@@ -81,10 +81,10 @@
             such as those involving stochastic processes defined in continuous time, may require the use of more general probability measures.
           </li>
         </ul>
-        <br/>
         If you want to know more about what a probability distribution is <a href="https://en.wikipedia.org/wiki/Probability_distribution">click here</a> 
         or about the normal distribution <a href="https://en.wikipedia.org/wiki/Normal_distribution">click here</a>.
-        
+        <br>
+        <br>
         
       </p>
       
@@ -127,13 +127,14 @@
         </form>
         </div>
       </div>  
-      <div class="mt-2" align="center">
+      <div align="center">
         <h4>Status: {{message}} </h4>
       </div>   
 
     {% else %}
       <div class="mt-2" align="center">
-        <h4>Status: {{message}}</h4>
+        <h4 class="alert alert-success" >Status: Success</h4>
+        <br>
         <p>
             List of distributions: {{list_x}}
         </p>

@@ -73,6 +73,7 @@
     </div>
     
     <br>
+    <br>
     <div class="mt-5" align="center">
           <h4>Status: {{message}} </h4>
     </div>
@@ -81,8 +82,8 @@
 
     {% else %}
     <div class="mt-5" align="center">
-          <h4>Status: {{message}}</h4>
-          <p><strong>Option selected:</strong> {{miss_code}}</p>
+          <h4 class="alert alert-success">Status: Success</h4>
+          <p class="alert alert-success"><strong> Option selected:</strong> {{miss_code}}</p>
           <div class="mt-5" align="center">
             <a class="btn btn-dark btn-lg" href="{{ url_for('descriptive_statistics') }} ">Next</a>
           </div>
