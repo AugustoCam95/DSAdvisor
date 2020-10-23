@@ -9,6 +9,7 @@
             <h3 class="card-title" align="center">Upload your CSV !</h3>
         </div>
         
+        {% if message == "Waiting for upload" %}
         <div>
             <br>
             <p class="card-text">To start using our features, we first need you to upload the data you want to work on. Click on the button below to select the file on your computer, if you wanted to change the file just select another one. Remember that the format of your file must be of the type 'csv'. 
@@ -19,8 +20,6 @@
             </p>
         </div>
         
-
-        {% if message == "Waiting for upload" %}
         <form action="{{ url_for('upload_csv') }}" method="POST" enctype=multipart/form-data>
             <div align="center" class="form-group">
                 <div class="custom-file">
@@ -44,10 +43,12 @@
         <h3 align="center">Status: {{message}} </h3>
 
         {% else %}
+            <div class="alert alert-success">
+                <h3 align="center">Status:</h3>
+                <p align="center" >  File "{{filename}}" uploaded !</p>
+            </div>
             
-            <h3 align="center">Status:</h3>
-            <p align="center" class="alert alert-success">  File {{filename}} uploaded !</p>
-            <p align="center"> 
+            <p class="alert alert-info" align="center"> 
                 Below is a preview of the data that was sent, take the opportunity to check if it is really the csv file you wanted to upload.
             </p>
             

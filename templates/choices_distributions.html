@@ -133,11 +133,14 @@
 
     {% else %}
       <div class="mt-2" align="center">
-        <h4 class="alert alert-success" >Status: Success</h4>
-        <br>
-        <p>
+        <div class="alert alert-success">
+          <h4>Status: Success</h4>
+          <br>
+          <p>
             List of distributions: {{list_x}}
-        </p>
+          </p>
+        </div>
+        
       
         <div class="mt-5" align="center">
             <!-- <a class="btn btn-dark " href="{{ url_for('upload_csv') }} ">Back</a> -->

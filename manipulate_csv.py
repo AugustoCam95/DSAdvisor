@@ -582,7 +582,7 @@ def create_boxplots(df):
     for col in df.columns:
         fig1, ax1 = plt.subplots()
         ax1.boxplot(df[col])
-        plt.xlabel(col)
+        ax1.set_xticklabels([col])
         plt.savefig(col+".jpg")
         plt.clf()
     os.chdir(start_point)

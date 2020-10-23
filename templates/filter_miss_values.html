@@ -27,6 +27,8 @@
       <h3 class="card-title" align="center"> Select the code for miss values in the dataset</h3>
     </div>
     
+
+    {% if message == "Waiting for choice" %}
     <div>
       <br>
       <p class="card-text"> 
@@ -38,7 +40,7 @@
       </p>
     </div>
     
-    {% if message == "Waiting for choice" %}
+    
     <div style="width: 100%; height: auto;">
       <div class="container" style= " width: 30%; height: 100px;">
         <form action="{{ url_for('filter_miss_values') }}" method="POST" enctype=multipart/form-data>
@@ -82,11 +84,14 @@
 
     {% else %}
     <div class="mt-5" align="center">
-          <h4 class="alert alert-success">Status: Success</h4>
-          <p class="alert alert-success"><strong> Option selected:</strong> {{miss_code}}</p>
-          <div class="mt-5" align="center">
-            <a class="btn btn-dark btn-lg" href="{{ url_for('descriptive_statistics') }} ">Next</a>
-          </div>
+        <div class="alert alert-success">
+          <h4>Status: Success</h4>
+          <p><strong>Option selected:</strong> {{miss_code}}</p>
+        </div>
+        
+        <div class="mt-5" align="center">
+          <a class="btn btn-dark btn-lg" href="{{ url_for('descriptive_statistics') }} ">Next</a>
+        </div>
     </div>
     {% endif %}
 
