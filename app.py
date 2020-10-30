@@ -302,13 +302,18 @@ def outlier_report():
 def table_outlier():
     return render_template("table_outlier.html",  path1 ="static/samples/"+file_name+"outliers.csv")
 
+list_col = None
 @app.route('/normalization')
 def normalization():
+    global list_col
+    list_col = manipulate_csv.create_table_feature_selection(X_train, y_train, type_problem, file_name)
     return render_template("normalization.html", path1 ="static/samples/"+file_name+".csv", path2 ="static/samples/"+file_name+"train_norm_data20.csv"  )
 
 @app.route('/feature_selection', methods = [ "GET", "POST"] )
 def feature_selection():
-    return render_template("feature_selection.html", type_problem = type_problem)
+    if request.method == "POST":
+        selected_variables = request.form.getlist("checkbox")
+    return render_template("feature_selection.html", message = "Waiting for choice", type_problem = type_problem, filename = file_name, variables = list(set(X_train.columns) - set(list_col)), list_col = list_col)
 
 @app.route('/resemple_techniques', methods = [ "GET", "POST"])
 def resemple_techniques():

@@ -35,11 +35,15 @@
             {% endfor %}  
         {% endif %}
     </div>
-    <div>
+    <div >
       {% if temp1|count == 0 and temp2|count == 0 %}
+      <div class="alert alert-info">
+        <br>
         <h3>No categorical and discrete variables found</h3>
         <p>Your data set has no categorical or discrete variables. Right on that page we 
-           don't have any graphs to show. </p>
+           don't have any graphs to show. 
+        </p>
+      </div>
       {% endif %}
     </div>    
       

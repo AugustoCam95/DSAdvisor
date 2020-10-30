@@ -59,7 +59,7 @@
 <div  id="myDIV2" class="card mb-6 " >
   <div class="card-body">
 
-    
+    {% if message == "Waiting for choice" %}
       <h4 class="card-title" align="center"> Choice distributions</h4>
       <p class="card-text" align="justify"> 
         On this page we will talk about probability distributions for continuous variables, where on the next page we will use a series of tests to infer
@@ -88,7 +88,7 @@
         
       </p>
       
-      {% if message == "Waiting for choice" %}
+      
       <div style="width: 100%; height: auto;">
         <div class="container" style= " width: 70%; height: 100%;">
           <form action="{{ url_for('choices_distributions') }}" method="POST" enctype=multipart/form-data>

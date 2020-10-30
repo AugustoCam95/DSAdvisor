@@ -17,7 +17,9 @@ from sklearn import preprocessing
 from sklearn.preprocessing import MinMaxScaler
 from statsmodels.stats.stattools import medcouple 
 from sklearn.model_selection import train_test_split
-
+from sklearn.feature_selection import mutual_info_classif, f_classif, mutual_info_regression, chi2, f_regression
+from info_gain import info_gain
+import scipy.stats as ss
 
 
 def make_dataset(dataset,text):
@@ -227,7 +229,7 @@ def corrdot_spearman(*args, **kwargs):
     corr_r = args[0].corr(args[1], 'spearman')
     corr_text = round(corr_r, 2)
     ax = plt.gca()
-    font_size = abs(corr_r) * 60 + 5
+    font_size = abs(corr_r) * 50 + 15
     ax.annotate(corr_text, [.5, .5,],  xycoords="axes fraction", ha='center', va='center', fontsize=font_size)
 
 def corrfunc_spearman(x, y, **kws):
@@ -461,17 +463,16 @@ def get_name_graphics():
 ### divisão dos conjuntos de treino, validação e test / normalização do conjunto de treinamento
 def split_and_norm(choiced,df, text, test_percent):
     start_point = os.getcwd()
+    le = preprocessing.LabelEncoder()
+    for col in df.columns:
+        if df[col].dtypes == 'object' :
+            df[col] = le.fit_transform(df[col])
     dataset = df.drop(columns= [choiced])
     label = df[[choiced]]
     os.chdir("static/samples")
-    for col in dataset.columns:
-        if dataset[col].dtypes == 'float64' or dataset[col].dtypes == 'int64' :
-            pass
-        else:
-            dataset = dataset.drop( columns = [col])
     X_train, X_test, y_train, y_test = train_test_split(dataset, label, test_size = test_percent)
     X_test, X_validate, y_test, y_validate = train_test_split(X_test, y_test, test_size=0.5)
-    train_set = X_train
+    train_set = X_train.copy()
     train_set[y_train.columns[0]] = y_train
     train_set.to_csv(text+"train_data.csv", index = False)
     z_score = st.zscore(train_set)
@@ -569,10 +570,9 @@ def adjust_iqr(df, text):
 
 
 
-## Criacao de boxplots
+# Criacao de boxplots
 def create_boxplots(df):
     start_point = os.getcwd()
-    print(os.getcwd())
     os.chdir("static/boxplots")
     for col in df.columns:
         if df[col].dtypes == 'float64' or df[col].dtypes == 'int64' :
@@ -649,3 +649,39 @@ def after_oversampling(dataset,labels,text):
             per = round(v / len(target) * 100, 2)
             writer.writerow({'Class': k, 'Count': v, 'Percentage': per})
     os.chdir(start_point)
+
+# Feature Selection
+def create_table_feature_selection(dataset, labels, type_problem, text):
+    ch,_ =  chi2(dataset,labels)
+    if type_problem == "Classification":
+        mi = mutual_info_classif(dataset, labels)
+        f,_ =  f_classif(dataset, labels)
+    else:
+        mi = mutual_info_regression(dataset, labels)
+        f,_ =  f_regression(dataset, labels)
+    ig = []
+    igr = []
+    for col in dataset.columns:
+        ig.append(info_gain.info_gain(dataset[col],labels))
+        igr.append(info_gain.info_gain_ratio(dataset[col],labels))
+    feature_ranking = pd.DataFrame(ss.rankdata(ch), index = [dataset.columns], columns = ['Ch'])
+    feature_ranking["Ig"] = ss.rankdata(ig)
+    feature_ranking["Gr"] = ss.rankdata(igr)
+    feature_ranking["Mi"] = ss.rankdata(mi)
+    feature_ranking["F"] = ss.rankdata(f)
+    feature_ranking["Sum"] = feature_ranking.sum(axis=1)
+    feature_ranking = feature_ranking.sort_values(by=['Sum'], ascending = False)
+    start_point = os.getcwd()
+    os.chdir("static/samples")
+    feature_ranking.to_csv(text+"_fs.csv")
+    os.chdir(start_point)
+    count = 0
+    for i in feature_ranking['Sum']:
+        if i > (feature_ranking['Sum'][0]/2):
+            count = count + 1
+    columns = feature_ranking['Sum'].index[0:count]
+    len(columns)
+    list_col = []
+    for i in columns:
+        list_col.append(i[0])
+    return list_col

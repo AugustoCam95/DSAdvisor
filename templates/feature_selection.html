@@ -5,20 +5,152 @@
 {% block content%}
 <div class="card mb-6" align="center">
   <div class="card-body">
+    {% if message == "Waiting for choice" %}
       <h3 class="card-title">Feature Selection</h3>
+      <br>
+      <p>
+        In the table below we list the ranking according to each feature selection method for 
+        each variable in the dataset.The pre-selected variables are indicated to be chosen according 
+        to the heuristic implemented in <strong>Dsadvisor</strong>.
+      </p>
+    
+      <div style="width: 100%; height: auto; text-align:center;">
+          <div style="width: 70%; height: auto; border-bottom: 2px solid black" class="container">
+              <div class="row">
+                <div class="col">
+                  
+                  <li>Ch: Chi Squared</li>
+                  <li>Ig: Information Gain</li>
+                  <li>Mi: Mutual Info</li>
+                  <li>F: F-value </li>
+                  <li>GR: Gain Ratio</li>
+                  <li>Sum: The sum of all results</li>
+                  
+                </div>
+              </div>
+            <br>
+          </div>
+      </div>
+       <br>
+    
       
+      <div class="row">
+        <div style="width: 100%; height: auto;">
+          <div class="container" style= " width: 95%; height: 100%;">
+            <div style="overflow-y: scroll;" id="fea">
+            </div>
+          </div>
+        </div>
+      </div>
 
+      <div style="width: 100%; height: auto;">
+        <div class="container" style= " width: 70%; height: 100%;text-align:center;">
+          <form action="{{ url_for('feature_selection') }}" method="POST" enctype=multipart/form-data>
+            <br>
+            <h3>Variables:</h3>
+            
+            <div style="width: 70%; height: auto;" class="container">
+              {% for column in list_col %}
+                  <div class="row" >
+                    <div class="col" style="text-align: right;">
+                      <input class="form-check-input" type="checkbox" name="checkbox" id="{{column}}" value="{{column}}" checked>
+                    </div>
+                    <div class="col" style="text-align: left;">
+                      <label class="form-check-label" for="{{column}}">{{column}}</label>
+                    </div>
+                  </div>
+              {% endfor %}
+
+              {% for column in variables %}
+                  <div class="row" >
+                    <div class="col" style="text-align: right;">
+                      <input class="form-check-input" type="checkbox" name="checkbox" id="{{column}}" value="{{column}}">
+                    </div>
+                    <div class="col" style="text-align: left;">
+                      <label class="form-check-label" for="{{column}}">{{column}}</label>
+                    </div>
+                  </div>
+              {% endfor %}
+            </div>
+          
+            <div align="center">
+              <br>
+              <button type="submit" class="btn  btn-primary">Confirm option</button>
+            </div>
+          </form>
+        </div>     
+      </div>    
       
+      <br/>
+     
+        
+      <div style="border-top: 2px solid black;" align="center">
+        <br>
+            <h4>Status: {{message}} </h4>
+      </div>   
+
+    {% else %}
+      <div align="center">
+        <br>
+        <div class="alert alert-success">
+          <h4 >Status: Success</h4>
+        </div>
+      </div> 
+
       {% if type_problem == "Classification"%}
-      <div class="mt-5">
-        <a class="btn btn-dark btn-lg" href="{{ url_for('resemple_techniques') }}">Next</a>
-      </div>
+        <div class="mt-5">
+          <a class="btn btn-dark btn-lg" href="{{ url_for('resemple_techniques') }}">Next</a>
+        </div>
       {%else%}
-      <div class="mt-5">
-        <a class="btn btn-dark btn-lg" href="{{ url_for('generate_models') }}">Next</a>
-      </div>
+        <div class="mt-5">
+          <a class="btn btn-dark btn-lg" href="{{ url_for('generate_models') }}">Next</a>
+        </div>
       {%endif%}
-       
+
+    {%endif%}
+    
+
+    <script>
+      d3.text("../static/samples/{{filename}}_fs.csv").then(function(datasetText) {
+                  var rows  = d3.csvParseRows(datasetText),
+                      table = d3.select('#fea').append('table')
+                                .style("border-collapse", "collapse")
+                                .style("border", "2px black solid");
+    
+                  // headers
+                  table.append("thead").append("tr")
+                    .selectAll("th")
+                    .data(rows[0])
+                    .enter().append("th")
+                    .text(function(d) { return d; })
+                    .style("border", "1px black solid")
+                    .style("padding", "5px")
+                    .style("background-color", "lightgray")
+                    .style("font-weight", "bold")
+                    .style("text-transform", "uppercase");
+    
+                  // data
+                  table.append("tbody")
+                    .selectAll("tr").data(rows.slice(1))
+                    .enter().append("tr")
+                    .selectAll("td")
+                    .data(function(d){return d;})
+                    .enter().append("td")
+                    .style("border", "1px black solid")
+                    .style("padding", "5px")
+                    .on("mouseover", function(){
+                    d3.select(this).style("background-color", "powderblue");
+                  })
+                    .on("mouseout", function(){
+                    d3.select(this).style("background-color", "white");
+                  })
+                    .text(function(d){return d;})
+                    .style("font-size", "12px");
+            });
+    </script>   
+
   </div>  
 </div>
 {% endblock %}
+
+
