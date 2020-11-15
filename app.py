@@ -313,6 +313,7 @@ def normalization():
 def feature_selection():
     if request.method == "POST":
         selected_variables = request.form.getlist("checkbox")
+        manipulate_csv.filter_on_feature_selection(selected_variables, file_name)
     return render_template("feature_selection.html", message = "Waiting for choice", type_problem = type_problem, filename = file_name, variables = list(set(X_train.columns) - set(list_col)), list_col = list_col)
 
 @app.route('/resemple_techniques', methods = [ "GET", "POST"])
@@ -331,10 +332,21 @@ def resemple_techniques():
     return render_template("resemple_techniques.html", message = "Waiting for choice", path1 = "static/samples/"+file_name+"_before.csv")
 
 
-@app.route('/generate_models', methods = [ "GET", "POST"])
-def generate_models():
-    return render_template("generate_models.html")
+@app.route('/downloads_datasets')
+def downloads_datasets():
+    return render_template("downloads_datasets.html")
 
+@app.route('/return_files_train/')
+def return_files_train():
+	return send_file('static/samples/'+file_name+'train_data.csv', attachment_filename= file_name+'train_data.csv')
+
+@app.route('/return_files_validation/')
+def return_files_validation():
+	return send_file('static/samples/'+file_name+'validation_data.csv', attachment_filename= file_name+'validation_data.csv')
+
+@app.route('/return_files_test/')
+def return_files_test():
+	return send_file('static/samples/'+file_name+'test_data.csv', attachment_filename= file_name+'test_data.csv')
 
 
 if __name__ == "__main__":    

@@ -1,4 +1,3 @@
-from app import dataframe
 import os
 import csv
 import math
@@ -471,10 +470,19 @@ def split_and_norm(choiced,df, text, test_percent):
     label = df[[choiced]]
     os.chdir("static/samples")
     X_train, X_test, y_train, y_test = train_test_split(dataset, label, test_size = test_percent)
-    X_test, X_validate, y_test, y_validate = train_test_split(X_test, y_test, test_size=0.5)
+    X_test, X_validation, y_test, y_validation = train_test_split(X_test, y_test, test_size=0.5)
+    ### Train set
     train_set = X_train.copy()
     train_set[y_train.columns[0]] = y_train
     train_set.to_csv(text+"train_data.csv", index = False)
+    ### Validation set
+    validation_set = X_validation.copy()
+    validation_set[y_validation.columns[0]] = y_validation
+    validation_set.to_csv(text+"validation_data.csv", index = False)
+    ### Test set
+    test_set = X_train.copy()
+    test_set[y_test.columns[0]] = y_test
+    test_set.to_csv(text+"test_data.csv", index = False)
     z_score = st.zscore(train_set)
     dataset_norm = pd.DataFrame(z_score,columns = train_set.columns)
     aux = dataset_norm.head(n=20)
@@ -685,3 +693,21 @@ def create_table_feature_selection(dataset, labels, type_problem, text):
     for i in columns:
         list_col.append(i[0])
     return list_col
+
+def filter_on_feature_selection(col_to_remove, text):
+    start_point = os.getcwd()
+    os.chdir("static/samples")
+    dataframe1 = pd.read_csv("static/samples/"+text+"train_data.csv")
+    dataframe2 = pd.read_csv("static/samples/"+text+"validation_data.csv")
+    dataframe3 = pd.read_csv("static/samples/"+text+"test_data.csv")
+    
+    dataframe1 = dataframe1.drop(columns = col_to_remove)
+    dataframe1.to_csv(text+"train_data.csv", index = False)
+
+    dataframe2 = dataframe2.drop(columns = col_to_remove)
+    dataframe2.to_csv(text+"validation_data.csv", index = False)
+
+    dataframe3 = dataframe3.drop(columns = col_to_remove)
+    dataframe3.to_csv(text+"test_data.csv", index = False)
+
+    os.chdir(start_point)
