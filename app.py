@@ -313,8 +313,10 @@ def normalization():
 def feature_selection():
     if request.method == "POST":
         selected_variables = request.form.getlist("checkbox")
-        manipulate_csv.filter_on_feature_selection(selected_variables, file_name)
-    return render_template("feature_selection.html", message = "Waiting for choice", type_problem = type_problem, filename = file_name, variables = list(set(X_train.columns) - set(list_col)), list_col = list_col)
+        drop_variables = list(set(X_train.columns) - set(selected_variables))
+        manipulate_csv.filter_on_feature_selection(drop_variables, file_name)
+        return render_template("feature_selection.html", message = "Sucess", type_problem = type_problem)
+    return render_template("feature_selection.html", message = "Waiting for choice", filename = file_name, variables = list(set(X_train.columns) - set(list_col)), list_col = list_col)
 
 @app.route('/resemple_techniques', methods = [ "GET", "POST"])
 def resemple_techniques():
@@ -332,9 +334,9 @@ def resemple_techniques():
     return render_template("resemple_techniques.html", message = "Waiting for choice", path1 = "static/samples/"+file_name+"_before.csv")
 
 
-@app.route('/downloads_datasets')
-def downloads_datasets():
-    return render_template("downloads_datasets.html")
+@app.route('/download_datasets')
+def download_datasets():
+    return render_template("download_datasets.html")
 
 @app.route('/return_files_train/')
 def return_files_train():

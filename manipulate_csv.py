@@ -149,13 +149,13 @@ def categorical_plots(df):
     #     colors[i] = [cm.hsv(i * 1.0 /n, 1) for i in range(n)]
     my_colors = 'rgbkymc'
     for i in range(len(array)):    
-        fig1, ax1 = plt.subplots(figsize=(10, 10))
+        fig1, ax1 = plt.subplots(figsize=(20, 20))
         ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-        ax1.pie(array[i], labels=vetor[i], autopct='%1.1f%%', shadow=True, startangle=90)
+        ax1.pie(array[i], labels=vetor[i], autopct='%1.1f%%', shadow = False , startangle=90)
         plt.savefig("pie_"+col_string[i]+"_.jpg")
         plt.clf()
     for i in range(len(array)):    
-        fig1, ax1 = plt.subplots(figsize=(10, 10))
+        fig1, ax1 = plt.subplots(figsize=(20, 20))
         ax1.bar(vetor[i], height=array[i], color = my_colors )
         plt.savefig("bar_"+col_string[i]+"_.jpg")
         plt.clf()
@@ -697,9 +697,9 @@ def create_table_feature_selection(dataset, labels, type_problem, text):
 def filter_on_feature_selection(col_to_remove, text):
     start_point = os.getcwd()
     os.chdir("static/samples")
-    dataframe1 = pd.read_csv("static/samples/"+text+"train_data.csv")
-    dataframe2 = pd.read_csv("static/samples/"+text+"validation_data.csv")
-    dataframe3 = pd.read_csv("static/samples/"+text+"test_data.csv")
+    dataframe1 = pd.read_csv(text+"train_data.csv")
+    dataframe2 = pd.read_csv(text+"validation_data.csv")
+    dataframe3 = pd.read_csv(text+"test_data.csv")
     
     dataframe1 = dataframe1.drop(columns = col_to_remove)
     dataframe1.to_csv(text+"train_data.csv", index = False)

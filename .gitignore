@@ -6,4 +6,6 @@ __pycache__/
 Workflow/
 .ipnyb_checkpoints
 .vscode/
+all_csvs
+
 

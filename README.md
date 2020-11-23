@@ -14,8 +14,8 @@ descriptive_statistics
 graphical_analysis
 correlations
 dependent_variable
-type_problem
-outlier_report
+setup_problem
+outlier_detection
 normalization
 feature_selection
 resemple_techniques
