@@ -68,7 +68,6 @@ def normal_test(data):
     return binario
 
 def kolmogorov_test(data, dist_names):
-    dist_names = dist_names
     dist_results = []
     params = {}
     for dist_name in dist_names:

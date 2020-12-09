@@ -22,6 +22,7 @@ app.config["SECRET_KEY"] = 'secret'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['ALLOWED_EXTENSIONS'] = 'csv'
 
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
@@ -31,13 +32,17 @@ def index():
     delete.delete_trash()
     return render_template("index.html")
 
+log_user_execution = {}
 file_name = None
 dataframe = None
 
 @app.route('/upload_csv', methods = [ "GET", "POST"])
 def upload_csv():
     delete.delete_trash()
+    global log_user_execution
     if request.method == 'POST':
+        log_user_execution["Dataset details"] = request.form["text_details"]
+        print("Details: ",request.form["text_details"])
         if 'file' not in request.files:
             flash('Nenhum arquivo encontrado')
             return redirect(url_for('upload_csv'))
@@ -54,6 +59,8 @@ def upload_csv():
             global file_name
             global dataframe
             file_name = filename.split(".")[0]
+            log_user_execution["file_name"] = file_name
+            print("Dict:", log_user_execution)
             # statistics.statistics_Creator(file.filename)
             # jupyter.jupyter_Creator()
             # zip.create_zip()
@@ -77,7 +84,9 @@ def resume_variables():
 def remove_columns():
     if request.method == "POST":
         global dataframe
+        global log_user_execution
         drop_values = request.form.getlist("checkbox")
+        log_user_execution["removed variables"] = drop_values
         dataframe = manipulate_csv.drop_col(drop_values, dataframe, file_name)
         return render_template("remove_columns.html" , message = "Success to choice" , list_x = drop_values)
 
@@ -91,11 +100,14 @@ def filter_miss_values():
     if request.method == "POST":
         global choices_miss
         global special_code
+        global log_user_execution
         choices_miss = request.form.getlist("checkbox")
+        log_user_execution["missing values codes"] = choices_miss
         # print(choices_miss)
         if "other_code" in choices_miss:
             choices_miss.remove("other_code")
             special_code = request.form["text123"]
+            log_user_execution["special missing value code"] = special_code
             # print(special_code)
             # print(choices_miss)
             manipulate_csv.miss_value(choices_miss,special_code,dataframe, file_name)
@@ -175,6 +187,8 @@ def choices_distributions():
     if request.method == "POST":
         dist_list = request.form.getlist("checkbox")
         global dist_names
+        global log_user_execution
+        log_user_execution["Selected ditribution to best fit method"] = dist_list
         dist_names = dist_list
         return render_template("choices_distributions.html" , message = "Success to choice" , list_x = dist_list)
 
@@ -188,6 +202,7 @@ user_choice_dist = None
 def distribution_analysis():
     if request.method == "POST":
         global user_choice_dist 
+        global log_user_execution
         user_choice_dist = []
         df = dataframe
         for col in dataframe.columns:
@@ -196,6 +211,7 @@ def distribution_analysis():
         for i in range(len(df.columns)):
             # print(user_choice_dist)
             user_choice_dist.append(request.form["radio"+str(i)])
+        log_user_execution["User's distribution choices"] = user_choice_dist
         return render_template("distribution_analysis.html" , message = "Success to choice", user_answer= user_choice_dist)
 
     temp = []
@@ -270,10 +286,13 @@ y_train = None
 @app.route('/dependent_variable', methods = [ "GET", "POST"])
 def dependent_variable():
     if request.method == "POST":
-        global X_train, y_train, type_problem 
+        global X_train, y_train, type_problem, log_user_execution 
         dependent_variable = request.form["radiobutton"]
         test_percent = 100 - int(request.form["radiobutton2"])
         type_problem = request.form["radiobutton3"]
+        log_user_execution["Dependent Variable"] = dependent_variable
+        log_user_execution["Train percent"] = test_percent
+        log_user_execution["Problem type"] = type_problem
         X_train, y_train = manipulate_csv.split_and_norm(dependent_variable,dataframe, file_name, test_percent)
         return render_template("dependent_variable.html" , message = "Success to choice" ,user_answer= dependent_variable, train_percent = int(request.form["radiobutton2"]), user_answer2 = type_problem)
 
@@ -312,7 +331,9 @@ def normalization():
 @app.route('/feature_selection', methods = [ "GET", "POST"] )
 def feature_selection():
     if request.method == "POST":
+        global log_user_execution
         selected_variables = request.form.getlist("checkbox")
+        log_user_execution["Selected variables in feature selection page"] = selected_variables
         drop_variables = list(set(X_train.columns) - set(selected_variables))
         manipulate_csv.filter_on_feature_selection(drop_variables, file_name)
         return render_template("feature_selection.html", message = "Sucess", type_problem = type_problem)
@@ -323,6 +344,8 @@ def resemple_techniques():
     manipulate_csv.before_reasample(y_train,file_name)
     if request.method == "POST":
         resampling_choice = request.form["radiobutton"]
+        global log_user_execution
+        log_user_execution["Resample technique choiced"] = resampling_choice
         if resampling_choice == "oversampling":
             manipulate_csv.after_oversampling(X_train,y_train,file_name)
             return render_template("resemple_techniques.html" , message = "Success to choice" , resampling_choice = resampling_choice, path2 = "static/samples/"+file_name+"_after_over.csv")

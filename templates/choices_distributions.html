@@ -96,21 +96,21 @@
             <h4>List of continious distributions:</h4>
             <div style="width: 70%; height: auto;" class="container">
                  <!-- Value checked -->
-                 {% for column in not_lazy%}
-                <div class="form-check form-check-inline" >
-                    <input class="form-check-input" type="checkbox" name="checkbox" id="{{column}}" value="{{column}}" checked>
-                    <label class="form-check-label" for="{{column}}">{{column}}</label>
-                </div>
+                {% for column in not_lazy%}
+                  <div class="form-check form-check-inline" >
+                      <input class="form-check-input" type="checkbox" name="checkbox" id="{{column}}" value="{{column}}" checked>
+                      <label class="form-check-label" for="{{column}}">{{column}}</label>
+                  </div>
                 {% endfor %}
               
             </div>
            
             <div style="width: 70%; height: auto;" class="container">
                 {%for column in lazy_dist%}
-                <div class="form-check form-check-inline" >
-                    <input class="form-check-input" type="checkbox" name="checkbox" id="{{column}}" value="{{column}}" >
-                    <label class="form-check-label" for="{{column}}">{{column}}</label>
-                </div>
+                  <div class="form-check form-check-inline" >
+                      <input class="form-check-input" type="checkbox" name="checkbox" id="{{column}}" value="{{column}}" >
+                      <label class="form-check-label" for="{{column}}">{{column}}</label>
+                  </div>
                 {% endfor %}
             </div>
            
