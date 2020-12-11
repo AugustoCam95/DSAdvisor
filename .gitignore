@@ -1,6 +1,6 @@
 .dsadvisor
 .idea/
-.automlweb/
+.dsa/
 venv-automlweb/
 __pycache__/
 Workflow/
