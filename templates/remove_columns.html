@@ -15,126 +15,91 @@
     {% if message == "Waiting for choice" %}
       
         <div style="width: 100%; height: auto;">
-        
-          <div class="container" style= " width: 70%; height: 100%;text-align:center;">
+          <div class="container" style="width: 100%; height: auto; text-align:center;">
             <form action="{{ url_for('remove_columns') }}" method="POST" enctype=multipart/form-data>
             
-            <h3>Categorical variables:</h3>
-
-            {% if string|count > 0  %}
-             
-            <div style="width: 70%; height: auto;" class="container">
-            {% for column in string %}
-              
-
-                <div class="row" >
-                  <div class="col" style="text-align: right;">
-                    <input class="form-check-input" type="checkbox" name="checkbox" id="{{column}}" value="{{column}}">
-                  </div>
-                  <div class="col" style="text-align: left;">
-                    <label class="form-check-label" for="{{column}}">{{column}}</label>
-                  </div>
-                </div>
-             
-            {% endfor %}
-            </div>
-            {% endif %}
-            
-            <br>
-
-            <div  style="border-top: 2px solid black;text-align:center;">
-              <br>
-              <h3>Numeric Variables:</h3>
-              <br>
-            </div>
-          
-            <div style="text-align:center">
-              <h4>Discrete variables:</h4>
-              {% if int|count > 0  %}
-             
-                <div style="width: 70%; height: auto;" class="container">
-                {% for column in int %}
-                
-
-                  <div class="row" >
-                    <div class="col" style="text-align: right;">
-                      <input class="form-check-input" type="checkbox" name="checkbox" id="{{column}}" value="{{column}}">
-                    </div>
-                    <div class="col" style="text-align: left;">
-                      <label class="form-check-label" for="{{column}}">{{column}}</label>
+              <div style="width: 70%; height: auto;" class="container">
+                <div class="row">
+                  {% if string|count > 0  %}
+                  <div class="col">
+                    <h4>Categorical variables:</h4>
+                    <div style="width: 10%; height: auto; text-align:center;" class="container">
+                      <div class="col">
+                        {% for column in string %}
+                        <input class="form-check-input" type="checkbox" name="checkbox" id="{{column}}" value="{{column}}">
+                        <label class="form-check-label" for="{{column}}">{{column}}</label>
+                        {% endfor %}
+                      </div>
                     </div>
                   </div>
-              
-                {% endfor %}
-                </div>
-              {% endif %}
+                  {% endif %}
 
-              <br>
-
-              <h4>Continuos variables:</h4>
-              {% if float|count > 0  %}
-             
-                <div style="width: 70%; height: auto;" class="container">
-                {% for column in float %}
-                
-
-                  <div class="row" >
-                    <div class="col" style="text-align: right;">
-                      <input class="form-check-input" type="checkbox" name="checkbox" id="{{column}}" value="{{column}}">
-                    </div>
-                    <div class="col" style="text-align: left;">
-                      <label class="form-check-label" for="{{column}}">{{column}}</label>
+                  {% if int|count > 0  %}
+                  <div class="col">
+                    <h4>Discrete variables:</h4>
+                    <div style="width: 10%; height: auto; text-align:center;" class="container">
+                      <div class="col">
+                        {% for column in int %}
+                        <input class="form-check-input" type="checkbox" name="checkbox" id="{{column}}" value="{{column}}">
+                        <label class="form-check-label" for="{{column}}">{{column}}</label>
+                        {% endfor %}
+                      </div>
                     </div>
                   </div>
-              
-                {% endfor %}
-                </div>
-              {% endif %}
-            
+                  {% endif %}
+
+                  {% if float|count > 0  %}
+                  <div class="col">
+                    <h4>Continuos variables:</h4>
+                    <div style="width: 10%; height: auto; text-align:center;" class="container">
+                      <div class="col">
+                        {% for column in float %}
+                        <input class="form-check-input" type="checkbox" name="checkbox" id="{{column}}" value="{{column}}">
+                        <label class="form-check-label" for="{{column}}">{{column}}</label>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                  {% endif %}
+
+
+              </div>
+              <div align="center">
+                <br>
+                <button type="submit" class="btn  btn-primary">Confirm option</button>
+              </div>
+            </form>
           </div>
-          
+        </div>  
+              
+        <br/>
         
-          <div align="center">
-            <br>
-            <button type="submit" class="btn  btn-primary">Confirm option</button>
-          </div>
-        </form>
-
-        </div>     
-      </div>    
-      
-      <br/>
-     
-        
-      <div style="border-top: 2px solid black;" align="center">
-        <br>
-            <h4>Status: {{message}} </h4>
-      </div>   
+        <div align="center">
+          <br>
+          <h4>Status: {{message}} </h4>
+          <br>  
+        </div>   
 
     {% else %}
-            <div align="center">
-              <br>
-              <div class="alert alert-success">
-                <h4 >Status: Success</h4>
-                <p><strong>Removed columns:</strong>  {{list_x}} </p>
-              </div>
+        <div align="center">
+          <br>
+          <div class="alert alert-success">
+            <h4 >Status: Success</h4>
+            <p><strong>Removed columns:</strong>  {{list_x}} </p>
+          </div>
               
-              <br>
-            </div>  
-            <div style="border-top: 2px solid black;" class="mt-1" align="center">
-              <br>
-              <a class="btn btn-dark btn-lg" href="{{ url_for('filter_miss_values') }} ">Next</a>
-            </div>
+          <br>
+        </div>  
+            
+        <div class="mt-1" align="center">
+          <br>
+          <a class="btn btn-dark btn-lg" href="{{ url_for('filter_miss_values') }} ">Next</a>
+        </div>
         
       </div>    
     {% endif %}
-    
-      
-      
-       
+     
   </div>
 </div>
-
-
 
 {% endblock %}

@@ -1,9 +1,6 @@
-.dsadvisor
 .idea/
 .dsa/
-venv-automlweb/
 __pycache__/
-Workflow/
 .ipnyb_checkpoints
 .vscode/
 all_csvs

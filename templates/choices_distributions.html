@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block subtitulo %} Choice distributions {% endblock %}
+{% block subtitulo %} Select distributions {% endblock %}
 
 {% block content%}
 <style>
@@ -60,7 +60,7 @@
   <div class="card-body">
 
     {% if message == "Waiting for choice" %}
-      <h4 class="card-title" align="center"> Choice distributions</h4>
+      <h4 class="card-title" align="center"> Select  distributions</h4>
       <p class="card-text" align="justify"> 
         On this page we will talk about probability distributions for continuous variables, where on the next page we will use a series of tests to infer
         the probability distribution of our quantitative variables. In probability theory and statistics, a probability distribution is the mathematical 
@@ -94,7 +94,7 @@
           <form action="{{ url_for('choices_distributions') }}" method="POST" enctype=multipart/form-data>
             
             <h4>List of continious distributions:</h4>
-            <div style="width: 70%; height: auto;" class="container">
+            <div style="width: 90%; height: auto;" class="container">
                  <!-- Value checked -->
                 {% for column in not_lazy%}
                   <div class="form-check form-check-inline" >
@@ -105,7 +105,7 @@
               
             </div>
            
-            <div style="width: 70%; height: auto;" class="container">
+            <div style="width: 90%; height: auto;" class="container">
                 {%for column in lazy_dist%}
                   <div class="form-check form-check-inline" >
                       <input class="form-check-input" type="checkbox" name="checkbox" id="{{column}}" value="{{column}}" >

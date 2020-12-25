@@ -48,65 +48,54 @@
       <div style="border-bottom: 2px solid black;"></div>
       <br>
       
-      
-      <div style="width: 100%; height: auto; text-align:center;">
-          <h3>Categorical variables:</h3>
+      <div style="width: 100%; height: auto; text-align:center;" class="container">
+        <div class="row">
+          
+          
           {% if string|count > 0  %}
-            <div style="width: 70%; height: auto; border-bottom: 2px solid black" class="container">
+          <div class="col">
+            <h4>Categorical variables:</h4>
+            <div style="width: 70%; height: auto; text-align:center;" class="container">
               {% for column in string %}
-                <div class="row">
-                  <div class="col">
-                    
-                      <li>
-                        {{column}}
-                      </li>
-                    
-                  </div>
+              <div class="col">
+                {{column}}
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+          
+          {% if int|count > 0  %}
+          <div class="col">
+            <h4>Discrete variables:</h4>
+              <div style="width: 70%; height: auto; text-align:center;" class="container">
+              {% for column in int %}
+                <div class="col">
+                  {{column}}
                 </div>
               {% endfor %}
-              <br>
-            </div>
-          {% endif %}
-            
-          
-          <br>
-          <h3>Numeric Variables:</h3>
-          <br>
-          {% if int|count > 0  %}
-          <h4>Discrete variables:</h4>
-          <div style="width: 70%; height: auto;" class="container">
-            {% for column in int %}
-              <div class="row">
-                <div class="col">
-                    <li>
-                      {{column}}
-                    </li>
-                </div>
               </div>
-            {% endfor %}
           </div>
           {% endif %}
-          <br>
-        
 
           {% if float|count > 0  %}
-          <h4>Continuos variables:</h4>
-          <div style="width: 70%; height: auto;" class="container">
-            {% for column in float %}
-              <div class="row">
-                <div class="col">
-                    <li>
-                      {{column}}
-                    </li>             
-                  </div>
+          <div class="col">
+            <h4>Continuos variables:</h4>
+            <div style="width: 70%; height: auto; text-align:center;" class="container">
+              {% for column in float %}
+              <div class="col">
+                {{column}}
               </div>
-            {% endfor %}
-          </div>
+              {% endfor %}
+            </div>
+          </div> 
           {% endif %}
+          
+        
+        </div>
       </div>
-           
       
-      <br/>
+      
       
       <div style="border-top: 2px solid black;" class="mt-2" align="center">
         <br>
