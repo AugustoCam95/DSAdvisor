@@ -1,0 +1,16 @@
+,0
+Sex,object
+Length,float64
+Diameter,float64
+Height,float64
+Whole weight,float64
+Shucked weight,float64
+Viscera weight,float64
+Shell weight,float64
+Rings,int64
+generate column 1,float64
+generate column 2,float64
+generate column 3,float64
+generate column 4,float64
+categorical2,object
+categorical3,object

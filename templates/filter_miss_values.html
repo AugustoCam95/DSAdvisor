@@ -42,26 +42,36 @@
     
     
     <div style="width: 100%; height: auto;">
-      <div class="container" style= " width: 30%; height: 100px;">
+      <div class="container" style= " width: 20%; height: 100px;">
         <form action="{{ url_for('filter_miss_values') }}" method="POST" enctype=multipart/form-data>
           
-          <div class="checkboxes" >
+          <div class="checkboxes">
             
             <label class="checkbox" for="nan">
               <input  type="checkbox" name="checkbox" id="nan" value="nan">
               <span>Nan and None</span>
             </label>
 
+          </div>
+
+          <div class="checkboxes">
+          
             <label class="checkbox" for="empty">
               <input  type="checkbox" name="checkbox" id="empty" value="empty">
               <span>Empty String</span> 
             </label>
-           
+                 
+          </div>
+
+          <div class="checkboxes">
+            
+            
             <label class="checkbox" for="other_code">
               <input onclick="myFunction()" type="checkbox" name="checkbox" id="other_code" value="other_code">  
               <span>Other code</span> 
             </label>
             <input id="myP" style="visibility: hidden;" type="text" name="text123"/>        
+
           </div>
 
           <br>
@@ -74,6 +84,8 @@
       </div>
     </div>
     
+    <br>
+    <br>
     <br>
     <br>
     <div class="mt-5" align="center">

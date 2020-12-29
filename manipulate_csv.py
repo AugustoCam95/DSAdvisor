@@ -13,6 +13,7 @@ from pylab import savefig
 from matplotlib import cm
 from collections import Counter
 from sklearn import preprocessing
+from dython.nominal import associations
 from sklearn.preprocessing import MinMaxScaler
 from statsmodels.stats.stattools import medcouple 
 from sklearn.model_selection import train_test_split
@@ -136,6 +137,9 @@ def categorical_plots(df):
     vetor = len(col_string)*[[]]
     for i in range(len(col_string)):
         vetor[i] = list(pd.unique(df[col_string[i]]))
+    for i in range(len(vetor)):
+        for j in range(len(vetor[i])):
+            vetor[i][j] = str(vetor[i][j])
     array = len(col_string)*[[]]
     for i in range(len(col_string)):
         array[i] = len(vetor[i])*[[]]
@@ -148,15 +152,15 @@ def categorical_plots(df):
     #     colors[i] = [cm.hsv(i * 1.0 /n, 1) for i in range(n)]
     my_colors = 'rgbkymc'
     for i in range(len(array)):    
-        fig1, ax1 = plt.subplots(figsize=(20, 20))
+        fig1, ax1 = plt.subplots(figsize=(8, 8))
         ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
         ax1.pie(array[i], labels=vetor[i], autopct='%1.1f%%', shadow = False , startangle=90)
-        plt.savefig("pie_"+col_string[i]+"_.jpg")
+        plt.savefig("pie_"+col_string[i]+"_.jpg", dpi = 400)
         plt.clf()
     for i in range(len(array)):    
-        fig1, ax1 = plt.subplots(figsize=(20, 20))
+        fig1, ax1 = plt.subplots(figsize=(8, 8))
         ax1.bar(vetor[i], height=array[i], color = my_colors )
-        plt.savefig("bar_"+col_string[i]+"_.jpg")
+        plt.savefig("bar_"+col_string[i]+"_.jpg", dpi = 400)
         plt.clf()
     os.chdir(start_point)
    
@@ -174,7 +178,7 @@ def discrete_plots(df):
         plt.ylabel('Quantities')
         plt.title(r'Histogram of {}'.format(col))
         plt.hist(integers[col])
-        plt.savefig("hist_"+col+"_.jpg", dpi = 300)
+        plt.savefig("hist_"+col+"_.jpg", dpi = 400)
         plt.clf()
     os.chdir(start_point)
 
@@ -311,41 +315,18 @@ def generate_correlations_spearman(dataframe, text):
 def corr_cramer_v(data,text):
     start_point = os.getcwd()
     os.chdir("static/samples")
-    from sklearn import preprocessing
     
-    label = preprocessing.LabelEncoder()
-    data_encoded = pd.DataFrame() 
-
-    for i in data.columns :
-        data_encoded[i]=label.fit_transform(data[i])
-
-    from scipy.stats import chi2_contingency
-
-    def cramers_V(var1,var2) :
-        crosstab =np.array(pd.crosstab(var1,var2, rownames=None, colnames=None)) # Cross table building
-        stat = chi2_contingency(crosstab)[0] # Keeping of the test statistic of the Chi2 test
-        obs = np.sum(crosstab) # Number of observations
-        mini = min(crosstab.shape)-1 # Take the minimum value between the columns and the rows of the cross table
-        return (stat/(obs*mini))
-
-    rows= []
-
-    for var1 in data_encoded:
-        col = []
-        for var2 in data_encoded :
-            cramers =cramers_V(data_encoded[var1], data_encoded[var2]) # Cramer's V test
-            col.append(round(cramers,2)) # Keeping of the rounded value of the Cramer's V  
-        rows.append(col)
-    
-    cramers_results = np.array(rows)
-    df = pd.DataFrame(cramers_results, columns = data_encoded.columns, index =data_encoded.columns)
+    for col in data.columns:
+        if data[col].dtypes == 'float64' or data[col].dtypes == 'int64':
+            data = data.drop( columns = [col])
+    corr = associations(data)
     
     fig, ax = plt.subplots(figsize=(15,10))
-    map3 = sns.heatmap(df, annot= True,  ax = ax, linewidth=0.5, cmap='YlGnBu')
+    map3 = sns.heatmap(corr['corr'], annot= True,  ax = ax, linewidth=0.5, cmap='YlGnBu')
     bottom, top = ax.get_ylim()
     ax.set_ylim(bottom + 0.5, top - 0.5)
     figure3 = map3.get_figure()
-    figure3.savefig("../correlations/"+text+"cramer.jpg", dpi = 200)
+    figure3.savefig("../correlations/"+text+"cramer.jpg", dpi = 400)
     os.chdir(start_point)
 
 def sample_csv(dataframe,text):
