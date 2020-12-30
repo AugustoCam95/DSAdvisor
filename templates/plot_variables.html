@@ -16,11 +16,16 @@
     <div>  
         {% if temp2|count > 0%}
         <h3>Categorical variables</h3>
-            {% for item in temp2 %}
-                <p>Variable {{item}}</p>
-                <img src="static/plots/pie_{{item}}_.jpg"  width="500" height="500">
-                <img src="static/plots/bar_{{item}}_.jpg"  width="500" height="500">
-            {% endfor %}        
+            {% for item,cat_num in req_cat %}
+                {% if cat_num|count > 3 %}
+                  <p>Variable {{item}}</p>
+                  <img src="static/plots/bar_{{item}}_.jpg"  width="700" height="600">
+                {% else %}
+                  <p>Variable {{item}}</p>
+                  <img src="static/plots/pie_{{item}}_.jpg"  width="500" height="450">
+                  <img src="static/plots/bar_{{item}}_.jpg"  width="500" height="450">
+                {% endif %}
+              {% endfor %}        
         {% endif %}
     </div>    
 
@@ -31,7 +36,7 @@
         <h3>Discrete variables</h3>
             {% for i in temp1 %}
                 <p>Variable {{i}}</p>
-                <img src="static/plot_int/hist_{{i}}_.jpg" width="700" height="700">
+                <img src="static/plot_int/hist_{{i}}_.jpg" width="700" height="600">
             {% endfor %}  
         {% endif %}
     </div>

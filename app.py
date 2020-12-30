@@ -160,10 +160,10 @@ def plot_variables():
         if dataframe[col].dtype == "object":
             temp2.append(col)
     if len(temp2)>0:
-        manipulate_csv.categorical_plots(dataframe)
+        cat_col_num = manipulate_csv.categorical_plots(dataframe)
     if len(temp1)>0:
         manipulate_csv.discrete_plots(dataframe)
-    return render_template("plot_variables.html", temp1 = temp1, temp2 = temp2)
+    return render_template("plot_variables.html", temp1 = temp1, temp2 = temp2 ,req_cat = zip(temp2, cat_col_num))
 
 lazy_dist = ['crystalball', 'johnsonsb', 'burr', 'fisk', 'exponweib', 'powerlognorm', 'johnsonsu',
                  'kappa4', 'vonmises_line', 'vonmises', 'ncx2', 'gausshyper', 'argus', 'genexpon',

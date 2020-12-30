@@ -130,11 +130,26 @@ def get_columns(dataframe):
 def categorical_plots(df):
     start_point = os.getcwd()
     os.chdir("static/plots")
+    for col in df.columns:
+        if df[col].dtype != "object":
+            df = df.drop(columns = col)
+
+    array = df.to_numpy()
+    array = array.transpose()
+    
+    for i in range(len(array)):
+        for j in range(len(array[i])):
+            array[i][j] = str(array[i][j])
+    array = array.transpose()
     col_string = []
+    
     for col in df.columns:
         if df[col].dtype == "object":
             col_string.append(col)
+    
+    df = pd.DataFrame(array, columns = col_string)
     vetor = len(col_string)*[[]]
+    
     for i in range(len(col_string)):
         vetor[i] = list(pd.unique(df[col_string[i]]))
     for i in range(len(vetor)):
@@ -146,24 +161,26 @@ def categorical_plots(df):
     for i in range(len(col_string)):
         for j in range(len(vetor[i])):
             array[i][j] = df[ df[ col_string[i] ] == vetor[i][j] ].shape[0]
-    # colors = len(array)*[[]]
-    # for i in range(len(array)):
-    #     n = len(set(array[0]))
-    #     colors[i] = [cm.hsv(i * 1.0 /n, 1) for i in range(n)]
+    
     my_colors = 'rgbkymc'
-    for i in range(len(array)):    
-        fig1, ax1 = plt.subplots(figsize=(8, 8))
-        ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-        ax1.pie(array[i], labels=vetor[i], autopct='%1.1f%%', shadow = False , startangle=90)
-        plt.savefig("pie_"+col_string[i]+"_.jpg", dpi = 400)
-        plt.clf()
+    
+    for i in range(len(array)):
+        if len(vetor[i]) > 3:
+            pass
+        else:    
+            fig1, ax1 = plt.subplots(figsize=(8, 8))
+            ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+            ax1.pie(array[i], labels=vetor[i], autopct='%1.1f%%', shadow = False , startangle=90)
+            plt.savefig("pie_"+col_string[i]+"_.jpg", dpi = 500)
+            plt.clf()
+
     for i in range(len(array)):    
         fig1, ax1 = plt.subplots(figsize=(8, 8))
         ax1.bar(vetor[i], height=array[i], color = my_colors )
-        plt.savefig("bar_"+col_string[i]+"_.jpg", dpi = 400)
-        plt.clf()
+        plt.savefig("bar_"+col_string[i]+"_.jpg", dpi = 500)
+        plt.clf()    
     os.chdir(start_point)
-   
+    return vetor
 
 # function to make plots from discrete variables in the dataset
 def discrete_plots(df):
@@ -411,8 +428,12 @@ def miss_value(code, special, df, text):
             miss[1].append((df[df[col] == code].shape[0]/df.shape[0])*100)
         miss_shaped = np.reshape(miss, (2, len(df.columns)))
         miss_values = pd.DataFrame(miss_shaped, columns = list(df.columns))
+        miss_values.to_csv("temp1x.csv")
+        miss_values = pd.read_csv("temp1x.csv")
+        miss_values = miss_values.rename(columns = {'Unnamed: 0': 'Columns'}, inplace = False)
+        miss_values = miss_values.set_index('Columns')
         miss_values = miss_values.rename(index = { 0:"Count of miss values", 1:"Percent of miss values"})
-        miss_values.to_csv(text+"emptyreport.csv",index = False)
+        miss_values.to_csv(text+"emptyreport.csv")
 
     
 
@@ -424,9 +445,12 @@ def miss_value(code, special, df, text):
             miss[1].append((df[df[col] == code].shape[0]/df.shape[0])*100)
         miss_shaped = np.reshape(miss, (2, len(df.columns)))
         miss_values = pd.DataFrame(miss_shaped, columns = list(df.columns))
+        miss_values.to_csv("temp2x.csv")
+        miss_values = pd.read_csv("temp2x.csv")
+        miss_values = miss_values.rename(columns = {'Unnamed: 0': 'Columns'}, inplace = False)
+        miss_values = miss_values.set_index('Columns')
         miss_values = miss_values.rename(index = { 0:"Count of miss values", 1:"Percent of miss values"})
-        miss_values.to_csv(text+"specialreport.csv",index = False)
-
+        miss_values.to_csv(text+"specialreport.csv")
     os.chdir(start_point)
     
 
