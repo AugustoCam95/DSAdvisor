@@ -76,9 +76,9 @@ def upload_csv():
         
     return render_template("upload_csv.html", message = "Waiting for upload")
 
-@app.route('/resume_variables')
+@app.route('/check_variables_type')
 def resume_variables():
-    return render_template("resume_variables.html", message = "Waiting for choice" , string = manipulate_csv.get_columns(dataframe)[0], float = manipulate_csv.get_columns(dataframe)[2], int = manipulate_csv.get_columns(dataframe)[1] )
+    return render_template("check_variables_type.html", message = "Waiting for choice" , string = manipulate_csv.get_columns(dataframe)[0], float = manipulate_csv.get_columns(dataframe)[2], int = manipulate_csv.get_columns(dataframe)[1] )
 
 @app.route('/remove_columns', methods = [ "GET", "POST"])
 def remove_columns():
@@ -182,7 +182,7 @@ not_lazy = ['alpha', 'anglit', 'arcsine', 'beta', 'betaprime', 'bradford', 'cauc
 
 dist_names = None
 
-@app.route('/choices_distributions', methods = [ "GET", "POST"])
+@app.route('/distribution_analysis_part_1', methods = [ "GET", "POST"])
 def choices_distributions():
     if request.method == "POST":
         dist_list = request.form.getlist("checkbox")
@@ -190,15 +190,15 @@ def choices_distributions():
         global log_user_execution
         log_user_execution["Selected ditribution to best fit method"] = dist_list
         dist_names = dist_list
-        return render_template("choices_distributions.html" , message = "Success to choice" , list_x = dist_list)
+        return render_template("distribution_analysis_part_1.html" , message = "Success to choice" , list_x = dist_list)
 
     global lazy_dist
     global not_lazy
-    return render_template("choices_distributions.html", message = "Waiting for choice"  , lazy_dist =  lazy_dist, not_lazy = not_lazy )
+    return render_template("distribution_analysis_part_1.html", message = "Waiting for choice"  , lazy_dist =  lazy_dist, not_lazy = not_lazy )
 
 user_choice_dist = None
 
-@app.route('/distribution_analysis',  methods = [ "GET", "POST"])
+@app.route('/distribution_analysis_part_2',  methods = [ "GET", "POST"])
 def distribution_analysis():
     if request.method == "POST":
         global user_choice_dist 
@@ -212,7 +212,7 @@ def distribution_analysis():
             # print(user_choice_dist)
             user_choice_dist.append(request.form["radio"+str(i)])
         log_user_execution["User's distribution choices"] = user_choice_dist
-        return render_template("distribution_analysis.html" , message = "Success to choice", user_answer= user_choice_dist)
+        return render_template("distribution_analysis_part_2.html" , message = "Success to choice", user_answer= user_choice_dist)
 
     temp = []
     for col in dataframe.columns:
@@ -242,7 +242,7 @@ def distribution_analysis():
         d['best_fit'] = aux3[i].upper()
         lst.append(d)
         
-    return render_template("distribution_analysis.html", message = "Waiting for choice" ,elements = lst, num = len(dataframe.columns))
+    return render_template("distribution_analysis_part_2.html", message = "Waiting for choice" ,elements = lst, num = len(dataframe.columns))
 
 @app.route('/correlations')
 def correlations():

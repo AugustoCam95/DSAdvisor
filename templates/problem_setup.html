@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block subtitulo %} Choices {% endblock %}
+{% block subtitulo %} Problem Setup {% endblock %}
 
 {% block content%}
 <div class="card mb-6" align="center">
@@ -52,25 +52,25 @@
         </div>
         
         <br/>
-        <div style="border-bottom: 5px solid black;" class="form-check form-check-inline">
-          
-          <input class="form-check-input" type="radio" name="radiobutton2" id="50" value="60">
-          <label style="margin: 2%;" class="form-check-label" for="50">50% train - 25% validation - 25% test</label>
-          
-          <input class="form-check-input" type="radio" name="radiobutton2" id="60" value="60">
-          <label style="margin: 2%;" class="form-check-label" for="60">60% train - 20% validation - 20% test</label>
-          
-          <input class="form-check-input" type="radio" name="radiobutton2" id="70" value="70">
-          <label style="margin: 2%;" class="form-check-label" for="70">70% train - 15% validation - 15% test</label>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="radiobutton2" id="50" value="60">
+            <label style="margin: 1%;" class="form-check-label" for="50">50% train - 50% test</label>
+            
+            <input class="form-check-input" type="radio" name="radiobutton2" id="60" value="60">
+            <label style="margin: 1%;" class="form-check-label" for="60">60% train - 40% test</label>
+            
+            <input class="form-check-input" type="radio" name="radiobutton2" id="70" value="70">
+            <label style="margin: 1%;" class="form-check-label" for="70">70% train - 30% test</label>
 
-          <input class="form-check-input" type="radio" name="radiobutton2" id="80" value="80">
-          <label style="margin: 2%;" class="form-check-label" for="80">80% train - 10% validation - 10% test</label>
+            <input class="form-check-input" type="radio" name="radiobutton2" id="80" value="80">
+            <label style="margin: 1%;" class="form-check-label" for="80">80% train - 20% test</label>
+          
         </div>
         
         <br/>
         <br/>
 
-        <div>
+        <div style="border-top: 5px solid black;">
           <br>
           <h4>Select the type of problem being treated:</h4>
         </div>
@@ -121,16 +121,16 @@
               <br>
               <p>Please note that the column <strong>"{{user_answer}}"</strong> will be removed from the dataset. </p>
               {% if train_percent == 50 %}
-                The proportion of the data set partitioning choiced: <strong> 50% train - 25% validation - 25% test<./strong>
+                The proportion of the data set partitioning choiced: <strong> 50% train - 50% test</strong>
               {% endif %}
               {% if train_percent == 60 %}
-                The proportion of the data set partitioning choiced: <strong> 60% train - 20% validation - 20% test.</strong>
+                The proportion of the data set partitioning choiced: <strong> 60% train - 40% test.</strong>
               {%endif%}
               {% if train_percent == 70 %}
-                The proportion of the data set partitioning choiced: <strong> 70% train - 15% validation - 15% test. </strong> 
+                The proportion of the data set partitioning choiced: <strong> 70% train - 30% test. </strong> 
               {%endif%}
               {% if train_percent == 80 %}
-                The proportion of the data set partitioning choiced: <strong> 80% train - 10% validation - 10% test. </strong> 
+                The proportion of the data set partitioning choiced: <strong> 80% train - 20% test. </strong> 
               {%endif%}
               <br>
               <br>
