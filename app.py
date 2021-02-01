@@ -77,7 +77,7 @@ def upload_csv():
     return render_template("upload_csv.html", message = "Waiting for upload")
 
 @app.route('/check_variables_type')
-def resume_variables():
+def check_variables_type():
     return render_template("check_variables_type.html", message = "Waiting for choice" , string = manipulate_csv.get_columns(dataframe)[0], float = manipulate_csv.get_columns(dataframe)[2], int = manipulate_csv.get_columns(dataframe)[1] )
 
 @app.route('/remove_columns', methods = [ "GET", "POST"])
@@ -183,7 +183,7 @@ not_lazy = ['alpha', 'anglit', 'arcsine', 'beta', 'betaprime', 'bradford', 'cauc
 dist_names = None
 
 @app.route('/distribution_analysis_part_1', methods = [ "GET", "POST"])
-def choices_distributions():
+def distribution_analysis_part_1():
     if request.method == "POST":
         dist_list = request.form.getlist("checkbox")
         global dist_names
@@ -199,7 +199,7 @@ def choices_distributions():
 user_choice_dist = None
 
 @app.route('/distribution_analysis_part_2',  methods = [ "GET", "POST"])
-def distribution_analysis():
+def distribution_analysis_part_2():
     if request.method == "POST":
         global user_choice_dist 
         global log_user_execution
