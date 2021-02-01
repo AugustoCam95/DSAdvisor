@@ -154,6 +154,7 @@ def descriptive_statistics():
 def plot_variables():
     temp1 = []
     temp2 = []
+    list_images = []
     for col in dataframe.columns:
         if dataframe[col].dtype == "int64":
             temp1.append(col)
@@ -162,13 +163,13 @@ def plot_variables():
     if len(temp2)>0:
         cat_col_num = manipulate_csv.categorical_plots(dataframe)
     if len(temp1)>0:
-        manipulate_csv.discrete_plots(dataframe)
+        list_images = manipulate_csv.discrete_plots(dataframe)
     if len(temp1)>0 and len(temp2)>0:
-        return render_template("plot_variables.html", temp1 = temp1, temp2 = temp2 ,req_cat = zip(temp2, cat_col_num))
+        return render_template("plot_variables.html", temp1 = temp1, temp2 = temp2 ,req_cat = zip(temp2, cat_col_num), list_images= list_images)
     if len(temp1)>0:
-        return render_template("plot_variables.html", temp1 = temp1)
+        return render_template("plot_variables.html", temp1 = temp1, list_images= list_images)
     if len(temp1) == 0 and len(temp2) == 0:
-        return render_template("plot_variables.html", temp1 = temp1, temp2 = temp2 )
+        return render_template("plot_variables.html", temp1 = temp1, temp2 = temp2, list_images= list_images )
 
 lazy_dist = ['crystalball', 'johnsonsb', 'burr', 'fisk', 'exponweib', 'powerlognorm', 'johnsonsu',
                  'kappa4', 'vonmises_line', 'vonmises', 'ncx2', 'gausshyper', 'argus', 'genexpon',

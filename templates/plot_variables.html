@@ -19,7 +19,7 @@
             {% for item,cat_num in req_cat %}
                 {% if cat_num|count > 3 %}
                   <p>Variable {{item}}</p>
-                  <img src="static/plots/bar_{{item}}_.jpg"  width="700" height="600">
+                  <!--<img src="static/plots/bar_{{item}}_.jpg"  width="700" height="600">-->
                 {% else %}
                   <p>Variable {{item}}</p>
                   <img src="static/plots/pie_{{item}}_.jpg"  width="500" height="450">
@@ -34,9 +34,9 @@
         <div style="border-bottom: 5px solid black;"></div>
         <br>
         <h3>Discrete variables</h3>
-            {% for i in temp1 %}
-                <p>Variable {{i}}</p>
-                <img src="static/plot_int/hist_{{i}}_.jpg" width="700" height="600">
+            {% for i in list_images %}
+                <p>Variable</p>
+                <img width="700" height="600" src="data:image/png;base64,{{ i |safe }}" >
             {% endfor %}  
         {% endif %}
     </div>

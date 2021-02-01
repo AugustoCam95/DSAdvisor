@@ -1,6 +1,9 @@
+import base64
 import os
 import csv
 import math
+from io import BytesIO
+
 import numpy as np
 import pandas as pd
 import scipy.stats as st
@@ -184,20 +187,40 @@ def categorical_plots(df):
 
 # function to make plots from discrete variables in the dataset
 def discrete_plots(df):
-    start_point = os.getcwd()
-    os.chdir("static/plot_int")
+    #start_point = os.getcwd()
+    #os.chdir("static/plot_int")
     integers = df
     for col in df.columns:
         if df[col].dtype != "int64":
             integers = integers.drop(columns = col)
+
+    list_images = []
     for col in integers.columns:
         plt.xlabel('Values')
         plt.ylabel('Quantities')
         plt.title(r'Histogram of {}'.format(col))
         plt.hist(integers[col])
-        plt.savefig("hist_"+col+"_.jpg", dpi = 400)
+        #plt.savefig("hist_"+col+"_.jpg", dpi = 400)
+
+        # TODO BUFFERIZAR AS IMAGENS EM TODO O SISTEMA
+        # bufferiza a imagem
+        buffer = BytesIO()
+        plt.savefig(buffer, format='png')
+        buffer.seek(0)
+        image_png = buffer.getvalue()
+        buffer.close()
+        plt.close()
+
+        # converte em base 64
+        graphic = base64.b64encode(image_png)
+        graphic = graphic.decode('utf-8')
+
+        list_images.append(graphic)
+
         plt.clf()
-    os.chdir(start_point)
+    #os.chdir(start_point)
+
+    return list_images
 
 def generate_plots(dist_list,df):
     start_point = os.getcwd()
