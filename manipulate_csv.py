@@ -474,19 +474,15 @@ def split_and_norm(choiced,df, text, test_percent):
     label = df[[choiced]]
     os.chdir("static/samples")
     X_train, X_test, y_train, y_test = train_test_split(dataset, label, test_size = test_percent)
-    X_test, X_validation, y_test, y_validation = train_test_split(X_test, y_test, test_size=0.5)
     ### Train set
     train_set = X_train.copy()
     train_set[y_train.columns[0]] = y_train
     train_set.to_csv(text+"train_data.csv", index = False)
-    ### Validation set
-    validation_set = X_validation.copy()
-    validation_set[y_validation.columns[0]] = y_validation
-    validation_set.to_csv(text+"validation_data.csv", index = False)
     ### Test set
     test_set = X_train.copy()
     test_set[y_test.columns[0]] = y_test
     test_set.to_csv(text+"test_data.csv", index = False)
+    
     z_score = st.zscore(train_set)
     dataset_norm = pd.DataFrame(z_score,columns = train_set.columns)
     aux = dataset_norm.head(n=20)

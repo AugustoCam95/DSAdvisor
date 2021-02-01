@@ -283,8 +283,8 @@ def correlations():
 type_problem = None
 X_train =  None
 y_train = None   
-@app.route('/dependent_variable', methods = [ "GET", "POST"])
-def dependent_variable():
+@app.route('/problem_setup_part_1', methods = [ "GET", "POST"])
+def problem_setup_part_1():
     if request.method == "POST":
         global X_train, y_train, type_problem, log_user_execution 
         dependent_variable = request.form["radiobutton"]
@@ -294,9 +294,14 @@ def dependent_variable():
         log_user_execution["Train percent"] = test_percent
         log_user_execution["Problem type"] = type_problem
         X_train, y_train = manipulate_csv.split_and_norm(dependent_variable,dataframe, file_name, test_percent)
-        return render_template("dependent_variable.html" , message = "Success to choice" ,user_answer= dependent_variable, train_percent = int(request.form["radiobutton2"]), user_answer2 = type_problem)
+        return render_template("problem_setup_part_1.html" , message = "Success to choice" ,user_answer= dependent_variable, train_percent = int(request.form["radiobutton2"]), user_answer2 = type_problem)
 
-    return render_template("dependent_variable.html", message = "Waiting for choice" ,columns = dataframe.columns)
+    return render_template("problem_setup_part_1.html", message = "Waiting for choice" ,columns = dataframe.columns)
+
+@app.route('/problem_setup_part_2', methods = [ "GET", "POST"])
+def problem_setup_part_2():
+    pass
+
 
 
 @app.route('/outlier_report')
