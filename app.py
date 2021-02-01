@@ -163,7 +163,12 @@ def plot_variables():
         cat_col_num = manipulate_csv.categorical_plots(dataframe)
     if len(temp1)>0:
         manipulate_csv.discrete_plots(dataframe)
-    return render_template("plot_variables.html", temp1 = temp1, temp2 = temp2 ,req_cat = zip(temp2, cat_col_num))
+    if len(temp1)>0 and len(temp2)>0:
+        return render_template("plot_variables.html", temp1 = temp1, temp2 = temp2 ,req_cat = zip(temp2, cat_col_num))
+    if len(temp1)>0:
+        return render_template("plot_variables.html", temp1 = temp1)
+    if len(temp1) == 0 and len(temp2) == 0:
+        return render_template("plot_variables.html", temp1 = temp1, temp2 = temp2 )
 
 lazy_dist = ['crystalball', 'johnsonsb', 'burr', 'fisk', 'exponweib', 'powerlognorm', 'johnsonsu',
                  'kappa4', 'vonmises_line', 'vonmises', 'ncx2', 'gausshyper', 'argus', 'genexpon',
