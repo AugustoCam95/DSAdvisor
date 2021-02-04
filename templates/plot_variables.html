@@ -16,14 +16,14 @@
     <div>  
         {% if temp2|count > 0%}
         <h3>Categorical variables</h3>
-            {% for item,cat_num in req_cat %}
+            {% for item, i, j, cat_num in req_cat %}
                 {% if cat_num|count > 3 %}
                   <p>Variable {{item}}</p>
                   <!--<img src="static/plots/bar_{{item}}_.jpg"  width="700" height="600">-->
                 {% else %}
                   <p>Variable {{item}}</p>
-                  <img src="static/plots/pie_{{item}}_.jpg"  width="500" height="450">
-                  <img src="static/plots/bar_{{item}}_.jpg"  width="500" height="450">
+                  <img width="500" height="450" src="data:image/png;base64,{{ i |safe }}" >
+                  <img width="500" height="450" src="data:image/png;base64,{{ j |safe }}" >
                 {% endif %}
               {% endfor %}        
         {% endif %}

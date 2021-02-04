@@ -161,15 +161,17 @@ def plot_variables():
         if dataframe[col].dtype == "object":
             temp2.append(col)
     if len(temp2)>0:
-        cat_col_num = manipulate_csv.categorical_plots(dataframe)
+        cat_col_num, bar_cat_images, pie_images = manipulate_csv.categorical_plots(dataframe)
+        # print("Bar:", bar_cat_images)
+        # print("Pie:", pie_images)
     if len(temp1)>0:
         list_images = manipulate_csv.discrete_plots(dataframe)
     if len(temp1)>0 and len(temp2)>0:
-        return render_template("plot_variables.html", temp1 = temp1, temp2 = temp2 ,req_cat = zip(temp2, cat_col_num), list_images= list_images)
+        return render_template("plot_variables.html", temp1 = temp1, temp2 = temp2 ,req_cat = zip(temp2, pie_images, bar_cat_images, cat_col_num), list_images= list_images)
     if len(temp1)>0:
         return render_template("plot_variables.html", temp1 = temp1, list_images= list_images)
     if len(temp1) == 0 and len(temp2) == 0:
-        return render_template("plot_variables.html", temp1 = temp1, temp2 = temp2, list_images= list_images )
+        return render_template("plot_variables.html", temp1 = temp1, temp2 = temp2 )
 
 lazy_dist = ['crystalball', 'johnsonsb', 'burr', 'fisk', 'exponweib', 'powerlognorm', 'johnsonsu',
                  'kappa4', 'vonmises_line', 'vonmises', 'ncx2', 'gausshyper', 'argus', 'genexpon',

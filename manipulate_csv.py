@@ -131,8 +131,6 @@ def get_columns(dataframe):
 
 # function to make plots from categorical variables in the dataset
 def categorical_plots(df):
-    start_point = os.getcwd()
-    os.chdir("static/plots")
     for col in df.columns:
         if df[col].dtype != "object":
             df = df.drop(columns = col)
@@ -167,6 +165,9 @@ def categorical_plots(df):
     
     my_colors = 'rgbkymc'
     
+    pie_images = []
+    bar_cat_images = []
+
     for i in range(len(array)):
         if len(vetor[i]) > 3:
             pass
@@ -174,21 +175,44 @@ def categorical_plots(df):
             fig1, ax1 = plt.subplots(figsize=(8, 8))
             ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
             ax1.pie(array[i], labels=vetor[i], autopct='%1.1f%%', shadow = False , startangle=90)
-            plt.savefig("pie_"+col_string[i]+"_.jpg", dpi = 500)
+            # plt.savefig("pie_"+col_string[i]+"_.jpg", dpi = 500)
+            buffer = BytesIO()
+            plt.savefig(buffer, format='png')
+            buffer.seek(0)
+            image_png = buffer.getvalue()
+            buffer.close()
+            plt.close()
+
+            # converte em base 64
+            graphic = base64.b64encode(image_png)
+            graphic = graphic.decode('utf-8')
+
+            pie_images.append(graphic)
             plt.clf()
 
+    
     for i in range(len(array)):    
-        fig1, ax1 = plt.subplots(figsize=(8, 8))
-        ax1.bar(vetor[i], height=array[i], color = my_colors )
-        plt.savefig("bar_"+col_string[i]+"_.jpg", dpi = 500)
+        fig1, ax2 = plt.subplots(figsize=(8, 8))
+        ax2.bar(vetor[i], height=array[i], color = my_colors )
+        # plt.savefig("bar_"+col_string[i]+"_.jpg", dpi = 500)
+        buffer = BytesIO()
+        plt.savefig(buffer, format='png')
+        buffer.seek(0)
+        image_png = buffer.getvalue()
+        buffer.close()
+        plt.close()
+
+        # converte em base 64
+        graphic = base64.b64encode(image_png)
+        graphic = graphic.decode('utf-8')
+
+        bar_cat_images.append(graphic)
         plt.clf()    
-    os.chdir(start_point)
-    return vetor
+    
+    return vetor, bar_cat_images, pie_images
 
 # function to make plots from discrete variables in the dataset
 def discrete_plots(df):
-    #start_point = os.getcwd()
-    #os.chdir("static/plot_int")
     integers = df
     for col in df.columns:
         if df[col].dtype != "int64":
@@ -200,7 +224,6 @@ def discrete_plots(df):
         plt.ylabel('Quantities')
         plt.title(r'Histogram of {}'.format(col))
         plt.hist(integers[col])
-        #plt.savefig("hist_"+col+"_.jpg", dpi = 400)
 
         # TODO BUFFERIZAR AS IMAGENS EM TODO O SISTEMA
         # bufferiza a imagem
@@ -218,8 +241,7 @@ def discrete_plots(df):
         list_images.append(graphic)
 
         plt.clf()
-    #os.chdir(start_point)
-
+    
     return list_images
 
 def generate_plots(dist_list,df):

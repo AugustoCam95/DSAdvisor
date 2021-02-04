@@ -71,10 +71,4 @@ def delete_trash():
             os.remove((folder4[i]))
     os.chdir(start_point)
 
-    # Remover images png da pasta plot_int
-    os.chdir("static/plot_int")
-    folder4 = os.listdir()
-    for i in range(len(folder4)):
-        if ".jpg" in folder4[i]:
-            os.remove((folder4[i]))                
-    os.chdir(start_point)
+   
