@@ -162,16 +162,23 @@ def plot_variables():
             temp2.append(col)
     if len(temp2)>0:
         cat_col_num, bar_cat_images, pie_images = manipulate_csv.categorical_plots(dataframe)
-        # print("Bar:", bar_cat_images)
-        # print("Pie:", pie_images)
+    lst = []
+    for i in range(len(cat_col_num)):
+        d = {}
+        d['temp2'] = temp2[i]
+        d['bar'] = bar_cat_images[i]
+        d['pie'] = pie_images[i]
+        d['cat_col'] = cat_col_num[i]
+        lst.append(d)
     if len(temp1)>0:
         list_images = manipulate_csv.discrete_plots(dataframe)
     if len(temp1)>0 and len(temp2)>0:
-        return render_template("plot_variables.html", temp1 = temp1, temp2 = temp2 ,req_cat = zip(temp2, pie_images, bar_cat_images, cat_col_num), list_images= list_images)
+        return render_template("plot_variables.html", temp1 = temp1, temp2 = temp2 , elements = lst , list_images= list_images)
     if len(temp1)>0:
         return render_template("plot_variables.html", temp1 = temp1, list_images= list_images)
     if len(temp1) == 0 and len(temp2) == 0:
         return render_template("plot_variables.html", temp1 = temp1, temp2 = temp2 )
+
 
 lazy_dist = ['crystalball', 'johnsonsb', 'burr', 'fisk', 'exponweib', 'powerlognorm', 'johnsonsu',
                  'kappa4', 'vonmises_line', 'vonmises', 'ncx2', 'gausshyper', 'argus', 'genexpon',
@@ -238,9 +245,9 @@ def distribution_analysis_part_2():
     aux4 = manipulate_csv.all_normal_tests(df)[0]
     aux5 = manipulate_csv.all_normal_tests(df)[1]
     aux6 = manipulate_csv.all_normal_tests(df)[2]
-    manipulate_csv.generate_plots(aux3,df)
+    list_plots = manipulate_csv.generate_plots(aux3,df)
     lst = []
-    for i in range(len(manipulate_csv.get_name_graphics())):
+    for i in range(len(list_plots)):
         d = {}
         d['name'] = aux[i]
         d['test'] = aux2[i]
@@ -248,9 +255,10 @@ def distribution_analysis_part_2():
         d['von'] = aux5[i]
         d['lillie'] = aux6[i] 
         d['best_fit'] = aux3[i].upper()
+        d['base64'] = list_plots[i]
         lst.append(d)
         
-    return render_template("distribution_analysis_part_2.html", message = "Waiting for choice" ,elements = lst, num = len(dataframe.columns))
+    return render_template("distribution_analysis_part_2.html", message = "Waiting for choice" , elements = lst, num = len(dataframe.columns))
 
 @app.route('/correlations')
 def correlations():

@@ -16,14 +16,13 @@
     <div>  
         {% if temp2|count > 0%}
         <h3>Categorical variables</h3>
-            {% for item, i, j, cat_num in req_cat %}
-                {% if cat_num|count > 3 %}
-                  <p>Variable {{item}}</p>
-                  <!--<img src="static/plots/bar_{{item}}_.jpg"  width="700" height="600">-->
+            {% for dict_item in elements %}
+                {% if dict_item['cat_num']|count > 3 %}
+                  <p>Variable {{dict_item['temp2']}}</p>
                 {% else %}
-                  <p>Variable {{item}}</p>
-                  <img width="500" height="450" src="data:image/png;base64,{{ i |safe }}" >
-                  <img width="500" height="450" src="data:image/png;base64,{{ j |safe }}" >
+                  <p>Variable {{dict_item['temp2']}}</p>
+                  <img width="500" height="450" src="data:image/png;base64,{{ dict_item['pie'] |safe }}" >
+                  <img width="500" height="450" src="data:image/png;base64,{{ dict_item['bar'] |safe }}" >
                 {% endif %}
               {% endfor %}        
         {% endif %}
@@ -40,6 +39,7 @@
             {% endfor %}  
         {% endif %}
     </div>
+
     <div >
       {% if temp1|count == 0 and temp2|count == 0 %}
       <div class="alert alert-info">
@@ -57,7 +57,6 @@
       
       
     <div class="mt-5">
-      <!-- <a class="btn btn-dark" href="{{ url_for('descriptive_statistics') }}">Back</a> -->
       <a  class="btn btn-dark btn-lg" href="{{ url_for('distribution_analysis_part_1') }}">Next</a>
     </div>
       

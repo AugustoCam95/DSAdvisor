@@ -110,8 +110,10 @@
           <p>Using the <strong>Shapiro-Wilk test</strong>: {{dict_item['shap']}}</p>
           <p>Using the <strong>Kolmogorov-Smirnov test</strong>, the best fit for this distribution is: {{dict_item['best_fit']}}</p>
         {%endif%}
-          <img src="{{url_for('static', filename='images/')}}{{dict_item['name']}}" alt="{{dict_item['name']}}">
-        <form action="{{ url_for('distribution_analysis_part_2')}}" method="POST" enctype="multipart/form-data">
+          
+          <img width="500" height="450" src="data:image/png;base64,{{ dict_item['base64'] |safe }}" >
+        
+          <form action="{{ url_for('distribution_analysis_part_2')}}" method="POST" enctype="multipart/form-data">
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="radio{{count}}" id="norm" value="norm">
             <label style="margin: 2%;" class="form-check-label" for="norm">Normal distribution</label>

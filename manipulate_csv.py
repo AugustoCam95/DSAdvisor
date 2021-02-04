@@ -172,9 +172,8 @@ def categorical_plots(df):
         if len(vetor[i]) > 3:
             pass
         else:    
-            fig1, ax1 = plt.subplots(figsize=(8, 8))
-            ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-            ax1.pie(array[i], labels=vetor[i], autopct='%1.1f%%', shadow = False , startangle=90)
+            plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+            plt.pie(array[i], labels=vetor[i], autopct='%1.1f%%', shadow = False , startangle=90)
             # plt.savefig("pie_"+col_string[i]+"_.jpg", dpi = 500)
             buffer = BytesIO()
             plt.savefig(buffer, format='png')
@@ -192,8 +191,7 @@ def categorical_plots(df):
 
     
     for i in range(len(array)):    
-        fig1, ax2 = plt.subplots(figsize=(8, 8))
-        ax2.bar(vetor[i], height=array[i], color = my_colors )
+        plt.bar(vetor[i], height=array[i], color = my_colors )
         # plt.savefig("bar_"+col_string[i]+"_.jpg", dpi = 500)
         buffer = BytesIO()
         plt.savefig(buffer, format='png')
@@ -245,8 +243,7 @@ def discrete_plots(df):
     return list_images
 
 def generate_plots(dist_list,df):
-    start_point = os.getcwd()
-    os.chdir("static/images")
+    list_plots = []
     for col,dist_ in zip(df.columns,dist_list):
         plt.figure()
         plt.hist(df[col], bins=25, density=True, alpha=0.6, color='g')
@@ -266,9 +263,24 @@ def generate_plots(dist_list,df):
         q = dist.pdf(y,*param[:-2] ,loc = mu1, scale = std1)
         plt.plot(y, q, 'r', linewidth = 1, label = dist_)
         plt.legend()
-        plt.savefig(col+".jpg")
+        # plt.savefig(col+".jpg")
+        # bufferiza a imagem
+        buffer = BytesIO()
+        plt.savefig(buffer, format='png')
+        buffer.seek(0)
+        image_png = buffer.getvalue()
+        buffer.close()
+        plt.close()
+
+        # converte em base 64
+        graphic = base64.b64encode(image_png)
+        graphic = graphic.decode('utf-8')
+
+        list_plots.append(graphic)
+
         plt.clf()
-    os.chdir(start_point)
+        return list_plots
+    
 
 def corrdot_pearson(*args, **kwargs):
     corr_r = args[0].corr(args[1], 'pearson')
@@ -499,15 +511,6 @@ def miss_value(code, special, df, text):
     os.chdir(start_point)
     
 
-
-### List graphics on the page correctly
-def get_name_graphics():
-    start_point = os.getcwd()
-    os.chdir("static/images")
-    names = os.listdir()
-    os.chdir(start_point)
-    return names
-    
 ### divisão dos conjuntos de treino, validação e test / normalização do conjunto de treinamento
 def split_and_norm(choiced,df, text, test_percent):
     start_point = os.getcwd()
