@@ -8,3 +8,11 @@
 .row_tables{
     margin-top:20px;
 }
+
+#cabecalho.navbar{
+	height: 40px;
+}
+
+#rodape.navbar{
+	height: 10px;
+}

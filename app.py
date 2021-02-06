@@ -152,6 +152,8 @@ def descriptive_statistics():
 
 @app.route('/plot_variables')
 def plot_variables():
+    print("Entrou aqui")
+    lst = []
     temp1 = []
     temp2 = []
     list_images = []
@@ -160,9 +162,10 @@ def plot_variables():
             temp1.append(col)
         if dataframe[col].dtype == "object":
             temp2.append(col)
+    if len(temp1)>0:
+        list_images = manipulate_csv.discrete_plots(dataframe)
     if len(temp2)>0:
         cat_col_num, bar_cat_images, pie_images = manipulate_csv.categorical_plots(dataframe)
-    lst = []
     for i in range(len(cat_col_num)):
         d = {}
         d['temp2'] = temp2[i]
@@ -170,13 +173,13 @@ def plot_variables():
         d['pie'] = pie_images[i]
         d['cat_col'] = cat_col_num[i]
         lst.append(d)
-    if len(temp1)>0:
-        list_images = manipulate_csv.discrete_plots(dataframe)
-    if len(temp1)>0 and len(temp2)>0:
+    if (len(temp1)>0 and len(temp2)>0):
         return render_template("plot_variables.html", temp1 = temp1, temp2 = temp2 , elements = lst , list_images= list_images)
-    if len(temp1)>0:
+    if (len(temp1)==0 and len(temp2)>0):
+        return render_template("plot_variables.html", temp1 = temp1, temp2 = temp2 , elements = lst )
+    if (len(temp1)>0):
         return render_template("plot_variables.html", temp1 = temp1, list_images= list_images)
-    if len(temp1) == 0 and len(temp2) == 0:
+    if (len(temp1) == 0 and len(temp2) == 0):
         return render_template("plot_variables.html", temp1 = temp1, temp2 = temp2 )
 
 

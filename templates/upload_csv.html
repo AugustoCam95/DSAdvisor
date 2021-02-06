@@ -15,7 +15,7 @@
             <p class="card-text">To start using our features, we first need you to upload the data you want to work on. Click on the button below to select the file on your computer, if you wanted to change the file just select another one. Remember that the format of your file must be of the type 'csv'. 
                 Once you have decided on the desired file, click on the 'Upload csv' button and then we will display a part of your data so that you can check that you have sent the right file.</p>
             
-            <p align="center" class="alert alert-info">
+            <p align="center" class="alert-sm alert-info">
                Note: Check if the file name does not contain special characters, if you have, remove them so that there are no errors in this step.
             </p>
         </div>
@@ -33,7 +33,7 @@
                 <br>   
 
                 <div>
-                    <label for="exampleFormControlTextarea1" class="alert alert-info">Dataset details:</label>
+                    <label for="exampleFormControlTextarea1" class="alert-sm alert-info">Dataset details:</label>
                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="text_details"></textarea>
                 </div>
             </div>
@@ -50,11 +50,11 @@
 
         <br>
         
-        <h3 align="center">Status: {{message}} </h3>
+        <h4 align="center">Status: {{message}} </h4>
 
         {% else %}
-            <div class="alert alert-success">
-                <h3 align="center">Status:</h3>
+            <div class="alert-sm alert-success">
+                <h4 align="center">Status:</h4>
                 <p align="center" >  File "{{filename}}" uploaded !</p>
             </div>
             
