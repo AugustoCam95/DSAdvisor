@@ -24,14 +24,14 @@
       
       <div style="border-top: 5px solid black;">
         <br>
-        <h3 style="text-align:center" > <strong>Column:</strong> {{dict_item['name'][0:-4]}}</h3>
+        <h3 style="text-align:center" > <strong>Column:</strong> {{dict_item['name']}}</h3>
       </div>
 
       <div align="center" class="row">
         
         
         <div class="column">
-          <img src="{{url_for('static', filename='boxplots/')}}{{dict_item['name']}}" width="400" height="400" alt="{{dict_item['name']}}">
+          <img width="400" height="400" src="data:image/png;base64,{{ dict_item['img'] |safe }}"> 
         </div>
         
         <div class="column">

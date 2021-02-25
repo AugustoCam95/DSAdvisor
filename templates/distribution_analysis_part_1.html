@@ -60,41 +60,43 @@
   <div class="card-body">
 
     {% if message == "Waiting for choice" %}
-      <h4 class="card-title" align="center"> Select  distributions</h4>
-      <p class="card-text" align="justify"> 
-        On this page we will talk about probability distributions for continuous variables, where on the next page we will use a series of tests to infer
-        the probability distribution of our quantitative variables. In probability theory and statistics, a probability distribution is the mathematical 
-        function that provides the probabilities of the occurrence of different possible outcomes for an experiment. It is a mathematical description of a 
-        random phenomenon in terms of its sample space and the probabilities of events (subsets of the sample space). The probability distributions are generally 
-        divided into two classes. 
-        <ul>
-          <li>
-            <strong>Discrete probability distribution</strong> is applicable to scenarios where the set of possible outcomes is discrete (for example, a 
-            coin toss or a dice roll), and the probabilities are encoded here by a discrete list of probabilities for the results, known as a function of probability 
-            mass. 
-          </li>
-          <br/>
-          <li>
-            <strong>Continuos probability distributions</strong> are applicable to scenarios where the set of possible results can assume values ​​in a 
-            continuous interval (for example, real numbers), such as the temperature on a given day. In this case, the probabilities are usually described by a 
-            probability density function. The normal distribution is a commonly found continuous probability distribution. More complex experiments, 
-            such as those involving stochastic processes defined in continuous time, may require the use of more general probability measures.
-          </li>
-        </ul>
-        If you want to know more about what a probability distribution is <a href="https://en.wikipedia.org/wiki/Probability_distribution">click here</a> 
-        or about the normal distribution <a href="https://en.wikipedia.org/wiki/Normal_distribution">click here</a>.
+      <div style="border-bottom: 2px solid black;">
+        <h3 class="card-title" align="center"> Distribution Analysis part 1</h3>
+      </div>
+      
+      <div>
         <br>
-        <br>
-        
-      </p>
+        <p class="card-text" align="justify"> 
+          On this page we will talk about probability distributions for continuous variables, where on the next page we will use a series of tests to infer
+          the probability distribution of our quantitative variables. In probability theory and statistics, a probability distribution is the mathematical 
+          function that provides the probabilities of the occurrence of different possible outcomes for an experiment. It is a mathematical description of a 
+          random phenomenon in terms of its sample space and the probabilities of events (subsets of the sample space). The probability distributions are generally 
+          divided into two classes. </p>
+          <ul>
+            <li>
+              <strong>Discrete probability distribution</strong> is applicable to scenarios where the set of possible outcomes is discrete (for example, a 
+              coin toss or a dice roll), and the probabilities are encoded here by a discrete list of probabilities for the results, known as a function of probability 
+              mass. 
+            </li>
+            <br/>
+            <li>
+              <strong>Continuos probability distributions</strong> are applicable to scenarios where the set of possible results can assume values ​​in a 
+              continuous interval (for example, real numbers), such as the temperature on a given day. In this case, the probabilities are usually described by a 
+              probability density function. The normal distribution is a commonly found continuous probability distribution. More complex experiments, 
+              such as those involving stochastic processes defined in continuous time, may require the use of more general probability measures.
+            </li>
+          </ul>
+          <p>If you want to know more about what a probability distribution is <a href="https://en.wikipedia.org/wiki/Probability_distribution">click here</a> 
+          or about the normal distribution <a href="https://en.wikipedia.org/wiki/Normal_distribution">click here</a>.</p>
+      </div>
       
       
       <div style="width: 100%; height: auto;">
         <div class="container" style= " width: 70%; height: 100%;">
           <form action="{{ url_for('distribution_analysis_part_1') }}" method="POST" enctype=multipart/form-data>
             
-            <h4>List of continious distributions:</h4>
-            <div style="width: 90%; height: auto;" class="container">
+            <h4 align="center">List of continious distributions:</h4>
+            <div style="width: 120%; height: auto;" class="container">
                  <!-- Value checked -->
                 {% for column in not_lazy%}
                   <div class="form-check form-check-inline" >
@@ -105,7 +107,7 @@
               
             </div>
            
-            <div style="width: 90%; height: auto;" class="container">
+            <div style="width: 120%; height: auto;" class="container">
                 {%for column in lazy_dist%}
                   <div class="form-check form-check-inline" >
                       <input class="form-check-input" type="checkbox" name="checkbox" id="{{column}}" value="{{column}}" >
@@ -113,32 +115,38 @@
                   </div>
                 {% endfor %}
             </div>
-           
-          <br>
+
+            <br>
+            <div style="width: 100%; height: auto;">
+              <div class="container" style= " width: 70%; height: 100px;">
+                <div align="center">
+                  <button type="submit" class="btn  btn-primary">Confirm option</button>
+                </div>
+              
+              </div>
+            </div> 
+
+          </form> 
+        
         </div>
       </div>
 
-      <br/>
-      <div style="width: 100%; height: auto;">
-        <div class="container" style= " width: 70%; height: 100px;">
-          <div align="center">
-            <button type="submit" class="btn  btn-primary">Confirm option</button>
-          </div>
-        </form>
-        </div>
-      </div>  
-      <div align="center">
-        <h4>Status: {{message}} </h4>
+        
+       
+      <div align="center" class="alert-sm alert-secondary">
+        <label>Status: {{message}} </label>
       </div>   
 
     {% else %}
       <div class="mt-2" align="center">
-        <div class="alert alert-success">
-          <h4>Status: Success</h4>
+        <div >
+          <label class="alert alert-success" >Status: Success</label>
+        </div>
+
+        <div class="alert alert-info">
+          <h4>List of distributions: </h4>
           <br>
-          <p>
-            List of distributions: {{list_x}}
-          </p>
+          <p>{{list_x}}</p>
         </div>
         
       

@@ -5,18 +5,70 @@
 {% block content%}
 <div class="card mb-6" align="center">
   <div class="card-body">
-      <h3 class="card-title">Choose normalization technique</h3>
+    
+    <h3 class="card-title">Choose normalization technique</h3>
+
+    {% if message == "Waiting for choice" %}
+
       <p align="justify"> 
-        In this step, we will normalize the data. This is a resource widely used in statistics that 
-        consists of subtracting the mean from a value in the data set and dividing this result by the 
-        standard deviation.The standardization is done through the equation below, where <strong>X</strong> represents 
-        the current value of the data, <strong>µx</strong>  the average of the <strong>X</strong> values ​​and <strong>σx</strong>  
-        the standard deviation. After this normalization, the average of the new data will be centered at 0 and its deviation at 1.
+        In this step, we will normalize the data. This is a resource widely used in statistics and 
+        there are two main techniques to normalize our data.
+        <ul>
+          <li><strong>Min-Max:</strong> In Min-Max (also called min-max scaling), you transform the data such that the features are within a specific range e.g. [0, 1].
+            and it's important in the algorithms such as support vector machines (SVM) and k-nearest neighbors (KNN) where distance between the data points is important.  
+          </li>
+          <br>
+          <li><strong>Z-Score:</strong>Standardization (also called z-score normalization) transforms your data such that the resulting distribution has a mean of 0 and a 
+            standard deviation of 1.</li>
+        </ul> 
+        
       </p>
-      <img src="../static/logos/z-score.png">
+
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 border-right">
+            <label>Min-Max formula</label>
+            <img src="../static/logos/minmax.png">
+          </div>
+          <div class="col-md-6 border-left">
+            <label>Z-Score formula</label>
+            <img src="../static/logos/z-score.png" style="margin-left: -12%;">
+          </div>
+        </div>
+      </div>
+
+      
       <br>
+
+      <form action="{{ url_for('normalization') }}" method="POST" enctype=multipart/form-data>
+        
+        
+        <div  class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="radiobutton" id="Min-Max" value="Min-Max">
+          <label style="margin: 4%;" class="form-check-label" for="Min-Max">MinMax(Scaling)</label>
+          <input class="form-check-input" type="radio" name="radiobutton" id="Z-score" value="Z-score">
+          <label style="margin: 4%;" class="form-check-label" for="Z-score">Zscore(Standardization)</label>
+        </div>
+         
+        <br>
+        
+        <div align="center" class="alert-sm alert-secondary">
+          <label>Status: {{message}} </label>
+        </div>
+        
+        <br>
+
+        <div align="center">
+          <br>
+          <button type="submit" class="btn  btn-primary">Confirm option</button>
+        </div>
+
+      </form>
+        
+      <br>
+
       <p align="justify">
-        But what is the importance of doing this whole process?<br>
+        But what is the importance of doing this whole process? Let's see an example!<br>
         It is essential to check that the columns are on the same scale. For example, two columns A and B 
         can have two different numerical ranges: the first in a range between zero and one in the realm 
         domain, while the second is in a range in the range 1 to 1000 in the realm of integers. Evidencing 
@@ -26,24 +78,40 @@
       </p>
 
       
-      <h3>Before normalization</h3>
+      <h5>Before apply z-score</h5>
       <div style="overflow-x: scroll" align="center" id = "up">
             
       </div>
       <br>
       <br>
 
-      <h3>After normalization</h3>
+      <h5>After apply z-score</h5>
       <div style="overflow-x: scroll" align="center" id = "down">
               
       </div>
     
 
+      <div align="center" class="alert-sm alert-secondary">
+        <label>Status: {{message}} </label>
+      </div>
+
+    {% else %}
+    
+      <br>
+      <div align="center" class="alert-sm alert-success">
+        <label>Status: Sucess</label>
+      </div>
+          
+      <br>
+      <div align="center" class="alert-sm alert-info">
+        <label> <strong>Technique selected:</strong>  {{anwser}} </label>
+      </div>
+
       <div class="mt-5">
-        <!-- <a class="btn btn-dark" href="{{ url_for('outlier_report') }}">Back</a> -->
         <a class="btn btn-dark btn-lg" href="{{ url_for('feature_selection') }}">Next</a>
       </div>
-         
+      
+    {% endif %}
 
     <script>
       d3.text("{{path1|safe}}").then(function(datasetText) {
@@ -122,12 +190,8 @@
           .style("font-size", "12px");
           });
     </script>
-
-    
-
-
-
-   
+  
+ 
        
   </div>  
 </div>

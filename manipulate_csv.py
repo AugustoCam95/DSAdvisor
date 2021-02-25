@@ -29,7 +29,7 @@ def make_dataset(dataset,text):
     start_point = os.getcwd()
     os.chdir(start_point)
     os.chdir("static/samples")
-    aux = dataset.head(n = 20)
+    aux = dataset.head(n = 10)
     aux.to_csv(text+".csv", index = False)
     dataset.to_csv(text+"dataset.csv", index = False)
     os.chdir(start_point)
@@ -218,9 +218,6 @@ def discrete_plots(df):
 
     list_images = []
     for col in integers.columns:
-        plt.xlabel('Values')
-        plt.ylabel('Quantities')
-        plt.title(r'Histogram of {}'.format(col))
         plt.hist(integers[col])
 
         # TODO BUFFERIZAR AS IMAGENS EM TODO O SISTEMA
@@ -263,7 +260,7 @@ def generate_plots(dist_list,df):
         q = dist.pdf(y,*param[:-2] ,loc = mu1, scale = std1)
         plt.plot(y, q, 'r', linewidth = 1, label = dist_)
         plt.legend()
-        # plt.savefig(col+".jpg")
+
         # bufferiza a imagem
         buffer = BytesIO()
         plt.savefig(buffer, format='png')
@@ -279,7 +276,7 @@ def generate_plots(dist_list,df):
         list_plots.append(graphic)
 
         plt.clf()
-        return list_plots
+    return list_plots
     
 
 def corrdot_pearson(*args, **kwargs):
@@ -321,8 +318,6 @@ def corrfunc_spearman(x, y, **kws):
     ax.annotate(p_stars, xy=(0.65, 0.6), xycoords=ax.transAxes, color='red', fontsize = 55)
 
 def generate_correlations_pearson(dataframe,text):
-    start_point = os.getcwd()
-    os.chdir("static/samples")
     df = dataframe
     for col in df.columns:
         if df[col].dtypes == 'float64' or df[col].dtypes == 'int64' :
@@ -349,13 +344,23 @@ def generate_correlations_pearson(dataframe,text):
     # Add titles to the diagonal axes/subplots
     for ax, col in zip(np.diag(g.axes), df.columns):
         ax.set_title(col, y=0.82, fontsize=26)
-    # Save plot    
-    g.savefig("../correlations/"+text+"pearson.jpg", dpi = 200)
-    os.chdir(start_point)
+   
+    # bufferiza a imagem
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    image_png = buffer.getvalue()
+    buffer.close()
+    plt.close()
+
+    # converte em base 64
+    graphic = base64.b64encode(image_png)
+    graphic = graphic.decode('utf-8')
+
+    return graphic
+   
 
 def generate_correlations_spearman(dataframe, text):
-    start_point = os.getcwd()
-    os.chdir("static/samples")
     df = dataframe
     for col in df.columns:
         if df[col].dtypes == 'float64' or df[col].dtypes == 'int64' :
@@ -382,14 +387,21 @@ def generate_correlations_spearman(dataframe, text):
     # Add titles to the diagonal axes/subplots
     for ax, col in zip(np.diag(g.axes), df.columns):
         ax.set_title(col, y=0.82, fontsize=26)
-    # Save plot    
-    g.savefig("../correlations/"+text+"spearman.jpg", dpi = 200)
-    os.chdir(start_point)
+    # bufferiza a imagem
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    image_png = buffer.getvalue()
+    buffer.close()
+    plt.close()
+
+    # converte em base 64
+    graphic = base64.b64encode(image_png)
+    graphic = graphic.decode('utf-8')
+
+    return graphic
 
 def corr_cramer_v(data,text):
-    start_point = os.getcwd()
-    os.chdir("static/samples")
-    
     for col in data.columns:
         if data[col].dtypes == 'float64' or data[col].dtypes == 'int64':
             data = data.drop( columns = [col])
@@ -400,8 +412,19 @@ def corr_cramer_v(data,text):
     bottom, top = ax.get_ylim()
     ax.set_ylim(bottom + 0.5, top - 0.5)
     figure3 = map3.get_figure()
-    figure3.savefig("../correlations/"+text+"cramer.jpg", dpi = 400)
-    os.chdir(start_point)
+    # bufferiza a imagem
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    image_png = buffer.getvalue()
+    buffer.close()
+    plt.close()
+
+    # converte em base 64
+    graphic = base64.b64encode(image_png)
+    graphic = graphic.decode('utf-8')
+
+    return graphic
 
 def sample_csv(dataframe,text):
     start_point = os.getcwd()
@@ -533,7 +556,7 @@ def split_and_norm(choiced,df, text, test_percent):
     
     z_score = st.zscore(train_set)
     dataset_norm = pd.DataFrame(z_score,columns = train_set.columns)
-    aux = dataset_norm.head(n=20)
+    aux = dataset_norm.head(n=10)
     aux.to_csv(text+"train_norm_data20.csv", index = False)
     dataset_norm.to_csv(text+"train_norm_data.csv", index = False)
     os.chdir(start_point)
@@ -628,8 +651,7 @@ def adjust_iqr(df, text):
 
 # Criacao de boxplots
 def create_boxplots(df):
-    start_point = os.getcwd()
-    os.chdir("static/boxplots")
+    boxplot_list = []
     for col in df.columns:
         if df[col].dtypes == 'float64' or df[col].dtypes == 'int64' :
             pass
@@ -639,16 +661,28 @@ def create_boxplots(df):
         fig1, ax1 = plt.subplots()
         ax1.boxplot(df[col])
         ax1.set_xticklabels([col])
-        plt.savefig(col+".jpg")
-        plt.clf()
-    os.chdir(start_point)
+        
+        # bufferiza a imagem
+        buffer = BytesIO()
+        plt.savefig(buffer, format='png')
+        buffer.seek(0)
+        image_png = buffer.getvalue()
+        buffer.close()
+        plt.close()
 
-def get_name_boxplots():
-    start_point = os.getcwd()
-    os.chdir("static/boxplots")
-    names = os.listdir()
-    os.chdir(start_point)
-    return names
+        # converte em base 64
+        graphic = base64.b64encode(image_png)
+        graphic = graphic.decode('utf-8')
+
+        boxplot_list.append(graphic)
+
+        plt.clf()
+    return boxplot_list
+
+        
+    
+
+
 
 # Resample Techniques
 
@@ -746,14 +780,10 @@ def filter_on_feature_selection(col_to_remove, text):
     start_point = os.getcwd()
     os.chdir("static/samples")
     dataframe1 = pd.read_csv(text+"train_data.csv")
-    dataframe2 = pd.read_csv(text+"validation_data.csv")
     dataframe3 = pd.read_csv(text+"test_data.csv")
     
     dataframe1 = dataframe1.drop(columns = col_to_remove)
     dataframe1.to_csv(text+"train_data.csv", index = False)
-
-    dataframe2 = dataframe2.drop(columns = col_to_remove)
-    dataframe2.to_csv(text+"validation_data.csv", index = False)
 
     dataframe3 = dataframe3.drop(columns = col_to_remove)
     dataframe3.to_csv(text+"test_data.csv", index = False)

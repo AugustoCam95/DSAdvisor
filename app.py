@@ -4,7 +4,7 @@ import pandas as pd
 import io
 import re
 import delete
-import statistics
+# import statistics
 import warnings
 import manipulate_csv
 from flask import Flask, render_template, request, flash, send_file, url_for, redirect
@@ -152,7 +152,6 @@ def descriptive_statistics():
 
 @app.route('/plot_variables')
 def plot_variables():
-    print("Entrou aqui")
     lst = []
     temp1 = []
     temp2 = []
@@ -166,13 +165,13 @@ def plot_variables():
         list_images = manipulate_csv.discrete_plots(dataframe)
     if len(temp2)>0:
         cat_col_num, bar_cat_images, pie_images = manipulate_csv.categorical_plots(dataframe)
-    for i in range(len(cat_col_num)):
-        d = {}
-        d['temp2'] = temp2[i]
-        d['bar'] = bar_cat_images[i]
-        d['pie'] = pie_images[i]
-        d['cat_col'] = cat_col_num[i]
-        lst.append(d)
+        for i in range(len(cat_col_num)):
+            d = {}
+            d['temp2'] = temp2[i]
+            d['bar'] = bar_cat_images[i]
+            d['pie'] = pie_images[i]
+            d['cat_col'] = cat_col_num[i]
+            lst.append(d)
     if (len(temp1)>0 and len(temp2)>0):
         return render_template("plot_variables.html", temp1 = temp1, temp2 = temp2 , elements = lst , list_images= list_images)
     if (len(temp1)==0 and len(temp2)>0):
@@ -227,21 +226,20 @@ def distribution_analysis_part_2():
             if dataframe[col].dtype != "float64":
                 df = df.drop(columns = col)
         for i in range(len(df.columns)):
-            # print(user_choice_dist)
             user_choice_dist.append(request.form["radio"+str(i)])
         log_user_execution["User's distribution choices"] = user_choice_dist
         return render_template("distribution_analysis_part_2.html" , message = "Success to choice", user_answer= user_choice_dist)
+
+    df = dataframe
+    for col in dataframe.columns:
+        if dataframe[col].dtype != "float64":
+            df = df.drop(columns = col)
 
     temp = []
     for col in dataframe.columns:
         if dataframe[col].dtype == "float64":
             temp.append(col)
-    for i in range(len(temp)):
-        temp[i] = str(temp[i]+".jpg")
-    df = dataframe
-    for col in dataframe.columns:
-        if dataframe[col].dtype != "float64":
-            df = df.drop(columns = col)
+
     aux = temp
     aux2 = manipulate_csv.get_vector_of_normality(df)
     aux3 = manipulate_csv.best_fit(dist_names,df)
@@ -273,9 +271,13 @@ def correlations():
         if dataframe[col].dtype != "object":
             string = string.drop(columns = col)
     
-    signal_2 = 0 
+    signal_2 = 0
+    cramer_64 = None 
+    pearson_64 = None
+    spearman_64 = None
     if len(string.columns) >1:
-        manipulate_csv.corr_cramer_v(string,file_name)
+        cramer_64 = manipulate_csv.corr_cramer_v(string,file_name)
+        print("Oq tem dentro: ",cramer_64)
         signal_2 = 1
     
     j = 0
@@ -284,7 +286,6 @@ def correlations():
             if user_choice_dist[i] == "norm":
                 j = j+1
 
-    
     signal_1 = 0
     if j > 1:
         signal_1 = 1
@@ -292,12 +293,12 @@ def correlations():
         for choice,col in zip(user_choice_dist,df_norm):
             if choice != "norm":
                 df_norm = df_norm.drop(columns = col)                
-        manipulate_csv.generate_correlations_pearson(df_norm,file_name)
+        pearson_64 = manipulate_csv.generate_correlations_pearson(df_norm,file_name)
     
     
-    manipulate_csv.generate_correlations_spearman(df,file_name)
+    spearman_64 = manipulate_csv.generate_correlations_spearman(df,file_name)
     
-    return render_template("correlations.html",  filename = file_name, signal_1 = signal_1, signal_2 = signal_2)
+    return render_template("correlations.html",  filename = file_name, signal_1 = signal_1, signal_2 = signal_2, cramer_64 = cramer_64, pearson_64 = pearson_64, spearman_64 = spearman_64)
 
 type_problem = None
 X_train =  None
@@ -319,21 +320,34 @@ def problem_setup_part_1():
 
 @app.route('/problem_setup_part_2', methods = [ "GET", "POST"])
 def problem_setup_part_2():
-    pass
+    global type_problem, log_user_execution 
+    if request.method == "POST":
+        
+        predictive_alg_list = request.form.getlist("checkbox")
+        metrics_list = request.form.getlist("checkbox2")
+        
+        log_user_execution["predictive_alg_list"] = predictive_alg_list
+        log_user_execution["metrics_list"] = metrics_list
+       
+        return render_template("problem_setup_part_2.html", message = "Success to choice", user_answer1 = predictive_alg_list,  user_answer2 = metrics_list)
 
+    return render_template("problem_setup_part_2.html", message = "Waiting for choice", type_problem = type_problem)
 
 
 @app.route('/outlier_report')
 def outlier_report():
-    manipulate_csv.create_boxplots(X_train)
+    boxplot_list = []
+    boxplot_list = manipulate_csv.create_boxplots(X_train)
+    list_names = X_train.columns
     manipulate_csv.adjust_iqr(X_train, file_name)
     out_posi = len(X_train.columns)*[[]]
     for col,i in zip(X_train.columns, range(len(X_train.columns))):
         out_posi[i] = manipulate_csv.outliers_position(X_train[col].values)[0]
     lst = []
-    for col,i in zip(X_train.columns,range(len(manipulate_csv.get_name_boxplots()))):
+    for col,i in zip(X_train.columns,range(len(X_train.columns))):
         d = {}
-        d["name"] = col+".jpg"
+        d["name"] = list_names[i]
+        d["img"] = boxplot_list[i]
         d["elements"] = len(X_train[col])
         d["sum_outliers"] = len(out_posi[i])
         d["percent_outliers"] = round((len(out_posi[i])*100)/len(X_train[col]),2)
@@ -346,18 +360,22 @@ def table_outlier():
     return render_template("table_outlier.html",  path1 ="static/samples/"+file_name+"outliers.csv")
 
 list_col = None
-@app.route('/normalization')
+@app.route('/normalization', methods = [ "GET", "POST"])
 def normalization():
-    global list_col
-    list_col = manipulate_csv.create_table_feature_selection(X_train, y_train, type_problem, file_name)
-    return render_template("normalization.html", path1 ="static/samples/"+file_name+".csv", path2 ="static/samples/"+file_name+"train_norm_data20.csv"  )
+    if request.method == "POST":
+        global list_col, log_user_execution
+        anwser = request.form["radiobutton"]
+        log_user_execution["normalization"] = anwser
+        list_col = manipulate_csv.create_table_feature_selection(X_train, y_train, type_problem, file_name)
+        return render_template("normalization.html", message = "Sucess", anwser = anwser )
+    return render_template("normalization.html", message = "Waiting for choice", path1 ="static/samples/"+file_name+".csv", path2 ="static/samples/"+file_name+"train_norm_data20.csv"  )
 
 @app.route('/feature_selection', methods = [ "GET", "POST"] )
 def feature_selection():
     if request.method == "POST":
         global log_user_execution
         selected_variables = request.form.getlist("checkbox")
-        log_user_execution["Selected variables in feature selection page"] = selected_variables
+        log_user_execution["feature selection variables"] = selected_variables
         drop_variables = list(set(X_train.columns) - set(selected_variables))
         manipulate_csv.filter_on_feature_selection(drop_variables, file_name)
         return render_template("feature_selection.html", message = "Sucess", type_problem = type_problem)

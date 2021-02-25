@@ -38,7 +38,6 @@
                 </div>
             </div>
             
-            <br>
             
             <div align="center">
                 <button type="submit"  class="btn btn-primary">Upload csv</button>
@@ -46,30 +45,34 @@
             
 
         </form>
-        
-
+    
         <br>
+        <div align="center" class="alert-sm alert-secondary">
+            <label>Status: {{message}} </label>
+        </div>
         
-        <h4 align="center">Status: {{message}} </h4>
 
         {% else %}
-            <div class="alert-sm alert-success">
-                <h4 align="center">Status:</h4>
-                <p align="center" >  File "{{filename}}" uploaded !</p>
+            <br>
+            <div align="center" class="alert-sm alert-success">
+                <label>Status:</label>
+                <label>  File "{{filename}}" uploaded !</label>
+            </div>
+            <br>
+            <div>
+                <p class="alert alert-info" align="center"> 
+                    Below is a preview of the data that was sent, take the opportunity to check if it is really the csv file you wanted to upload.
+                </p>
             </div>
             
-            <p class="alert alert-info" align="center"> 
-                Below is a preview of the data that was sent, take the opportunity to check if it is really the csv file you wanted to upload.
-            </p>
-            
-            <br>
-                
-            <h3 align="center" >Preview:</h3>
+            <h5 align="center" >Preview:</h5>
 
             <div style="overflow-x: scroll" align="center" id = "up">
             </div>
-                
-            <div class="mt-5" align="center">
+               
+            <br>
+
+            <div align="center">
                 <a class="btn btn-dark btn-lg" href="{{ url_for('check_variables_type') }}">Next</a>
             </div>
             

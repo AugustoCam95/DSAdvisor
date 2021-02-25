@@ -1,0 +1,6 @@
+,0
+sepal.length,float64
+sepal.width,float64
+petal.length,float64
+petal.width,float64
+variety,object

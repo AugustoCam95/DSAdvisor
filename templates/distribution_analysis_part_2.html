@@ -96,7 +96,7 @@
         
       
       <div style="border-bottom: 5px solid black;">  
-          <h4 class="mt-5">Column: {{dict_item['name'][0:-4]}}</h4>
+          <h4 class="mt-5">Column: {{dict_item['name']}}</h4>
         {% if dict_item['test'] == 0 %}
           <p>Using the <strong>Cramér–von Mises test</strong>: {{dict_item['von']}}</p>
           <p>Using the <strong>D'Agostino's K-squared test</strong>: Sample looks Gaussian (fail to reject H0)</p>
@@ -111,7 +111,7 @@
           <p>Using the <strong>Kolmogorov-Smirnov test</strong>, the best fit for this distribution is: {{dict_item['best_fit']}}</p>
         {%endif%}
           
-          <img width="500" height="450" src="data:image/png;base64,{{ dict_item['base64'] |safe }}" >
+          <img width="700" height="600" src="data:image/png;base64,{{ dict_item['base64'] |safe }}" >
         
           <form action="{{ url_for('distribution_analysis_part_2')}}" method="POST" enctype="multipart/form-data">
           <div class="form-check form-check-inline">
@@ -124,24 +124,37 @@
         
       {% endfor %}
     </div>
-    <div class="mt-3">
-          <h4 class="mt-3">Status: {{message}} </h4>
+    
+    <br>
+    <div class="mt-3 alert-sm alert-secondary">
+          <label>Status: {{message}} </label>
     </div>
-          <div class="mt-2" align="center">
-            <button type="submit" class="btn  btn-primary">Confirm option</button>
-          </div>
-        </form> 
+
+    <div class="mt-2" align="center">
+      <button type="submit" class="btn  btn-primary">Confirm option</button>
+    </div>
+    </form> 
     {% else %}
     <br>
-    <div class="mt-3 alert alert-success">
-      <h4 class="mt-3">Status: Success </h4>
+    
+    <div class="mt-3 alert-sm alert-success">
+      <label> Status: Success </label>
+    </div>
+
+    <br>
+
+    <div class="alert alert-info">
       <p>
-        <strong>Selected distributions:</strong>  {{user_answer}} 
+        <strong>Selected distributions:</strong>   
+      </p>
+      <br>
+      <p>
+        {{user_answer}}
       </p>
     </div>
+
     <div class="mt-5">
       <br>
-      <!-- <a class="btn btn-dark" href="{{ url_for('descriptive_statistics') }}">Back</a> -->
       <a onclick="myFunction()" class="btn btn-dark btn-lg" href="{{ url_for('correlations') }}"  >Next</a>
     </div>
     {% endif %}

@@ -10,37 +10,38 @@
       <h3 align="center"> Correlations </h3>
     </div>
 
-    <p align="justify">
-      <br>
-      On this page we will talk about correlation, more specifically the 
-      correlation coefficients that we have available, which are Pearson's and 
-      Spearman's coefficients. What the correlation seeks is to understand how 
+    <div align="justify">
+      <p>On this page we will talk about correlation, more specifically the 
+      correlation coefficients that we have available, which are <b>Cramér's V, Pearson's, 
+      Spearman's coefficients</b>. What the correlation seeks is to understand how 
       one variable behaves in a scenario where the other is varying. 
       The correlation coefficients help researchers to measure this relationship, 
       they are statistical methods to measure the relationships between variables 
       and what they represent, the correlation coefficient expresses this relationship 
       numerically, that is, it quantifies the relationship between variables.
-      <br>
-      <br>
-      <strong>Pearson's correlation coefficient</strong> measures the degree of linear correlation between two quantitative variables. 
-      It has values between -1.0 and 1.0 that reflect the intensity of a linear realization in two 
-      sets of data. Note: To use Pearson's coefficient, the data must be continuous and follow a normal 
-      distribution, therefore, in Pearson's correlation figure, not all columns of the data set appear.
-      <br>
-      <br>
-      <strong>Spearman's rank correlation coefficient</strong> is a non-parametric correlation measure, which unlike 
-      Pearson's correlation coefficient does not require the assumption that the distribution is normal 
-      or that the variables are quantitative and can be used for the variables measurements at the ordinal 
-      level. The coefficient has the same range as Pearson and varies from -1.0 to 1.0.
-      <br>
-      <br>
-      <strong>Cramér's V</strong> is a measure of association between two nominal variables, 
-      giving a value between 0 and +1 (inclusive). It is based on Pearson's chi-squared statistic.
-      <br>
-      <br>
+      </p>
+      <ul>
+        <li> <p>
+          <strong>Pearson's correlation coefficient</strong> measures the degree of linear correlation between two quantitative variables. 
+          It has values between -1.0 and 1.0 that reflect the intensity of a linear realization in two 
+          sets of data. Note: To use Pearson's coefficient, the data must be continuous and follow a normal 
+          distribution, therefore, in Pearson's correlation figure, not all columns of the data set appear.
+          </p></li>
+        <li><p><strong>Spearman's rank correlation coefficient</strong> is a non-parametric correlation measure, which unlike 
+          Pearson's correlation coefficient does not require the assumption that the distribution is normal 
+          or that the variables are quantitative and can be used for the variables measurements at the ordinal 
+          level. The coefficient has the same range as Pearson and varies from -1.0 to 1.0.
+          </p></li>
+        <li><p><strong>Cramér's V</strong> is a measure of association between two nominal variables, 
+          giving a value between 0 and +1 (inclusive). It is based on Pearson's chi-squared statistic.
+          </p></li>
+      </ul>
+
+
+    
       <div style="border-bottom: 2px solid black;" align="center">
         <h3>Correlations interval</h3>
-        <img src="static/logos/interval.jpg" alt="interval">
+        <img width="100%" height="100%" src="static/logos/interval.jpg" alt="interval">
         <p align="justify">A correlation coefficient close to zero indicates that there is no relationship 
           between the two variables, and the closer they are to 1 or -1, the stronger the relationship.
           In the figures below, it is worth noting that the scale on the right side has a color scale from 
@@ -50,13 +51,26 @@
         </p>
       </div>
       
-    </p>
+    </div>
+      
     <br>
-     
+    <div class="alert-sm alert-info">
+      <p> The graphs below are combined graphs divided into lower triangular, diagonal and upper triangular sectors.
+      Each graph will be explained according to the list below:</p>
+      <ul>
+        <li> <b> lower triangular:</b> scatter plot for each variable pair </li>
+        <li> <b> diagonal:</b> simple histogram of each variable </li>
+        <li> <b> upper triangular:</b> Correlation corresponding to the graph title coefficient, 
+             where each asterisk denotes the value of the p-value and can vary from three 
+             to no asterisk.
+        </li>
+      </ul>
+    </div>
+
         {% if signal_1 == 1 %}
         <div style="border-bottom: 2px solid black;">
           <h3>Pearson's correlation</h3>
-          <img src="static/correlations/{{filename}}pearson.jpg" alt="{{filename}}pearson" width="100%" height="100%">
+          <img width="100%" height="100%" src="data:image/png;base64,{{ pearson_64 |safe }}" >
           <br>
           <p> Reference values for consultation</p>
           <ul>
@@ -71,7 +85,7 @@
         
         <div style="border-bottom: 2px solid black;">
           <h3 class="mt-3">Spearman's rank correlation</h3>
-          <img src="static/correlations/{{filename}}spearman.jpg" alt="{{filename}}spearman"  width="100%" height="100%">
+          <img width="100%" height="100%" src="data:image/png;base64,{{ spearman_64 |safe }}" >
           <br>
           <p class="mt-3"> Reference values for consultation</p>
           <ul>
@@ -86,7 +100,7 @@
         {% if signal_2 == 1 %}
         <div style="border-bottom: 2px solid black;">
           <h3>Cramer's V correlation</h3>
-          <img src="static/correlations/{{filename}}cramer.jpg" alt="{{filename}}cramer" width="100%" height="100%">
+          <img width="100%" height="100%" src="data:image/png;base64,{{ cramer_64 |safe }}" >
           <br>
           <p> Reference values for consultation</p>
           <ul>
@@ -102,7 +116,6 @@
 
   
     <div class="mt-5" align ="center">
-      <!-- <a class="btn btn-dark" href="{{ url_for('distribution_analysis') }} ">Back</a> -->
       <a class="btn btn-dark btn-lg" href="{{ url_for('problem_setup_part_1') }} ">Next</a>
     </div>
     

@@ -42,7 +42,7 @@
     
     
     <div style="width: 100%; height: auto;">
-      <div class="container" style= " width: 20%; height: 100px;">
+      <div class="container" style= " width: 40%; height: 60px;">
         <form action="{{ url_for('filter_miss_values') }}" method="POST" enctype=multipart/form-data>
           
           <div class="checkboxes">
@@ -88,17 +88,22 @@
     <br>
     <br>
     <br>
-    <div class="mt-5" align="center">
-          <h4>Status: {{message}} </h4>
+    <div align="center" class="alert-sm alert-secondary">
+      <label>Status: {{message}} </label>
     </div>
 
     
 
     {% else %}
     <div class="mt-5" align="center">
-        <div class="alert alert-success">
-          <h4>Status: Success</h4>
-          <p><strong>Option selected:</strong> {{miss_code}}</p>
+        <div align="center" class="alert-sm alert-success">
+          <label>Status: Success</label>
+        </div>
+
+        <br>
+
+        <div align="center" class="alert-sm alert-info">
+          <label><strong>Option selected:</strong> {{miss_code}}</label>
         </div>
         
         <div class="mt-5" align="center">

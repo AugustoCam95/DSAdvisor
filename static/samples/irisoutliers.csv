@@ -1,0 +1,7 @@
+petal.length line,petal.length outlier candidate,petal.width line,petal.width outlier candidate,sepal.length line,sepal.length outlier candidate,sepal.width line,sepal.width outlier candidate
+2.0,6.4,,,,,23.0,2.0
+53.0,6.7,,,,,31.0,2.2
+105.0,6.6,,,,,34.0,2.3
+106.0,6.9,,,,,63.0,2.3
+117.0,6.7,,,,,64.0,2.3
+,,,,,,125.0,2.2
