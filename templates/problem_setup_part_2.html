@@ -26,20 +26,20 @@
             <div class="container" style= " width: 90%; height: auto;">
               <div class="form-check form-check-inline">
             
-                <input class="form-check-input" type="checkbox" id="Logistic Regression" name="checkbox" value="Logistic Regression" checked>
-                <label class="form-check-label" for="Logistic Regression">Logistic Regression</label>
+                <input class="form-check-input" type="checkbox" id="LogisticRegression(random_state=0)" name="checkbox" value="LogisticRegression(random_state=0)" checked>
+                <label class="form-check-label" for="LogisticRegression(random_state=0)">Logistic Regression</label>
             
-                <input class="form-check-input" type="checkbox" id="k-Nearest Neighbors" name="checkbox" value="k-Nearest Neighbors" checked>
-                <label class="form-check-label" for="k-Nearest Neighbors">K-Nearest Neighbors</label>
+                <input class="form-check-input" type="checkbox" id="KNeighborsClassifier(n_neighbors=2)" name="checkbox" value="KNeighborsClassifier(n_neighbors=2)" checked>
+                <label class="form-check-label" for="KNeighborsClassifier(n_neighbors=2)">K-Nearest Neighbors</label>
                 
-                <input class="form-check-input" type="checkbox" id="Decision Trees" name="checkbox" value="Decision Trees" checked>
-                <label class="form-check-label" for="Decision Trees">Decision Trees</label>
+                <input class="form-check-input" type="checkbox" id="DecisionTreeClassifier(random_state=0)" name="checkbox" value="DecisionTreeClassifier(random_state=0)" checked>
+                <label class="form-check-label" for="DecisionTreeClassifier(random_state=0)">Decision Trees</label>
                 
-                <input class="form-check-input" type="checkbox" id="Support Vector Machine" name="checkbox" value="Support Vector Machine" checked>
-                <label class="form-check-label" for="Support Vector Machine">Support Vector Machine</label>
+                <input class="form-check-input" type="checkbox" id="SVC(gamma='auto')" name="checkbox" value="SVC(gamma='auto')" checked>
+                <label class="form-check-label" for="SVC(gamma='auto')">Support Vector Machine</label>
                 
                 <input class="form-check-input" type="checkbox" id="Naive Bayes" name="checkbox" value="Naive Bayes" checked>
-                <label class="form-check-label" for="Naive Bayes">Naive Bayes</label>
+                <label class="form-check-label" for="GaussianNB()">Naive Bayes</label>
               </div>
                   
           </div>
@@ -48,17 +48,17 @@
 
           <div class="form-check form-check-inline">
             
-            <input class="form-check-input" type="checkbox" id="Linear Regression" name="checkbox" value="Linear Regression" checked>
-            <label class="form-check-label" for="Linear Regression">Linear Regression</label>
+            <input class="form-check-input" type="checkbox" id=" linear_model.LinearRegression()" name="checkbox" value=" linear_model.LinearRegression()" checked>
+            <label class="form-check-label" for=" linear_model.LinearRegression()">Linear Regression</label>
 
-            <input class="form-check-input" type="checkbox" id="Decision Tree" name="checkbox" value="Decision Tree" checked>
-            <label class="form-check-label" for="Decision Tree">Decision Tree</label>
+            <input class="form-check-input" type="checkbox" id="tree.DecisionTreeRegressor()" name="checkbox" value="tree.DecisionTreeRegressor()" checked>
+            <label class="form-check-label" for="tree.DecisionTreeRegressor()">Decision Tree</label>
             
-            <input class="form-check-input" type="checkbox" id="Multi-Layer Perceptron" name="checkbox" value="Multi-Layer Perceptron" checked>
-            <label class="form-check-label" for="Multi-Layer Perceptron">Multi-Layer Perceptron</label>
+            <input class="form-check-input" type="checkbox" id="MLPRegressor()" name="checkbox" value="MLPRegressor()" checked>
+            <label class="form-check-label" for="MLPRegressor()">Multi-Layer Perceptron</label>
             
-            <input class="form-check-input" type="checkbox" id="Support Vector Regression" name="checkbox" value="Support Vector Regression" checked>
-            <label class="form-check-label" for="Support Vector Regression">Support Vector Regression</label>
+            <input class="form-check-input" type="checkbox" id="SVR()" name="checkbox" value="SVR()" checked>
+            <label class="form-check-label" for="SVR()">Support Vector Regression</label>
             
           </div>
 
@@ -74,29 +74,26 @@
 
           <div class="form-check form-check-inline">
             
-            <input class="form-check-input" type="checkbox" id="Confusion Matrix" name="checkbox2" value="Confusion Matrix" checked>
-            <label class="form-check-label" for="Confusion Matrix">Confusion Matrix</label>
+            <input class="form-check-input" type="checkbox" id="confusion_matrix(y_true, y_pred)" name="checkbox2" value="confusion_matrix(y_true, y_pred)" checked>
+            <label class="form-check-label" for="confusion_matrix(y_true, y_pred)">Confusion Matrix</label>
 
-            <input class="form-check-input" type="checkbox" id="Roc Curve" name="checkbox2" value="Roc Curve" checked>
-            <label class="form-check-label" for="Roc Curve">Roc Curve</label>
+            <!-- <input class="form-check-input" type="checkbox" id="Roc Curve" name="checkbox2" value="Roc Curve" checked>
+            <label class="form-check-label" for="Roc Curve">Roc Curve</label> -->
             
-            <input class="form-check-input" type="checkbox" id="Roc Auc Score" name="checkbox2" value="Roc Auc Score" checked>
-            <label class="form-check-label" for="Roc Auc Score">Roc Auc Score</label>
+            <input class="form-check-input" type="checkbox" id="roc_auc_score(y_true, y_pred)" name="checkbox2" value="roc_auc_score(y_true, y_pred)" checked>
+            <label class="form-check-label" for="roc_auc_score(y_true, y_pred)">Roc Auc Score</label>
             
-            <input class="form-check-input" type="checkbox" id="Accuracy Score" name="checkbox2" value="Accuracy Score" checked>
-            <label class="form-check-label" for="Accuracy Score">Accuracy Score</label>
+            <input class="form-check-input" type="checkbox" id="accuracy_score(y_true, y_pred)" name="checkbox2" value="accuracy_score(y_true, y_pred)" checked>
+            <label class="form-check-label" for="accuracy_score(y_true, y_pred)">Accuracy Score</label>
             
-            <input class="form-check-input" type="checkbox" id="F1 Score" name="checkbox2" value="F1 Score" checked>
-            <label class="form-check-label" for="F1 Score">F1 Score</label>
+            <input class="form-check-input" type="checkbox" id="f1_score(y_true, y_pred)" name="checkbox2" value="f1_score(y_true, y_pred)" checked>
+            <label class="form-check-label" for="f1_score(y_true, y_pred)">F1 Score</label>
 
-            <input class="form-check-input" type="checkbox" id="Log Loss" name="checkbox2" value="Log Loss" checked>
-            <label class="form-check-label" for="Log Loss">Log Loss</label>
+            <input class="form-check-input" type="checkbox" id="precision_score(y_true, y_pred)" name="checkbox2" value="precision_score(y_true, y_pred)" checked>
+            <label class="form-check-label" for="precision_score(y_true, y_pred)">Precision Score</label>
 
-            <input class="form-check-input" type="checkbox" id="Precision Score" name="checkbox2" value="Precision Score" checked>
-            <label class="form-check-label" for="Precision Score">Precision Score</label>
-
-            <input class="form-check-input" type="checkbox" id="Recall Score" name="checkbox2" value="Recall Score" checked>
-            <label class="form-check-label" for="Recall Score">Recall Score</label>
+            <input class="form-check-input" type="checkbox" id="recall_score(y_true, y_pred)" name="checkbox2" value="recall_score(y_true, y_pred)" checked>
+            <label class="form-check-label" for="recall_score(y_true, y_pred)">Recall Score</label>
           </div>
         
         {% else %}
@@ -104,24 +101,24 @@
           <div class="form-check form-check-inline">
             
             <input class="form-check-input" type="checkbox" id="Mean Absolute Error" name="checkbox2" value="Mean Absolute Error" checked>
-            <label class="form-check-label" for="Mean Absolute Error">Mean Absolute Error</label>
+            <label class="form-check-label" for="mean_absolute_error(y_test, y_pred)">Mean Absolute Error</label>
 
-            <input class="form-check-input" type="Mean Squared Error" id="Mean Squared Error" name="checkbox2" value="Mean Squared Error" checked>
-            <label class="form-check-label" for="Mean Squared Error">Mean Squared Error</label>
+            <input class="form-check-input" type="mean_squared_error(y_test, y_pred)" id="mean_squared_error(y_test, y_pred)" name="checkbox2" value="mean_squared_error(y_test, y_pred)" checked>
+            <label class="form-check-label" for="mean_squared_error(y_test, y_pred)">Mean Squared Error</label>
             
-            <input class="form-check-input" type="checkbox" id="Mean Squared Log Error" name="checkbox2" value="Mean Squared Log Error" checked>
-            <label class="form-check-label" for="Mean Squared Log Error">Mean Squared Log Error</label>
+            <input class="form-check-input" type="checkbox" id="mean_squared_log_error(y_test, y_pred)" name="checkbox2" value="mean_squared_log_error(y_test, y_pred)" checked>
+            <label class="form-check-label" for="mean_squared_log_error(y_test, y_pred)">Mean Squared Log Error</label>
             
-            <input class="form-check-input" type="checkbox" id="Median Absolute Error" name="checkbox2" value="Median Absolute Error" checked>
-            <label class="form-check-label" for="Median Absolute Error">Median Absolute Error</label>
+            <input class="form-check-input" type="checkbox" id="median_absolute_error(y_test, y_pred)" name="checkbox2" value="median_absolute_error(y_test, y_pred)" checked>
+            <label class="form-check-label" for="median_absolute_error(y_test, y_pred)">Median Absolute Error</label>
 
 
-            <input class="form-check-input" type="checkbox" id="Mean Absolute Percentage Error" name="checkbox2" value="Mean Absolute Percentage Error" checked>
-            <label class="form-check-label" for="Mean Absolute Percentage Error">Mean Absolute Percentage Error</label>
+            <input class="form-check-input" type="checkbox" id="mean_absolute_percentage_error(y_test, y_pred)" name="checkbox2" value="mean_absolute_percentage_error(y_test, y_pred)" checked>
+            <label class="form-check-label" for="mean_absolute_percentage_error(y_test, y_pred)">Mean Absolute Percentage Error</label>
 
 
-            <input class="form-check-input" type="checkbox" id="R2 Score" name="checkbox2" value="R2 Score" checked>
-            <label class="form-check-label" for="R2 Score">R2 Score</label>
+            <input class="form-check-input" type="checkbox" id="r2_score(y_test, y_pred)" name="checkbox2" value="r2_score(y_test, y_pred)" checked>
+            <label class="form-check-label" for="r2_score(y_test, y_pred)">R2 Score</label>
             
           </div>
 

@@ -789,3 +789,81 @@ def filter_on_feature_selection(col_to_remove, text):
     dataframe3.to_csv(text+"test_data.csv", index = False)
 
     os.chdir(start_point)
+
+
+def generate_models(X, y, normalization, algorithm, params):
+
+    for i in range(42,46):
+
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=i)
+        #resemple
+        model = Pipeline([('nor', normalization), ('alg', algorithm)])
+
+        gs = GridSearchCV(model, params, cv=5, scoring='r2', refit=True)
+        gs.fit(X_train, y_train)
+
+        y_pred = gs.predict(X_test)
+
+        print("---------SUMMARY---------")
+        print(gs.cv_results_)
+        print("-------BEST PARAMS-------")
+        print(gs.best_params_)
+        print("---------RESULTS---------")
+
+        print('Mean squared error: %.2f', mean_squared_error(y_test, y_pred))
+        # The coefficient of determination: 1 is perfect prediction
+        print('Coefficient of determination: %.2f', r2_score(y_test, y_pred))
+        print("-------------------------\n")
+#-----------------------------------------------------------------------------------------------
+# ------------------Call for generate models----------------------------------------------------
+#-----------------------------------------------------------------------------------------------
+# algorithm = Ridge()
+# params = {'alg__alpha': [1,2,3]}
+# normalization = StandardScaler()
+# main_framework(X, y, normalization, algorithm, params)
+#-----------------------------------------------------------------------------------------------
+# -----------------Algorithms to implement------------------------------------------------------
+#-----------------------------------------------------------------------------------------------
+#------------------Regression-------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------
+# from sklearn import tree/tree.DecisionTreeRegressor() - DECISION TREE
+# from sklearn import linear_model/ linear_model.LinearRegression() - LINEAR REGRESSION
+# from sklearn.svm import SVR - SUPPORT VECTOR REGRESSION
+# from sklearn.neural_network import MLPRegressor - MULTI LAYER REGRESSION
+#-----------------------------------------------------------------------------------------------
+#------------------Regression metric------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------
+# from sklearn.metrics import mean_squared_error - Mean Absolute Error
+# from sklearn.metrics import mean_absolute_error - Mean Squared Error
+# from sklearn.metrics import mean_squared_log_error - Mean Squared Log Error
+# from sklearn.metrics import median_absolute_error - Median Absolute Error
+# from sklearn.metrics import mean_absolute_percentage_error - Mean Absolute Percentage Error
+# from sklearn.metrics import r2_score - R2 Score
+#-----------------------------------------------------------------------------------------------
+#------------------Classification---------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------
+# from sklearn.naive_bayes import GaussianNB - NAIVE BAYES
+# from sklearn import tree/tree.DecisionTreeClassifier() - DECISION TREE CLASSIFIER
+# from sklearn.svm import SVC - SUPPORT VECTOR CLASSIFICATION
+# from sklearn.neighbors import KNeighborsClassifier - KNN
+# from sklearn.linear_model import LogisticRegression - LOGISTIC REGRESSION
+#-----------------------------------------------------------------------------------------------
+#------------------Classification metrics-------------------------------------------------------
+#-----------------------------------------------------------------------------------------------
+# from sklearn.metrics import confusion_matrix - Confusion Matrix
+# Roc Curve
+# from sklearn.metrics import roc_auc_score - Roc Auc Score
+# from sklearn.metrics import accuracy_score - Accuracy Score
+# from sklearn.metrics import f1_score - F1 Score
+# from sklearn.metrics import precision_score - Precision Score
+# from sklearn.metrics import recall_score - Recall Score
+#-----------------------------------------------------------------------------------------------
+#------------------Support_For_Models-----------------------------------------------------------
+#-----------------------------------------------------------------------------------------------
+# from sklearn.model_selection import train_test_split
+# from sklearn.model_selection import GridSearchCV - GRIDSEARCHCV
+# from sklearn.preprocessing import MinMaxScaler - MINMAX NORMALIZATION
+# from sklearn.preprocessing import StandardScaler - Z-SCORE NORMALIZATION
+#-----------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------
