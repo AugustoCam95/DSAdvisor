@@ -5,13 +5,172 @@
 {% block content%}
 <div class="card mb-6" align="center">
   <div class="card-body">
-      <h3 class="card-title"> Generate Models </h3>
-      see the label and know if is important know the estimate value
-
+      {% if message == "Waiting for choice" %}
+      <h3 class="card-title"> Generate Models  </h3>
+      <p align="justify"> 
+        On this page we will make the selection of the predictive algorithms and performance metris.
+        See bellow the options to choose.
+      </p>
       
-      <!-- <div class="mt-5">
-        <a class="btn btn-dark" href="{{ url_for('') }}">Back</a>
-      </div> -->
+      <form action="{{ url_for('generate_models') }}" method="POST" enctype=multipart/form-data>
+        
+        <div style="border-top: 5px solid black;">
+          <br>
+          <h4>Predictive Algorithms:</h4>
+        </div>
+        
+        <br/>
+
+        {% if type_problem != "Regression" %}
+          <div style="width: 100%; height: auto;">
+            <div class="container" style= " width: 90%; height: auto;">
+              <div class="form-check form-check-inline">
+            
+                <input class="form-check-input" type="checkbox" id="LogisticRegression()" name="checkbox" value="LogisticRegression()" checked>
+                <label class="form-check-label" for="LogisticRegression()">Logistic Regression</label>
+            
+                <input class="form-check-input" type="checkbox" id="KNeighborsClassifier()" name="checkbox" value="KNeighborsClassifier()" checked>
+                <label class="form-check-label" for="KNeighborsClassifier()">K-Nearest Neighbors</label>
+                
+                <input class="form-check-input" type="checkbox" id="tree.DecisionTreeClassifier()" name="checkbox" value="tree.DecisionTreeClassifier()" checked>
+                <label class="form-check-label" for="tree.DecisionTreeClassifier()">Decision Trees</label>
+                
+                <input class="form-check-input" type="checkbox" id="SVC()" name="checkbox" value="SVC()" checked>
+                <label class="form-check-label" for="SVC()">Support Vector Machine</label>
+                
+                <input class="form-check-input" type="checkbox" id="GaussianNB()" name="checkbox" value="GaussianNB()" checked>
+                <label class="form-check-label" for="GaussianNB()">Naive Bayes</label>
+
+                <input class="form-check-input" type="checkbox" id="MLPClassifier()" name="checkbox" value="MLPClassifier()" checked>
+                <label class="form-check-label" for="MLPClassifier()">MLP-Classifier</label>
+
+                <input class="form-check-input" type="checkbox" id="GaussianProcessClassifier()" name="checkbox" value="GaussianProcessClassifier()" >
+                <label class="form-check-label" for="GaussianProcessClassifier()">GaussianProcessClassifier()</label>
+
+                <input class="form-check-input" type="checkbox" id="LinearDiscriminantAnalysis()" name="checkbox" value="LinearDiscriminantAnalysis()" >
+                <label class="form-check-label" for="LinearDiscriminantAnalysis()">LinearDiscriminantAnalysis()</label>
+
+                <input class="form-check-input" type="checkbox" id="QuadraticDiscriminantAnalysis()" name="checkbox" value="QuadraticDiscriminantAnalysis()" >
+                <label class="form-check-label" for="QuadraticDiscriminantAnalysis()">QuadraticDiscriminantAnalysis()</label>
+
+              </div>
+                  
+          </div>
+
+        {% else %}
+
+          <div class="form-check form-check-inline">
+            
+            <input class="form-check-input" type="checkbox" id=" linear_model.LinearRegression()" name="checkbox" value=" linear_model.LinearRegression()" checked>
+            <label class="form-check-label" for=" linear_model.LinearRegression()">Linear Regression</label>
+
+            <input class="form-check-input" type="checkbox" id="tree.DecisionTreeRegressor()" name="checkbox" value="tree.DecisionTreeRegressor()" checked>
+            <label class="form-check-label" for="tree.DecisionTreeRegressor()">Decision Tree</label>
+            
+            <input class="form-check-input" type="checkbox" id="MLPRegressor()" name="checkbox" value="MLPRegressor()" checked>
+            <label class="form-check-label" for="MLPRegressor()">MLP-Regressor</label>
+            
+            <input class="form-check-input" type="checkbox" id="SVR()" name="checkbox" value="SVR()" checked>
+            <label class="form-check-label" for="SVR()">Support Vector Regression</label>
+
+            <input class="form-check-input" type="checkbox" id=" GaussianProcessRegressor()" name="checkbox" value=" GaussianProcessRegressor()" checked>
+            <label class="form-check-label" for=" GaussianProcessRegressor()"> GaussianProcessRegressor()</label>
+          
+          </div>
+
+        {% endif %}
+        
+        <br>
+        <div style="border-top: 5px solid black;">
+          <br>
+          <h4>Performance Metrics:</h4>
+        </div>
+        
+        {% if type_problem != "Regression" %}
+
+          <div class="form-check form-check-inline">
+            
+            <input class="form-check-input" type="checkbox" id="confusion_matrix(y_true, y_pred)" name="checkbox2" value="confusion_matrix" checked>
+            <label class="form-check-label" for="confusion_matrix(y_true, y_pred)">Confusion Matrix</label>
+
+            <!-- <input class="form-check-input" type="checkbox" id="Roc Curve" name="checkbox2" value="Roc Curve" checked>
+            <label class="form-check-label" for="Roc Curve">Roc Curve</label> -->
+            
+            <input class="form-check-input" type="checkbox" id="roc_auc_score" name="checkbox2" value="roc_auc_score" checked>
+            <label class="form-check-label" for="roc_auc_score">Roc Auc Score</label>
+            
+            <input class="form-check-input" type="checkbox" id="accuracy_score" name="checkbox2" value="accuracy_score" checked>
+            <label class="form-check-label" for="accuracy_score">Accuracy Score</label>
+            
+            <input class="form-check-input" type="checkbox" id="f1_score" name="checkbox2" value="f1_score" checked>
+            <label class="form-check-label" for="f1_score">F1 Score</label>
+
+            <input class="form-check-input" type="checkbox" id="precision_score" name="checkbox2" value="precision_score" checked>
+            <label class="form-check-label" for="precision_score">Precision Score</label>
+
+            <input class="form-check-input" type="checkbox" id="recall_score" name="checkbox2" value="recall_score" checked>
+            <label class="form-check-label" for="recall_score">Recall Score</label>
+          </div>
+        
+        {% else %}
+
+          <div class="form-check form-check-inline">
+            
+            <input class="form-check-input" type="checkbox" id="mean_absolute_error" name="checkbox2" value="mean_absolute_error" checked>
+            <label class="form-check-label" for="mean_absolute_error">Mean Absolute Error</label>
+
+            <input class="form-check-input" type="mean_squared_error" id="mean_squared_error" name="checkbox2" value="mean_squared_error" checked>
+            <label class="form-check-label" for="mean_squared_error">Mean Squared Error</label>
+            
+            <input class="form-check-input" type="checkbox" id="mean_squared_log_error" name="checkbox2" value="mean_squared_log_error" checked>
+            <label class="form-check-label" for="mean_squared_log_error">Mean Squared Log Error</label>
+            
+            <input class="form-check-input" type="checkbox" id="median_absolute_error" name="checkbox2" value="median_absolute_error" checked>
+            <label class="form-check-label" for="median_absolute_error">Median Absolute Error</label>
+
+            <input class="form-check-input" type="checkbox" id="r2_score" name="checkbox2" value="r2_score" checked>
+            <label class="form-check-label" for="r2_score">R2 Score</label>
+            
+          </div>
+
+        {% endif %}
+
+        <div style="border-top: 5px solid black;" class="mt-3">
+          <br>
+          <button type="submit" class="btn  btn-primary">Confirm Option</button>
+        </div>
+        
+
+      </form>
+
+      <div align="center" class="mt-3 alert-sm alert-secondary">
+        <label>Status: {{message}} </label>
+      </div>   
+
+      {% else %}
+      <div class="mt-2" align="center">
+        <div>
+          <label class="alert-sm alert-success" >Status: Success </label>
+        </div>    
+        
+        <br>
+
+        <div class="alert alert-info" style="border-top: 5px solid black; border-bottom: 5px solid black;">
+          <br>
+          <p>List of predictive algorithms selected:</p>
+          <p>{{user_answer1}}</p>
+          <br>
+          <p>List of metrics selected:</p>
+          <p>{{user_answer2}} </p>
+        </div>
+            
+        <div class="mt-5">
+          <a class="btn btn-dark btn-lg" href="{{ url_for('metrics') }}">Next</a>
+        </div>
+
+      </div>
+      {% endif %}
+      
        
        
   </div>  

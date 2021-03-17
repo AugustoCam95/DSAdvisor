@@ -81,20 +81,23 @@
         </div>     
       </div>    
       
-      <br/>
-     
-        
-      <div style="border-top: 2px solid black;" align="center">
-        <br>
-            <h4>Status: {{message}} </h4>
-      </div>   
+      <br/> 
+
+      <div align="center" class="alert-sm alert-secondary">
+        <label>Status: {{message}} </label>
+      </div>
+
 
     {% else %}
       <div align="center">
         <br>
-        <div class="alert alert-success">
-          <h4 >Status: Success</h4>
+        <div>
+          <label class="alert-sm alert-success" >Status: Success </label>
+        </div>    
+        <div align="center" class="alert-sm alert-info">
+          <label> <strong>Selected columns:</strong>  {{selected_variables}} </label>
         </div>
+
       </div> 
 
       {% if type_problem == "Classification"%}
@@ -103,7 +106,7 @@
         </div>
       {%else%}
         <div class="mt-5">
-          <a class="btn btn-dark btn-lg" href="{{ url_for('download_datasets') }}">Next</a>
+          <a class="btn btn-dark btn-lg" href="{{ url_for('generate_models') }}">Next</a>
         </div>
       {%endif%}
 

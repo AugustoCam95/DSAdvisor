@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block subtitulo %} Metrics {% endblock %}
+
+{% block content%}
+<div class="card mb-6" >
+  <div class="card-body">
+      <div align="center">
+        <h3 class="card-title"> Result Metrics </h3>
+      see the label and know if is important know the estimate value
+      </div>
+      
+
+      <div align="justify">
+        {% for elem in dict_exec_models %}
+          <ul>
+            <li><b>Algorithm</b>: {{elem['algorythm']}}</li>
+            <li><b>Best parameters</b>: {{elem['best_parameters']}}</li>
+            
+            {% if "accuracy_score" in metrics %}
+              <li><b>Accuracy Score</b>: {{ elem["accuracy_score"] }}</li>
+            {% endif %}
+
+            {% if "f1_score" in metrics %}
+              <li><b>F1 Score</b>: {{ elem["f1_score"] }}</li>
+            {% endif %}
+
+            {% if "roc_auc_score" in metrics %}
+              <li><b>Roc Auc Score</b>: {{ elem["roc_auc_score"] }}</li>
+            {% endif %}
+
+            {% if "precision_score" in metrics %}
+              <li><b>Precision Score</b>: {{ elem["precision_score"] }}</li>
+            {% endif %}
+
+            {% if "recall_score" in metrics %}
+              <li><b>Recall Score</b>: {{ elem["recall_score"] }}</li>
+            {% endif %}
+
+            {% if "mean_absolute_error" in metrics %}
+              <li><b>Mean Absolute Error</b>: {{ elem["mean_absolute_error"] }}</li>
+            {% endif %}
+            
+            {% if "mean_squared_error" in metrics %}
+              <li><b>Mean Squared Error</b>: {{ elem["mean_squared_error"] }}</li>
+            {% endif %}
+
+            {% if "mean_squared_log_error" in metrics %}
+              <li><b>Mean Squared Log Error</b>: {{ elem["mean_squared_log_error"] }}</li>
+            {% endif %}
+
+            {% if "median_absolute_error" in metrics %}
+              <li><b>Median Absolute Error</b>: {{ elem["median_absolute_error"] }}</li>
+            {% endif %}
+
+            {% if "r2_score" in metrics %}
+              <li><b>R2 score</b>: {{ elem["r2_score"] }}</li>
+            {% endif %}
+          
+          </ul>
+
+        {%endfor%}
+      </div>
+      
+      
+      <div class="mt-5">
+        <a class="btn btn-dark btn-lg" href="{{ url_for('reproducibility') }}">Next</a>
+      </div>
+
+  </div>  
+</div>
+{% endblock %}

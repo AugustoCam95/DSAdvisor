@@ -15,23 +15,66 @@ from scipy import stats
 from pylab import savefig
 from matplotlib import cm
 from collections import Counter
-from sklearn import preprocessing
 from dython.nominal import associations
-from sklearn.preprocessing import MinMaxScaler
 from statsmodels.stats.stattools import medcouple 
-from sklearn.model_selection import train_test_split
-from sklearn.feature_selection import mutual_info_classif, f_classif, mutual_info_regression, chi2, f_regression
-from info_gain import info_gain
 import scipy.stats as ss
 
+from sklearn.feature_selection import mutual_info_classif, f_classif, mutual_info_regression, chi2, f_regression
+from info_gain import info_gain
+
+
+#-----------------------------------------------------------------------------------------------
+#------------------Regression Algorithms--------------------------------------------------------
+#-----------------------------------------------------------------------------------------------
+from sklearn import tree                   #tree.DecisionTreeRegressor()
+from sklearn import linear_model           #linear_model.LinearRegression() 
+from sklearn.svm import SVR 
+from sklearn.neural_network import MLPRegressor 
+from sklearn.gaussian_process import GaussianProcessRegressor
+#-----------------------------------------------------------------------------------------------
+#------------------Regression Metric------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------
+from sklearn.metrics import mean_squared_error 
+from sklearn.metrics import mean_absolute_error 
+from sklearn.metrics import mean_squared_log_error 
+from sklearn.metrics import median_absolute_error 
+from sklearn.metrics import r2_score 
+#-----------------------------------------------------------------------------------------------
+#------------------Classification Algorithms----------------------------------------------------
+#-----------------------------------------------------------------------------------------------
+from sklearn.naive_bayes import GaussianNB 
+from sklearn import tree  #tree.DecisionTreeClassifier() 
+from sklearn.svm import SVC 
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.neural_network import MLPClassifier
+from sklearn.gaussian_process import GaussianProcessClassifier
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
+#-----------------------------------------------------------------------------------------------
+#------------------Classification Metrics-------------------------------------------------------
+#-----------------------------------------------------------------------------------------------
+from sklearn.metrics import confusion_matrix        
+from sklearn.metrics import roc_auc_score           
+from sklearn.metrics import accuracy_score          
+from sklearn.metrics import f1_score                
+from sklearn.metrics import precision_score         
+from sklearn.metrics import recall_score            
+#-----------------------------------------------------------------------------------------------
+#------------------Support_For_Models-----------------------------------------------------------
+#-----------------------------------------------------------------------------------------------
+from sklearn.model_selection import train_test_split, GridSearchCV 
+from sklearn.preprocessing import MinMaxScaler, StandardScaler 
+from sklearn import preprocessing
+from sklearn.pipeline import make_pipeline, Pipeline
 
 def make_dataset(dataset,text):
     start_point = os.getcwd()
     os.chdir(start_point)
     os.chdir("static/samples")
     aux = dataset.head(n = 10)
-    aux.to_csv(text+".csv", index = False)
-    dataset.to_csv(text+"dataset.csv", index = False)
+    aux.to_csv(text+".csv", index = False, na_rep="Nan")
+    dataset.to_csv(text+"dataset.csv", index = False, na_rep="Nan")
     os.chdir(start_point)
 
 def shapiro_test(data):
@@ -162,34 +205,34 @@ def categorical_plots(df):
     for i in range(len(col_string)):
         for j in range(len(vetor[i])):
             array[i][j] = df[ df[ col_string[i] ] == vetor[i][j] ].shape[0]
-    
+    for i in range(len(vetor)):
+        conv = lambda j : j or "Empty"
+        vetor[i] = [conv(j) for j in vetor[i]] 
+
     my_colors = 'rgbkymc'
     
     pie_images = []
     bar_cat_images = []
 
     for i in range(len(array)):
-        if len(vetor[i]) > 3:
-            pass
-        else:    
-            plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-            plt.pie(array[i], labels=vetor[i], autopct='%1.1f%%', shadow = False , startangle=90)
-            # plt.savefig("pie_"+col_string[i]+"_.jpg", dpi = 500)
-            buffer = BytesIO()
-            plt.savefig(buffer, format='png')
-            buffer.seek(0)
-            image_png = buffer.getvalue()
-            buffer.close()
-            plt.close()
+        plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+        plt.pie(array[i], labels=vetor[i], autopct='%1.1f%%', shadow = False , startangle=90)
 
-            # converte em base 64
-            graphic = base64.b64encode(image_png)
-            graphic = graphic.decode('utf-8')
+        buffer = BytesIO()
+        plt.savefig(buffer, format='png')
+        buffer.seek(0)
+        image_png = buffer.getvalue()
+        buffer.close()
+        plt.close()
 
-            pie_images.append(graphic)
-            plt.clf()
+        # converte em base 64
+        graphic = base64.b64encode(image_png)
+        graphic = graphic.decode('utf-8')
 
-    
+        pie_images.append(graphic)
+        plt.clf()
+
+
     for i in range(len(array)):    
         plt.bar(vetor[i], height=array[i], color = my_colors )
         # plt.savefig("bar_"+col_string[i]+"_.jpg", dpi = 500)
@@ -220,7 +263,6 @@ def discrete_plots(df):
     for col in integers.columns:
         plt.hist(integers[col])
 
-        # TODO BUFFERIZAR AS IMAGENS EM TODO O SISTEMA
         # bufferiza a imagem
         buffer = BytesIO()
         plt.savefig(buffer, format='png')
@@ -432,16 +474,16 @@ def sample_csv(dataframe,text):
     df = dataframe
     # creation of datatypes.csv
     df_datatypes = pd.DataFrame(df.dtypes)
-    df_datatypes.to_csv("aux1.csv")
-    to_datatype = pd.read_csv("aux1.csv", names = ["Columns", "Type"])
+    df_datatypes.to_csv("aux1.csv", na_rep="Nan")
+    to_datatype = pd.read_csv("aux1.csv", names = ["Columns", "Type"], keep_default_na=False)
     to_datatype = to_datatype[1:]
     to_datatype = to_datatype.set_index('Columns')
     to_datatype = to_datatype.swapaxes("index", "columns")
     to_datatype = to_datatype.reset_index()
-    to_datatype.to_csv("aux2.csv", index = False)
-    to_datatype = pd.read_csv("aux2.csv")
+    to_datatype.to_csv("aux2.csv", index = False, na_rep="Nan")
+    to_datatype = pd.read_csv("aux2.csv", keep_default_na=False)
     to_datatype.rename(columns={'index':'Columns'}, inplace=True) 
-    to_datatype.to_csv(text+"datatypes.csv", index=False)
+    to_datatype.to_csv(text+"datatypes.csv", index=False, na_rep="Nan")
     
     # creation descriptive statistics and add cv row
     dataset = df
@@ -457,7 +499,7 @@ def sample_csv(dataframe,text):
 
     if len(list(string_set.columns)) > 0:
         cat_describe = string_set.describe()
-        cat_describe.to_csv(text+"catdescribe.csv")
+        cat_describe.to_csv(text+"catdescribe.csv", na_rep="Nan")
     
     if len(list(dataset.columns)) > 0:
         describe = dataset.describe()
@@ -472,7 +514,7 @@ def sample_csv(dataframe,text):
             cv.append(std[i]/mean[i])
         describe.loc["cv"] = cv[0]
         describe = describe.reindex(["count","mean","std","cv","min","25%","50%","75%","max"])
-        describe.to_csv(text+"numericdescribe.csv")
+        describe.to_csv(text+"numericdescribe.csv", na_rep="Nan")
 
     os.chdir(start_point)
 
@@ -485,20 +527,20 @@ def miss_value(code, special, df, text):
     if "nan" in code:
         print("True NAN PASS")
         sum_of_nulls = df.isnull().sum()
-        sum_of_nulls.to_csv("temp1.csv")
-        temp1 = pd.read_csv("temp1.csv", names = ["Columns","Count of miss values"])
+        sum_of_nulls.to_csv("temp1.csv", na_rep="Nan")
+        temp1 = pd.read_csv("temp1.csv", names = ["Columns","Count of miss values"], keep_default_na=False)
         percent = df.isnull().sum() / len(df) * 100
-        percent.to_csv("temp2.csv")
-        temp2 = pd.read_csv("temp2.csv", names = ["Columns", "Percent of miss values"])
+        percent.to_csv("temp2.csv", na_rep="Nan")
+        temp2 = pd.read_csv("temp2.csv", names = ["Columns", "Percent of miss values"], keep_default_na=False)
         temp1["Percent of miss values"] = temp2["Percent of miss values"]
         temp1 = temp1.iloc[1:]
         temp1 = temp1.set_index('Columns')
         temp1 = temp1.swapaxes("index","columns")
         temp1 = temp1.reset_index()
-        temp1.to_csv("temp3.csv", index = False)
-        temp3 = pd.read_csv("temp3.csv")
+        temp1.to_csv("temp3.csv", index = False, na_rep="Nan")
+        temp3 = pd.read_csv("temp3.csv", keep_default_na=False)
         temp3.rename(columns={'index':'Columns'}, inplace=True)
-        temp3.to_csv(text+"nanreport.csv", index = False)
+        temp3.to_csv(text+"nanreport.csv", index = False, na_rep="Nan")
 
     if "empty" in code:
         code = str("")
@@ -508,14 +550,12 @@ def miss_value(code, special, df, text):
             miss[1].append((df[df[col] == code].shape[0]/df.shape[0])*100)
         miss_shaped = np.reshape(miss, (2, len(df.columns)))
         miss_values = pd.DataFrame(miss_shaped, columns = list(df.columns))
-        miss_values.to_csv("temp1x.csv")
-        miss_values = pd.read_csv("temp1x.csv")
+        miss_values.to_csv("temp1x.csv", na_rep="Nan")
+        miss_values = pd.read_csv("temp1x.csv", keep_default_na=False)
         miss_values = miss_values.rename(columns = {'Unnamed: 0': 'Columns'}, inplace = False)
         miss_values = miss_values.set_index('Columns')
         miss_values = miss_values.rename(index = { 0:"Count of miss values", 1:"Percent of miss values"})
-        miss_values.to_csv(text+"emptyreport.csv")
-
-    
+        miss_values.to_csv(text+"emptyreport.csv", na_rep="Nan")
 
     if special != None:
         code = str(special)
@@ -526,7 +566,7 @@ def miss_value(code, special, df, text):
         miss_shaped = np.reshape(miss, (2, len(df.columns)))
         miss_values = pd.DataFrame(miss_shaped, columns = list(df.columns))
         miss_values.to_csv("temp2x.csv")
-        miss_values = pd.read_csv("temp2x.csv")
+        miss_values = pd.read_csv("temp2x.csv", keep_default_na=False)
         miss_values = miss_values.rename(columns = {'Unnamed: 0': 'Columns'}, inplace = False)
         miss_values = miss_values.set_index('Columns')
         miss_values = miss_values.rename(index = { 0:"Count of miss values", 1:"Percent of miss values"})
@@ -560,7 +600,7 @@ def split_and_norm(choiced,df, text, test_percent):
     aux.to_csv(text+"train_norm_data20.csv", index = False)
     dataset_norm.to_csv(text+"train_norm_data.csv", index = False)
     os.chdir(start_point)
-    return X_train,y_train
+    return X_train,y_train, dataset, label
 
 ### drop a column get from filter_categorical.html
 def drop_col(not_drop, dataframe, text):
@@ -569,7 +609,7 @@ def drop_col(not_drop, dataframe, text):
     os.chdir("static/samples")
     if len(not_drop)>0:
         df = df.drop(columns = not_drop)
-        df.to_csv(text+"dataset.csv", index = False)
+        df.to_csv(text+"dataset.csv", index = False, na_rep="Nan")
     os.chdir(start_point)
     return df
 
@@ -681,11 +721,7 @@ def create_boxplots(df):
 
         
     
-
-
-
 # Resample Techniques
-
 def before_reasample(target,text):
     counter = Counter(target.values[:,0])
     min_value = min(counter.items(), key=lambda x: x[1])[1]
@@ -742,7 +778,7 @@ def after_oversampling(dataset,labels,text):
 
 # Feature Selection
 def create_table_feature_selection(dataset, labels, type_problem, text):
-    ch,_ =  chi2(dataset,labels)
+    ch,_ =  chi2(abs(dataset), abs(labels))
     if type_problem == "Classification":
         mi = mutual_info_classif(dataset, labels)
         f,_ =  f_classif(dataset, labels)
@@ -779,8 +815,8 @@ def create_table_feature_selection(dataset, labels, type_problem, text):
 def filter_on_feature_selection(col_to_remove, text):
     start_point = os.getcwd()
     os.chdir("static/samples")
-    dataframe1 = pd.read_csv(text+"train_data.csv")
-    dataframe3 = pd.read_csv(text+"test_data.csv")
+    dataframe1 = pd.read_csv(text+"train_data.csv", keep_default_na=False)
+    dataframe3 = pd.read_csv(text+"test_data.csv", keep_default_na=False)
     
     dataframe1 = dataframe1.drop(columns = col_to_remove)
     dataframe1.to_csv(text+"train_data.csv", index = False)
@@ -791,79 +827,99 @@ def filter_on_feature_selection(col_to_remove, text):
     os.chdir(start_point)
 
 
-def generate_models(X, y, normalization, algorithm, params):
+def generate_models(X, y, log_user_execution):
+    score = None
+    algorythms = None
+    lst = []
+    norm_list = [MinMaxScaler(), StandardScaler()]
+    
+    if log_user_execution["problem_type"] == "Classification":
+        score = "accuracy"
+        list_alg_clas = [GaussianNB(), SVC(), KNeighborsClassifier(), LogisticRegression(), tree.DecisionTreeClassifier(), MLPClassifier(), GaussianProcessClassifier(), LinearDiscriminantAnalysis(), QuadraticDiscriminantAnalysis()]
+        for elem in list_alg_clas:
+            if str(elem) in log_user_execution["predictive_alg_list"]:
+                pass
+            else:
+                list_alg_clas.remove(elem)
+        algorythms = list_alg_clas
+    else:
+        score = "r2"
+        list_alg_reg = [linear_model.LinearRegression(), tree.DecisionTreeRegressor(), MLPRegressor(), SVR(), GaussianProcessRegressor()]
+        for elem in list_alg_reg:
+            if str(elem) in log_user_execution["predictive_alg_list"]:
+                pass
+            else:
+                list_alg_reg.remove(elem)
+        algorythms = list_alg_reg
 
-    for i in range(42,46):
+    for item in norm_list:
+        if str(item) in log_user_execution["normalization"]:
+            pass
+        else:
+            norm_list.remove(item)
+    normalization = norm_list[0]
 
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=i)
+    for alg in algorythms:
+        parameters = {}
+        iter1 = list(alg.get_params().keys())
+        iter2 = list(alg.get_params().values())
+        for i,j in zip(iter1,iter2):
+            parameters["alg__"+i] = [j]
+        params = parameters
+        y_test, y_pred, best_parameters = main_framework(X, y, normalization, log_user_execution["resample_technique_choiced"], log_user_execution["test_size_percent"], score, alg, params)
+        d = {}
+        d["algorythm"] = alg
+        d["best_parameters"] = best_parameters
+        
+        if "accuracy_score" in log_user_execution["metrics_list"]:
+            d["accuracy_score"] = accuracy_score(y_test, y_pred)
+        
+        if "f1_score" in log_user_execution["metrics_list"]:
+            d["f1_score"] = f1_score(y_test, y_pred)
+        
+        if "roc_auc_score" in log_user_execution["metrics_list"]:
+            d["roc_auc_score"] = roc_auc_score(y_test, y_pred)
+        
+        if "precision_score" in log_user_execution["metrics_list"]:
+            d["precision_score"] = precision_score(y_test, y_pred)
+        
+        if "recall_score" in log_user_execution["metrics_list"]:
+            d["recall_score"] = recall_score(y_test, y_pred)
+        
+        if "mean_absolute_error" in log_user_execution["metrics_list"]:
+            d["mean_absolute_error"] = mean_absolute_error(y_test, y_pred)
+        
+        if "mean_squared_error" in log_user_execution["metrics_list"]:
+            d["mean_squared_error"] = mean_squared_error(y_test, y_pred)
+        
+        if "mean_squared_log_error" in log_user_execution["metrics_list"]:
+            d["mean_squared_log_error"] = mean_squared_log_error(y_test, y_pred)
+        
+        if "median_absolute_error" in log_user_execution["metrics_list"]:
+            d["median_absolute_error"] = median_absolute_error(y_test, y_pred)
+        
+        if "r2_score" in log_user_execution["metrics_list"]:
+            d["r2_score"] = r2_score(y_test, y_pred)
+
+        lst.append(d)
+    
+    return lst
+
+    
+
+def main_framework(X, y, normalization, resample, test_size_percent, score, algorithm, params):
+    for i in range(42,43):
+
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = test_size_percent, random_state=i)
         #resemple
         model = Pipeline([('nor', normalization), ('alg', algorithm)])
 
-        gs = GridSearchCV(model, params, cv=5, scoring='r2', refit=True)
+        gs = GridSearchCV(model, params, cv=5, scoring = score, refit=True)
         gs.fit(X_train, y_train)
 
         y_pred = gs.predict(X_test)
 
-        print("---------SUMMARY---------")
-        print(gs.cv_results_)
         print("-------BEST PARAMS-------")
         print(gs.best_params_)
-        print("---------RESULTS---------")
-
-        print('Mean squared error: %.2f', mean_squared_error(y_test, y_pred))
-        # The coefficient of determination: 1 is perfect prediction
-        print('Coefficient of determination: %.2f', r2_score(y_test, y_pred))
-        print("-------------------------\n")
-#-----------------------------------------------------------------------------------------------
-# ------------------Call for generate models----------------------------------------------------
-#-----------------------------------------------------------------------------------------------
-# algorithm = Ridge()
-# params = {'alg__alpha': [1,2,3]}
-# normalization = StandardScaler()
-# main_framework(X, y, normalization, algorithm, params)
-#-----------------------------------------------------------------------------------------------
-# -----------------Algorithms to implement------------------------------------------------------
-#-----------------------------------------------------------------------------------------------
-#------------------Regression-------------------------------------------------------------------
-#-----------------------------------------------------------------------------------------------
-# from sklearn import tree/tree.DecisionTreeRegressor() - DECISION TREE
-# from sklearn import linear_model/ linear_model.LinearRegression() - LINEAR REGRESSION
-# from sklearn.svm import SVR - SUPPORT VECTOR REGRESSION
-# from sklearn.neural_network import MLPRegressor - MULTI LAYER REGRESSION
-#-----------------------------------------------------------------------------------------------
-#------------------Regression metric------------------------------------------------------------
-#-----------------------------------------------------------------------------------------------
-# from sklearn.metrics import mean_squared_error - Mean Absolute Error
-# from sklearn.metrics import mean_absolute_error - Mean Squared Error
-# from sklearn.metrics import mean_squared_log_error - Mean Squared Log Error
-# from sklearn.metrics import median_absolute_error - Median Absolute Error
-# from sklearn.metrics import mean_absolute_percentage_error - Mean Absolute Percentage Error
-# from sklearn.metrics import r2_score - R2 Score
-#-----------------------------------------------------------------------------------------------
-#------------------Classification---------------------------------------------------------------
-#-----------------------------------------------------------------------------------------------
-# from sklearn.naive_bayes import GaussianNB - NAIVE BAYES
-# from sklearn import tree/tree.DecisionTreeClassifier() - DECISION TREE CLASSIFIER
-# from sklearn.svm import SVC - SUPPORT VECTOR CLASSIFICATION
-# from sklearn.neighbors import KNeighborsClassifier - KNN
-# from sklearn.linear_model import LogisticRegression - LOGISTIC REGRESSION
-#-----------------------------------------------------------------------------------------------
-#------------------Classification metrics-------------------------------------------------------
-#-----------------------------------------------------------------------------------------------
-# from sklearn.metrics import confusion_matrix - Confusion Matrix
-# Roc Curve
-# from sklearn.metrics import roc_auc_score - Roc Auc Score
-# from sklearn.metrics import accuracy_score - Accuracy Score
-# from sklearn.metrics import f1_score - F1 Score
-# from sklearn.metrics import precision_score - Precision Score
-# from sklearn.metrics import recall_score - Recall Score
-#-----------------------------------------------------------------------------------------------
-#------------------Support_For_Models-----------------------------------------------------------
-#-----------------------------------------------------------------------------------------------
-# from sklearn.model_selection import train_test_split
-# from sklearn.model_selection import GridSearchCV - GRIDSEARCHCV
-# from sklearn.preprocessing import MinMaxScaler - MINMAX NORMALIZATION
-# from sklearn.preprocessing import StandardScaler - Z-SCORE NORMALIZATION
-#-----------------------------------------------------------------------------------------------
-#-----------------------------------------------------------------------------------------------
-#-----------------------------------------------------------------------------------------------
+    
+    return y_test, y_pred, gs.best_params_

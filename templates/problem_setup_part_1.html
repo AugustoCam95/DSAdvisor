@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
-{% block subtitulo %} Problem Setup Part 1 {% endblock %}
+{% block subtitulo %} Problem Setup {% endblock %}
 
 {% block content%}
 <div class="card mb-6" align="center">
   <div class="card-body">
       {% if message == "Waiting for choice" %}
-      <h3 class="card-title">Problem Setup Part 1</h3>
+      <h3 class="card-title">Problem Setup</h3>
       <p align="justify"> 
         On this page we will make the selection of the dependent variable, the partitioning of training sets, 
         validation, testing and the selection of the type of problem to be treated. See the instructions and tips given for selecting them.
@@ -51,17 +51,17 @@
         
         <br/>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="radiobutton2" id="50" value="50">
-            <label style="margin: 1%;" class="form-check-label" for="50">50% for training - 50% for test</label>
+            <input class="form-check-input" type="radio" name="radiobutton2" id="0.50" value="0.50">
+            <label style="margin: 1%;" class="form-check-label" for="0.50">50% for training - 50% for test</label>
             
-            <input class="form-check-input" type="radio" name="radiobutton2" id="60" value="60">
-            <label style="margin: 1%;" class="form-check-label" for="60">60% for training - 40% for test</label>
+            <input class="form-check-input" type="radio" name="radiobutton2" id="0.40" value="0.40">
+            <label style="margin: 1%;" class="form-check-label" for="0.40">60% for training - 40% for test</label>
             
-            <input class="form-check-input" type="radio" name="radiobutton2" id="70" value="70">
-            <label style="margin: 1%;" class="form-check-label" for="70">70% for training - 30% for test</label>
+            <input class="form-check-input" type="radio" name="radiobutton2" id="0.30" value="0.30">
+            <label style="margin: 1%;" class="form-check-label" for="0.30">70% for training - 30% for test</label>
 
-            <input class="form-check-input" type="radio" name="radiobutton2" id="80" value="80">
-            <label style="margin: 1%;" class="form-check-label" for="80">80% for training - 20% for test</label>
+            <input class="form-check-input" type="radio" name="radiobutton2" id="0.20" value="0.20">
+            <label style="margin: 1%;" class="form-check-label" for="0.20">80% for training - 20% for test</label>
           
         </div>
         
@@ -133,17 +133,17 @@
 
         <div class="alert alert-info" style="border-top: 5px solid black; border-bottom: 5px solid black;">
           <br>
-          <p>Please note that the column <strong>"{{user_answer}}"</strong> will be removed from the dataset. </p>
-          {% if train_percent == 50 %}
+          <p>Please note that the column <strong>"{{user_answer}}"</strong> will be separated from the dataset and join a new dataset for only the labels . </p>
+          {% if train_percent == 0.50 %}
             The proportion of the data set partitioning choiced: <strong> 50% train - 50% test</strong>
           {% endif %}
-          {% if train_percent == 60 %}
+          {% if train_percent == 0.40 %}
             The proportion of the data set partitioning choiced: <strong> 60% train - 40% test.</strong>
           {%endif%}
-          {% if train_percent == 70 %}
+          {% if train_percent == 0.30 %}
             The proportion of the data set partitioning choiced: <strong> 70% train - 30% test. </strong> 
           {%endif%}
-          {% if train_percent == 80 %}
+          {% if train_percent == 0.20 %}
             The proportion of the data set partitioning choiced: <strong> 80% train - 20% test. </strong> 
           {%endif%}
           <br>
@@ -152,7 +152,7 @@
         </div>
             
         <div class="mt-5">
-          <a class="btn btn-dark btn-lg" href="{{ url_for('problem_setup_part_2') }} ">Next</a>
+          <a class="btn btn-dark btn-lg" href="{{ url_for('outlier_report') }} ">Next</a>
         </div>
 
       </div>
