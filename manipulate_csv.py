@@ -63,7 +63,7 @@ from sklearn.metrics import recall_score
 #-----------------------------------------------------------------------------------------------
 #------------------Support_For_Models-----------------------------------------------------------
 #-----------------------------------------------------------------------------------------------
-from sklearn.model_selection import train_test_split, GridSearchCV 
+from sklearn.model_selection import train_test_split, GridSearchCV, RandomizedSearchCV 
 from sklearn.preprocessing import MinMaxScaler, StandardScaler 
 from sklearn import preprocessing
 from sklearn.pipeline import make_pipeline, Pipeline
@@ -525,7 +525,7 @@ def miss_value(code, special, df, text):
     # print("Inside  miss_value function:",code)
 
     if "nan" in code:
-        print("True NAN PASS")
+        # print("True NAN PASS")
         sum_of_nulls = df.isnull().sum()
         sum_of_nulls.to_csv("temp1.csv", na_rep="Nan")
         temp1 = pd.read_csv("temp1.csv", names = ["Columns","Count of miss values"], keep_default_na=False)
@@ -827,6 +827,8 @@ def filter_on_feature_selection(col_to_remove, text):
     os.chdir(start_point)
 
 
+# GENERATE MODELS
+
 def generate_models(X, y, log_user_execution):
     score = None
     algorythms = None
@@ -914,12 +916,25 @@ def main_framework(X, y, normalization, resample, test_size_percent, score, algo
         #resemple
         model = Pipeline([('nor', normalization), ('alg', algorithm)])
 
-        gs = GridSearchCV(model, params, cv=5, scoring = score, refit=True)
-        gs.fit(X_train, y_train)
+        rs = RandomizedSearchCV(model, params, cv=5, scoring = score, refit=True)
+        rs.fit(X_train, y_train)
 
-        y_pred = gs.predict(X_test)
-
-        print("-------BEST PARAMS-------")
-        print(gs.best_params_)
+        y_pred = rs.predict(X_test)
     
-    return y_test, y_pred, gs.best_params_
+    return y_test, y_pred, rs.best_params_
+
+
+# CONVERT DICT IN TEXT DATA
+def convertdict(log_user_execution):
+    start_point = os.getcwd()
+    os.chdir("static/samples")
+
+    f = open("AllChoicesMade.txt", "w")
+    f.write("    ALL THE CHOICES MADE:\n")
+    f.write("--------------START-------------\n")
+    for k in log_user_execution.keys():
+        f.write("'{}':'{}'\n".format(k, log_user_execution[k]))
+    f.write("--------------END---------------")
+    f.close()
+
+    os.chdir(start_point)

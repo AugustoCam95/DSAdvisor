@@ -74,21 +74,17 @@ def upload_csv():
         
     return render_template("upload_csv.html", message = "Waiting for upload")
 
-@app.route('/check_variables_type')
+@app.route('/check_variables_type', methods = ["GET", "POST"])
 def check_variables_type():
-    return render_template("check_variables_type.html", message = "Waiting for choice" , string = manipulate_csv.get_columns(dataframe)[0], float = manipulate_csv.get_columns(dataframe)[2], int = manipulate_csv.get_columns(dataframe)[1] )
-
-@app.route('/remove_columns', methods = [ "GET", "POST"])
-def remove_columns():
     if request.method == "POST":
         global dataframe
         global log_user_execution
         drop_values = request.form.getlist("checkbox")
         log_user_execution["removed variables"] = drop_values
         dataframe = manipulate_csv.drop_col(drop_values, dataframe, file_name)
-        return render_template("remove_columns.html" , message = "Success to choice" , list_x = drop_values)
+        return render_template("check_variables_type.html" , message = "Success to choice" , list_x = drop_values)
 
-    return render_template("remove_columns.html", message = "Waiting for choice" , string = manipulate_csv.get_columns(dataframe)[0], float = manipulate_csv.get_columns(dataframe)[2], int = manipulate_csv.get_columns(dataframe)[1] )
+    return render_template("check_variables_type.html", message = "Waiting for choice" , string = manipulate_csv.get_columns(dataframe)[0], float = manipulate_csv.get_columns(dataframe)[2], int = manipulate_csv.get_columns(dataframe)[1] )
 
 choices_miss = None
 special_code = None
@@ -381,7 +377,7 @@ def resemple_techniques():
 
 @app.route('/generate_models', methods = [ "GET", "POST"])
 def generate_models():
-    global type_problem, log_user_execution 
+    global type_problem, log_user_execution, X, y 
     if request.method == "POST":
         
         predictive_alg_list = request.form.getlist("checkbox")
@@ -389,6 +385,8 @@ def generate_models():
         
         log_user_execution["predictive_alg_list"] = predictive_alg_list
         log_user_execution["metrics_list"] = metrics_list
+        dict_exec_models = None
+        dict_exec_models = manipulate_csv.generate_models(X, y, log_user_execution)
         return render_template("generate_models.html", message = "Success to choice", user_answer1 = predictive_alg_list,  user_answer2 = metrics_list)
 
     return render_template("generate_models.html", message = "Waiting for choice", type_problem = type_problem)
@@ -396,14 +394,17 @@ def generate_models():
 
 @app.route('/metrics')
 def metrics():
-    global log_user_execution, X, y
-    dict_exec_models = None
-    dict_exec_models = manipulate_csv.generate_models(X, y, log_user_execution)
+    global log_user_execution
+    manipulate_csv.convertdict(log_user_execution)
     return render_template("metrics.html", dict_exec_models = dict_exec_models, metrics = log_user_execution["metrics_list"])
 
 @app.route('/reproducibility')
 def reproducibility():
     return render_template("reproducibility.html")
+
+@app.route('/return_files_choices/')
+def return_files_choices():
+	return send_file('static/samples/'+file_name+'AllChoicesMade.txt', attachment_filename= file_name+'AllChoicesMade.txt')
 
 @app.route('/return_files_train/')
 def return_files_train():

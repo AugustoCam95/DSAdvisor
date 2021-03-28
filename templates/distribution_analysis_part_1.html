@@ -97,7 +97,6 @@
             
             <h4 align="center">List of continious distributions:</h4>
             <div style="width: 120%; height: auto;" class="container">
-                 <!-- Value checked -->
                 {% for column in not_lazy%}
                   <div class="form-check form-check-inline" >
                       <input class="form-check-input" type="checkbox" name="checkbox" id="{{column}}" value="{{column}}" checked>
@@ -151,7 +150,6 @@
         
       
         <div class="mt-5" align="center">
-            <!-- <a class="btn btn-dark " href="{{ url_for('upload_csv') }} ">Back</a> -->
             <a onclick="myFunction()" class="btn btn-dark btn-lg" href="{{ url_for('distribution_analysis_part_2') }} ">Next</a>
         </div>
       </div>    

@@ -6,32 +6,36 @@
 <div class="card mb-6" align="center">
   <div class="card-body">
     {% if message == "Waiting for choice" %}
-      <h3 class="card-title">Feature Selection</h3>
+      <div style="border-bottom: 2px solid black;">
+        <h3 class="card-title">Feature Selection</h3>
+      </div>
+      
       <br>
       <p>
         In the table below we list the ranking according to each feature selection method for 
         each variable in the dataset.The pre-selected variables are indicated to be chosen according 
-        to the heuristic implemented in <strong>Dsadvisor</strong>.
+        to the heuristic implemented in <strong>Dsadvisor</strong>. Below are some methods used in the table.
       </p>
     
-      <div style="width: 100%; height: auto; text-align:center;">
-          <div style="width: 70%; height: auto; border-bottom: 2px solid black" class="container">
+      <div style="width: 100%; height: auto; text-align:center">
+        <br>
+          <div style="width: 100%; height: auto; border-bottom: 2px solid black" class="container">
               <div class="row">
                 <div class="col">
-                  
-                  <li>Ch: Chi Squared</li>
-                  <li>Ig: Information Gain</li>
-                  <li>Mi: Mutual Info</li>
-                  <li>F: F-value </li>
-                  <li>GR: Gain Ratio</li>
-                  <li>Sum: The sum of all results</li>
-                  
+                 <ul style="list-style: none;padding: 0; margin: 0; display: flex; justify-content: space-around;">
+                    <li> <b>Ch:</b> Chi Squared </li>
+                    <li> <b>Ig:</b> Information Gain</li>
+                    <li> <b>Mi:</b> Mutual Info</li>
+                    <li> <b>F:</b>  F-value </li>
+                    <li> <b>GR:</b> Gain Ratio</li>
+                    <li> <b>Sum:</b> The sum of all results</li>
+                 </ul> 
                 </div>
               </div>
             <br>
           </div>
       </div>
-       <br>
+      <br>
     
       
       <div class="row">
@@ -44,32 +48,24 @@
       </div>
 
       <div style="width: 100%; height: auto;">
-        <div class="container" style= " width: 70%; height: 100%;text-align:center;">
+        <div class="container" style= " width: 100%; height: auto;text-align:center;">
           <form action="{{ url_for('feature_selection') }}" method="POST" enctype=multipart/form-data>
             <br>
             <h3>Variables:</h3>
             
-            <div style="width: 70%; height: auto;" class="container">
+            <div style="width: 100%; height: auto;" class="container">
               {% for column in list_col %}
-                  <div class="row" >
-                    <div class="col" style="text-align: right;">
-                      <input class="form-check-input" type="checkbox" name="checkbox" id="{{column}}" value="{{column}}" checked>
-                    </div>
-                    <div class="col" style="text-align: left;">
-                      <label class="form-check-label" for="{{column}}">{{column}}</label>
-                    </div>
-                  </div>
+                <div class="form-check form-check-inline" >
+                  <input class="form-check-input" type="checkbox" name="checkbox" id="{{column}}" value="{{column}}" checked>
+                  <label class="form-check-label" for="{{column}}">{{column}}</label>
+                </div>
               {% endfor %}
 
               {% for column in variables %}
-                  <div class="row" >
-                    <div class="col" style="text-align: right;">
-                      <input class="form-check-input" type="checkbox" name="checkbox" id="{{column}}" value="{{column}}">
-                    </div>
-                    <div class="col" style="text-align: left;">
-                      <label class="form-check-label" for="{{column}}">{{column}}</label>
-                    </div>
-                  </div>
+                <div class="form-check form-check-inline" >
+                  <input class="form-check-input" type="checkbox" name="checkbox" id="{{column}}" value="{{column}}" >
+                  <label class="form-check-label" for="{{column}}">{{column}}</label>
+                </div>
               {% endfor %}
             </div>
           
