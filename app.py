@@ -375,9 +375,10 @@ def resemple_techniques():
             return render_template("resemple_techniques.html" , message = "Success to choice" , resampling_choice = resampling_choice, path2 = "static/samples/"+file_name+"_before.csv")
     return render_template("resemple_techniques.html", message = "Waiting for choice", path1 = "static/samples/"+file_name+"_before.csv")
 
+dict_exec_models = None
 @app.route('/generate_models', methods = [ "GET", "POST"])
 def generate_models():
-    global type_problem, log_user_execution, X, y 
+    global type_problem, log_user_execution, X, y, dict_exec_models 
     if request.method == "POST":
         
         predictive_alg_list = request.form.getlist("checkbox")
@@ -385,7 +386,7 @@ def generate_models():
         
         log_user_execution["predictive_alg_list"] = predictive_alg_list
         log_user_execution["metrics_list"] = metrics_list
-        dict_exec_models = None
+        
         dict_exec_models = manipulate_csv.generate_models(X, y, log_user_execution)
         return render_template("generate_models.html", message = "Success to choice", user_answer1 = predictive_alg_list,  user_answer2 = metrics_list)
 
@@ -394,7 +395,7 @@ def generate_models():
 
 @app.route('/metrics')
 def metrics():
-    global log_user_execution
+    global log_user_execution, dict_exec_models
     manipulate_csv.convertdict(log_user_execution)
     return render_template("metrics.html", dict_exec_models = dict_exec_models, metrics = log_user_execution["metrics_list"])
 
@@ -404,7 +405,7 @@ def reproducibility():
 
 @app.route('/return_files_choices/')
 def return_files_choices():
-	return send_file('static/samples/'+file_name+'AllChoicesMade.txt', attachment_filename= file_name+'AllChoicesMade.txt')
+	return send_file('static/samples/AllChoicesMade.txt', attachment_filename= file_name+'AllChoicesMade.txt')
 
 @app.route('/return_files_train/')
 def return_files_train():

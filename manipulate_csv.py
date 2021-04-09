@@ -833,27 +833,26 @@ def generate_models(X, y, log_user_execution):
     score = None
     algorythms = None
     lst = []
+    list_algs = []
     norm_list = [MinMaxScaler(), StandardScaler()]
-    
+    list_alg_clas = [ GaussianNB(), SVC(), KNeighborsClassifier(), LogisticRegression(), tree.DecisionTreeClassifier(), MLPClassifier(), GaussianProcessClassifier(), LinearDiscriminantAnalysis(), QuadraticDiscriminantAnalysis()]
+    list_alg_reg = [linear_model.LinearRegression(), tree.DecisionTreeRegressor(), MLPRegressor(), SVR(), GaussianProcessRegressor()]
+
+    alg_list_string = log_user_execution["predictive_alg_list"]
+   
+
     if log_user_execution["problem_type"] == "Classification":
         score = "accuracy"
-        list_alg_clas = [GaussianNB(), SVC(), KNeighborsClassifier(), LogisticRegression(), tree.DecisionTreeClassifier(), MLPClassifier(), GaussianProcessClassifier(), LinearDiscriminantAnalysis(), QuadraticDiscriminantAnalysis()]
-        for elem in list_alg_clas:
-            if str(elem) in log_user_execution["predictive_alg_list"]:
-                pass
-            else:
-                list_alg_clas.remove(elem)
-        algorythms = list_alg_clas
+        for elem in alg_list_string:
+            list_algs.append(eval(elem))
+        algorythms = list_algs
     else:
         score = "r2"
-        list_alg_reg = [linear_model.LinearRegression(), tree.DecisionTreeRegressor(), MLPRegressor(), SVR(), GaussianProcessRegressor()]
-        for elem in list_alg_reg:
-            if str(elem) in log_user_execution["predictive_alg_list"]:
-                pass
-            else:
-                list_alg_reg.remove(elem)
-        algorythms = list_alg_reg
+        for elem in alg_list_string:
+            list_algs.append(eval(elem))
+        algorythms = list_algs
 
+    print("Algorythms:", algorythms)
     for item in norm_list:
         if str(item) in log_user_execution["normalization"]:
             pass
@@ -862,6 +861,9 @@ def generate_models(X, y, log_user_execution):
     normalization = norm_list[0]
 
     for alg in algorythms:
+        print("-----------------")
+        print(alg)
+        print("-----------------")
         parameters = {}
         iter1 = list(alg.get_params().keys())
         iter2 = list(alg.get_params().values())
@@ -913,7 +915,13 @@ def main_framework(X, y, normalization, resample, test_size_percent, score, algo
     for i in range(42,43):
 
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = test_size_percent, random_state=i)
-        #resemple
+        
+        if resample == "oversampling":
+            X_train, y_train = oversampling_train(X_train, y_train)
+        if resample == "undersampling":
+            rus = RandomUnderSampler(random_state=0)
+            X_train, y_train = rus.fit_sample(X_train, y_train)
+
         model = Pipeline([('nor', normalization), ('alg', algorithm)])
 
         rs = RandomizedSearchCV(model, params, cv=5, scoring = score, refit=True)
@@ -922,6 +930,21 @@ def main_framework(X, y, normalization, resample, test_size_percent, score, algo
         y_pred = rs.predict(X_test)
     
     return y_test, y_pred, rs.best_params_
+
+# Oversampling train data 
+def oversampling_train(X_train, y_train, cv = None):
+    if cv is None:
+        cv = KFold(n_splits=5, random_state=42)
+
+    smoter = SMOTE(random_state=42)
+
+    for train_fold_index, val_fold_index in cv.split(X_train, y_train):
+        X_train_fold, y_train_fold = X_train.iloc[train_fold_index], y_train.iloc[train_fold_index]
+        X_val_fold, y_val_fold = X_train.iloc[val_fold_index], y_train.iloc[val_fold_index]
+
+        X_train_fold_upsample, y_train_fold_upsample = smoter.fit_resample(X_train_fold, y_train_fold)
+        
+    return X_train_fold_upsample, y_train_fold_upsample
 
 
 # CONVERT DICT IN TEXT DATA
