@@ -7,22 +7,24 @@ from io import BytesIO
 import numpy as np
 import pandas as pd
 import scipy.stats as st
-import matplotlib.pyplot as plt
-import seaborn as sns
 import statsmodels.api as sm
 from skgof import cvm_test
 from scipy import stats
-from pylab import savefig
-from matplotlib import cm
 from collections import Counter
 from dython.nominal import associations
 from statsmodels.stats.stattools import medcouple 
 import scipy.stats as ss
 
+import matplotlib.pyplot as plt
+import seaborn as sns
+from matplotlib import cm
+from pylab import savefig
+
+#-----------------------------------------------------------------------------------------------
+#------------------Feature Selection - Filter Methods-------------------------------------------
+#-----------------------------------------------------------------------------------------------
 from sklearn.feature_selection import mutual_info_classif, f_classif, mutual_info_regression, chi2, f_regression
 from info_gain import info_gain
-
-
 #-----------------------------------------------------------------------------------------------
 #------------------Regression Algorithms--------------------------------------------------------
 #-----------------------------------------------------------------------------------------------
@@ -59,14 +61,19 @@ from sklearn.metrics import roc_auc_score
 from sklearn.metrics import accuracy_score          
 from sklearn.metrics import f1_score                
 from sklearn.metrics import precision_score         
-from sklearn.metrics import recall_score            
+from sklearn.metrics import recall_score     
+#-----------------------------------------------------------------------------------------------
+#------------------Resample Techniques-----------------------------------------------------------
+#-----------------------------------------------------------------------------------------------
+from imblearn.over_sampling import SMOTE
+from imblearn.under_sampling import RandomUnderSampler
 #-----------------------------------------------------------------------------------------------
 #------------------Support_For_Models-----------------------------------------------------------
 #-----------------------------------------------------------------------------------------------
 from sklearn.model_selection import train_test_split, GridSearchCV, RandomizedSearchCV 
 from sklearn.preprocessing import MinMaxScaler, StandardScaler 
 from sklearn import preprocessing
-from sklearn.pipeline import make_pipeline, Pipeline
+from imblearn.pipeline import Pipeline, make_pipeline
 
 def make_dataset(dataset,text):
     start_point = os.getcwd()
@@ -835,6 +842,7 @@ def generate_models(X, y, log_user_execution):
     lst = []
     list_algs = []
     norm_list = [MinMaxScaler(), StandardScaler()]
+    resample_list = [ RandomUnderSampler(random_state=42), SMOTE( random_state = 42)]
     list_alg_clas = [ GaussianNB(), SVC(), KNeighborsClassifier(), LogisticRegression(), tree.DecisionTreeClassifier(), MLPClassifier(), GaussianProcessClassifier(), LinearDiscriminantAnalysis(), QuadraticDiscriminantAnalysis()]
     list_alg_reg = [linear_model.LinearRegression(), tree.DecisionTreeRegressor(), MLPRegressor(), SVR(), GaussianProcessRegressor()]
 
@@ -853,12 +861,21 @@ def generate_models(X, y, log_user_execution):
         algorythms = list_algs
 
     print("Algorythms:", algorythms)
+
     for item in norm_list:
         if str(item) in log_user_execution["normalization"]:
             pass
         else:
             norm_list.remove(item)
     normalization = norm_list[0]
+
+    if log_user_execution["resample_technique_choiced"] != "without":
+        for item in resample_list:
+            if str(item) in log_user_execution["resample_technique_choiced"]:
+                pass
+            else:
+                resample_list.remove(item)
+        resample = resample_list[0]
 
     for alg in algorythms:
         print("-----------------")
@@ -870,7 +887,10 @@ def generate_models(X, y, log_user_execution):
         for i,j in zip(iter1,iter2):
             parameters["alg__"+i] = [j]
         params = parameters
-        y_test, y_pred, best_parameters = main_framework(X, y, normalization, log_user_execution["resample_technique_choiced"], log_user_execution["test_size_percent"], score, alg, params)
+        if log_user_execution["resample_technique_choiced"] != "without":
+            y_test, y_pred, best_parameters = main_framework_with_resample(X, y, normalization, resample, log_user_execution["test_size_percent"], score, alg, params)
+        else:
+            y_test, y_pred, best_parameters = main_framework_without_resample(X, y, normalization, log_user_execution["test_size_percent"], score, alg, params)
         d = {}
         d["algorythm"] = alg
         d["best_parameters"] = best_parameters
@@ -909,43 +929,43 @@ def generate_models(X, y, log_user_execution):
     
     return lst
 
+
+
+def main_framework_with_resample(X, y, normalization, resample, test_size_percent, score, algorithm, params):
     
-
-def main_framework(X, y, normalization, resample, test_size_percent, score, algorithm, params):
     for i in range(42,43):
-
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = test_size_percent, random_state=i)
         
-        if resample == "oversampling":
-            X_train, y_train = oversampling_train(X_train, y_train)
-        if resample == "undersampling":
-            rus = RandomUnderSampler(random_state=0)
-            X_train, y_train = rus.fit_sample(X_train, y_train)
+        kf = KFold( n_splits = 5, random_state = i)
 
-        model = Pipeline([('nor', normalization), ('alg', algorithm)])
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = test_size_percent, random_state = i)
+        
+        model = Pipeline([ ('res', resample), ('nor', normalization), ('alg', algorithm)])
 
-        rs = RandomizedSearchCV(model, params, cv=5, scoring = score, refit=True)
+        rs = RandomizedSearchCV(model, params, cv = kf, scoring = score, return_train_score=True)
         rs.fit(X_train, y_train)
 
         y_pred = rs.predict(X_test)
     
     return y_test, y_pred, rs.best_params_
 
-# Oversampling train data 
-def oversampling_train(X_train, y_train, cv = None):
-    if cv is None:
-        cv = KFold(n_splits=5, random_state=42)
-
-    smoter = SMOTE(random_state=42)
-
-    for train_fold_index, val_fold_index in cv.split(X_train, y_train):
-        X_train_fold, y_train_fold = X_train.iloc[train_fold_index], y_train.iloc[train_fold_index]
-        X_val_fold, y_val_fold = X_train.iloc[val_fold_index], y_train.iloc[val_fold_index]
-
-        X_train_fold_upsample, y_train_fold_upsample = smoter.fit_resample(X_train_fold, y_train_fold)
+def main_framework_without_resample(X, y, normalization, test_size_percent, score, algorithm, params):
+    
+    for i in range(42,43):
         
-    return X_train_fold_upsample, y_train_fold_upsample
+        kf = KFold( n_splits = 5, random_state = i)
 
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = test_size_percent, random_state = i)
+        
+        model = Pipeline([ ('nor', normalization), ('alg', algorithm)])
+
+        rs = RandomizedSearchCV(model, params, cv = kf, scoring = score, return_train_score=True)
+        rs.fit(X_train, y_train)
+
+        y_pred = rs.predict(X_test)
+    
+    return y_test, y_pred, rs.best_params_
+        
+        
 
 # CONVERT DICT IN TEXT DATA
 def convertdict(log_user_execution):
