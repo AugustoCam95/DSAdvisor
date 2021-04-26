@@ -10,11 +10,11 @@
     
       </div>
       
-
+      {% for elem in dict_exec_models %}
       <div align="justify">
-        {% for elem in dict_exec_models %}
+          <h4><b>Algorithm</b>: {{elem['algorythm']}}</h4>
           <ul>
-            <li><b>Algorithm</b>: {{elem['algorythm']}}</li>
+            
             <li><b>Best parameters</b>: {{elem['best_parameters']}}</li>
             
             {% if "accuracy_score" in metrics %}
@@ -35,6 +35,14 @@
 
             {% if "recall_score" in metrics %}
               <li><b>Recall Score</b>: {{ elem["recall_score"] }}</li>
+            {% endif %}
+
+            {% if "confusion_matrix" in metrics %}
+              <img width="100%" height="100%" src="data:image/png;base64,{{ cf_matrix_64 |safe }}" >
+            {% endif %}
+
+            {% if "roc_score" in metrics %}
+              <img width="100%" height="100%" src="data:image/png;base64,{{ roc_curve_64 |safe }}" >
             {% endif %}
 
             {% if "mean_absolute_error" in metrics %}
@@ -59,9 +67,9 @@
           
           </ul>
 
-        {%endfor%}
+
       </div>
-      
+      {%endfor%}
       
       <div class="mt-5" align="center">
         <a class="btn btn-dark btn-lg" href="{{ url_for('reproducibility') }}">Next</a>

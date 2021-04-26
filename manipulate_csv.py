@@ -57,7 +57,7 @@ from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 #------------------Classification Metrics-------------------------------------------------------
 #-----------------------------------------------------------------------------------------------
 from sklearn.metrics import confusion_matrix        
-from sklearn.metrics import roc_auc_score           
+from sklearn.metrics import roc_auc_score, roc_curve           
 from sklearn.metrics import accuracy_score          
 from sklearn.metrics import f1_score                
 from sklearn.metrics import precision_score         
@@ -67,6 +67,7 @@ from sklearn.metrics import recall_score
 #-----------------------------------------------------------------------------------------------
 from imblearn.over_sampling import SMOTE
 from imblearn.under_sampling import RandomUnderSampler
+from imblearn.over_sampling import RandomOverSampler
 #-----------------------------------------------------------------------------------------------
 #------------------Support_For_Models-----------------------------------------------------------
 #-----------------------------------------------------------------------------------------------
@@ -159,9 +160,7 @@ def get_vector_of_normality(dataset):
         column.append(normal_test(dataset[col]))
     return column
 
-# 0 columns for string
-# 1 columns for int
-# 2 columns for float
+
 def get_columns(dataframe):
     dataset = dataframe
     cols1 = []
@@ -327,6 +326,70 @@ def generate_plots(dist_list,df):
         plt.clf()
     return list_plots
     
+
+
+def confusion_matrix(cf_matrix):
+    
+    group_names = ["True Neg","False Pos","False Neg","True Pos"]
+
+    group_counts = ["{0:0.0f}".format(value) for value in cf_matrix.flatten()]
+
+    group_percentages = ["{0:.2%}".format(value) for value in cf_matrix.flatten()/np.sum(cf_matrix)]
+
+    labels = [f"{v1}\n{v2}\n{v3}" for v1, v2, v3 in zip(group_names,group_counts,group_percentages)]
+
+    labels = np.asarray(labels).reshape(2,2)
+
+    fig, ax = plt.subplots(figsize=(15,10))
+    map4 = sns.heatmap(cf_matrix, annot=labels, fmt="", cmap='Blues')
+    bottom, top = ax.get_ylim()
+    ax.set_ylim(bottom + 0.5, top - 0.5)
+    figure4 = map4.get_figure()
+    
+    # bufferiza a imagem
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    image_png = buffer.getvalue()
+    buffer.close()
+    plt.close()
+
+    # converte em base 64
+    graphic = base64.b64encode(image_png)
+    graphic = graphic.decode('utf-8')
+
+    list_plots.append(graphic)
+
+    plt.clf()
+
+    return graphic
+
+
+def plot_roc_curve( fpr, tpr):
+    plt.plot(fpr, tpr, color='orange', label='ROC')
+    plt.plot([0, 1], [0, 1], color='darkblue', linestyle='--')
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('Receiver Operating Characteristic (ROC) Curve')
+    plt.legend()
+
+    # bufferiza a imagem
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    image_png = buffer.getvalue()
+    buffer.close()
+    plt.close()
+
+    # converte em base 64
+    graphic = base64.b64encode(image_png)
+    graphic = graphic.decode('utf-8')
+
+    list_plots.append(graphic)
+
+    plt.clf()
+
+    return graphic
 
 def corrdot_pearson(*args, **kwargs):
     corr_r = args[0].corr(args[1], 'pearson')
@@ -638,6 +701,7 @@ def outliers_value(ys):
             aux.append(y)
     return aux
 
+
 def outliers_position(ys):
     q1, q3 = np.percentile(ys, [25, 75])
     iqr = q3 - q1
@@ -649,6 +713,7 @@ def outliers_position(ys):
         lower_bound = q1 - (1.5 * math.exp(-3.0 * mc) * iqr) 
         upper_bound = q3 + (1.5 * math.exp(4 * mc) * iqr)
     return np.where((ys > upper_bound) | (ys < lower_bound))
+
 
 def adjust_iqr(df, text):
     for col in df.columns:
@@ -727,7 +792,6 @@ def create_boxplots(df):
     return boxplot_list
 
         
-    
 # Resample Techniques
 def before_reasample(target,text):
     counter = Counter(target.values[:,0])
@@ -764,7 +828,6 @@ def after_undersampling(dataset,labels,text):
             writer.writerow({'Class': k, 'Count': v, 'Percentage': per})
     os.chdir(start_point)
 
-from imblearn.over_sampling import RandomOverSampler
 
 def after_oversampling(dataset,labels,text):    
     ros = RandomOverSampler(random_state=0)
@@ -782,6 +845,7 @@ def after_oversampling(dataset,labels,text):
             per = round(v / len(target) * 100, 2)
             writer.writerow({'Class': k, 'Count': v, 'Percentage': per})
     os.chdir(start_point)
+
 
 # Feature Selection
 def create_table_feature_selection(dataset, labels, type_problem, text):
@@ -819,6 +883,7 @@ def create_table_feature_selection(dataset, labels, type_problem, text):
         list_col.append(i[0])
     return list_col
 
+
 def filter_on_feature_selection(col_to_remove, text):
     start_point = os.getcwd()
     os.chdir("static/samples")
@@ -835,7 +900,6 @@ def filter_on_feature_selection(col_to_remove, text):
 
 
 # GENERATE MODELS
-
 def generate_models(X, y, log_user_execution):
     score = None
     algorythms = None
@@ -888,19 +952,25 @@ def generate_models(X, y, log_user_execution):
             parameters["alg__"+i] = [j]
         params = parameters
         if log_user_execution["resample_technique_choiced"] != "without":
-            y_test, y_pred, best_parameters = main_framework_with_resample(X, y, normalization, resample, log_user_execution["test_size_percent"], score, alg, params)
+            y_test, y_pred, best_parameters = main_framework_with_resample(X, y, normalization, resample, log_user_execution["test_size_percent"], score, alg, params, log_user_execution["problem_type"])
         else:
-            y_test, y_pred, best_parameters = main_framework_without_resample(X, y, normalization, log_user_execution["test_size_percent"], score, alg, params)
+            y_test, y_pred, best_parameters = main_framework_without_resample(X, y, normalization, log_user_execution["test_size_percent"], score, alg, params, log_user_execution["problem_type"])
         d = {}
         d["algorythm"] = alg
         d["best_parameters"] = best_parameters
         
         if "accuracy_score" in log_user_execution["metrics_list"]:
             d["accuracy_score"] = accuracy_score(y_test, y_pred)
-        
+
+        if "confusion_matrix" in log_user_execution["metrics_list"]:
+            d["confusion_matrix"] = confusion_matrix(y_test, y_pred)    
+
         if "f1_score" in log_user_execution["metrics_list"]:
             d["f1_score"] = f1_score(y_test, y_pred)
         
+        if "roc_curve" in log_user_execution["metrics_list"]:
+            d["roc_curve"] = roc_curve(y_test, y_pred)
+
         if "roc_auc_score" in log_user_execution["metrics_list"]:
             d["roc_auc_score"] = roc_auc_score(y_test, y_pred)
         
@@ -931,7 +1001,7 @@ def generate_models(X, y, log_user_execution):
 
 
 
-def main_framework_with_resample(X, y, normalization, resample, test_size_percent, score, algorithm, params):
+def main_framework_with_resample(X, y, normalization, resample, test_size_percent, score, algorithm, params, problem_type):
     
     for i in range(42,43):
         
@@ -945,10 +1015,12 @@ def main_framework_with_resample(X, y, normalization, resample, test_size_percen
         rs.fit(X_train, y_train)
 
         y_pred = rs.predict(X_test)
-    
-    return y_test, y_pred, rs.best_params_
 
-def main_framework_without_resample(X, y, normalization, test_size_percent, score, algorithm, params):
+        return y_test, y_pred, rs.best_params_
+
+
+
+def main_framework_without_resample(X, y, normalization, test_size_percent, score, algorithm, params, problem_type):
     
     for i in range(42,43):
         
@@ -962,8 +1034,8 @@ def main_framework_without_resample(X, y, normalization, test_size_percent, scor
         rs.fit(X_train, y_train)
 
         y_pred = rs.predict(X_test)
-    
-    return y_test, y_pred, rs.best_params_
+        
+        return y_test, y_pred, rs.best_params_
         
         
 

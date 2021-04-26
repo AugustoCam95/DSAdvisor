@@ -205,8 +205,8 @@ def distribution_analysis_part_1():
     global not_lazy
     return render_template("distribution_analysis_part_1.html", message = "Waiting for choice"  , lazy_dist =  lazy_dist, not_lazy = not_lazy )
 
-user_choice_dist = None
 
+user_choice_dist = None
 @app.route('/distribution_analysis_part_2',  methods = [ "GET", "POST"])
 def distribution_analysis_part_2():
     if request.method == "POST":
@@ -253,6 +253,7 @@ def distribution_analysis_part_2():
         
     return render_template("distribution_analysis_part_2.html", message = "Waiting for choice" , elements = lst, num = len(dataframe.columns))
 
+
 @app.route('/correlations')
 def correlations():
     df = dataframe
@@ -291,6 +292,7 @@ def correlations():
     
     return render_template("correlations.html",  filename = file_name, signal_1 = signal_1, signal_2 = signal_2, cramer_64 = cramer_64, pearson_64 = pearson_64, spearman_64 = spearman_64)
 
+
 type_problem = None
 X_train =  None
 y_train = None   
@@ -310,6 +312,7 @@ def problem_setup_part_1():
         return render_template("problem_setup_part_1.html" , message = "Success to choice" ,user_answer= dependent_variable, train_percent = test_percent, user_answer2 = type_problem)
 
     return render_template("problem_setup_part_1.html", message = "Waiting for choice" ,columns = dataframe.columns)
+
 
 @app.route('/outlier_report')
 def outlier_report():
@@ -332,9 +335,11 @@ def outlier_report():
     
     return render_template("outlier_report.html", elements = lst , num = len(X_train.columns))
 
+
 @app.route('/table_outlier')
 def table_outlier():
     return render_template("table_outlier.html",  path1 ="static/samples/"+file_name+"outliers.csv")
+
 
 list_col = None
 @app.route('/normalization', methods = [ "GET", "POST"])
@@ -347,6 +352,7 @@ def normalization():
         return render_template("normalization.html", message = "Sucess", anwser = anwser )
     return render_template("normalization.html", message = "Waiting for choice", path1 ="static/samples/"+file_name+".csv", path2 ="static/samples/"+file_name+"train_norm_data20.csv"  )
 
+
 @app.route('/feature_selection', methods = [ "GET", "POST"] )
 def feature_selection():
     if request.method == "POST":
@@ -357,6 +363,7 @@ def feature_selection():
         manipulate_csv.filter_on_feature_selection(drop_variables, file_name)
         return render_template("feature_selection.html", message = "Sucess", type_problem = type_problem, selected_variables = selected_variables)
     return render_template("feature_selection.html", message = "Waiting for choice", filename = file_name, variables = list(set(X_train.columns) - set(list_col)), list_col = list_col)
+
 
 @app.route('/resemple_techniques', methods = [ "GET", "POST"])
 def resemple_techniques():
@@ -374,6 +381,7 @@ def resemple_techniques():
         if resampling_choice == "without":
             return render_template("resemple_techniques.html" , message = "Success to choice" , resampling_choice = resampling_choice, path2 = "static/samples/"+file_name+"_before.csv")
     return render_template("resemple_techniques.html", message = "Waiting for choice", path1 = "static/samples/"+file_name+"_before.csv")
+
 
 dict_exec_models = None
 @app.route('/generate_models', methods = [ "GET", "POST"])
@@ -396,8 +404,11 @@ def generate_models():
 @app.route('/metrics')
 def metrics():
     global log_user_execution, dict_exec_models
+    fpr, tpr, thresholds = dict_exec_models['roc_curve']
+    roc_curve_64 = manipulate_csv.plot_roc_curve(fpr, tpr)
+    cf_matrix_64 = manipulate_csv.confusion_matrix(dict_exec_models['confusion_matrix'])
     manipulate_csv.convertdict(log_user_execution)
-    return render_template("metrics.html", dict_exec_models = dict_exec_models, metrics = log_user_execution["metrics_list"])
+    return render_template("metrics.html", dict_exec_models = dict_exec_models, cf_matrix_64 = cf_matrix_64, roc_curve_64 = roc_curve_64,  metrics = log_user_execution["metrics_list"])
 
 @app.route('/reproducibility')
 def reproducibility():
