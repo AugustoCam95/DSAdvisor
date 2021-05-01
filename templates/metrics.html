@@ -38,13 +38,13 @@
             {% endif %}
 
             {% if "confusion_matrix" in metrics %}
-              <img width="100%" height="100%" src="data:image/png;base64,{{ cf_matrix_64 |safe }}" >
+              <img width="500" height="400" src="data:image/png;base64,{{ elem["confusion_matrix"] |safe }}" >
             {% endif %}
 
-            {% if "roc_score" in metrics %}
-              <img width="100%" height="100%" src="data:image/png;base64,{{ roc_curve_64 |safe }}" >
+            {% if "roc_curve" in metrics %}
+              <img width="350" height="350" src="data:image/png;base64,{{ elem["roc_curve"] |safe }}" >
             {% endif %}
-
+            
             {% if "mean_absolute_error" in metrics %}
               <li><b>Mean Absolute Error</b>: {{ elem["mean_absolute_error"] }}</li>
             {% endif %}

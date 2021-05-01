@@ -71,7 +71,7 @@ from imblearn.over_sampling import RandomOverSampler
 #-----------------------------------------------------------------------------------------------
 #------------------Support_For_Models-----------------------------------------------------------
 #-----------------------------------------------------------------------------------------------
-from sklearn.model_selection import train_test_split, GridSearchCV, RandomizedSearchCV 
+from sklearn.model_selection import train_test_split, GridSearchCV, RandomizedSearchCV, KFold 
 from sklearn.preprocessing import MinMaxScaler, StandardScaler 
 from sklearn import preprocessing
 from imblearn.pipeline import Pipeline, make_pipeline
@@ -328,7 +328,7 @@ def generate_plots(dist_list,df):
     
 
 
-def confusion_matrix(cf_matrix):
+def plot_cf_matrix(cf_matrix):
     
     group_names = ["True Neg","False Pos","False Neg","True Pos"]
 
@@ -358,8 +358,6 @@ def confusion_matrix(cf_matrix):
     graphic = base64.b64encode(image_png)
     graphic = graphic.decode('utf-8')
 
-    list_plots.append(graphic)
-
     plt.clf()
 
     return graphic
@@ -384,8 +382,6 @@ def plot_roc_curve( fpr, tpr):
     # converte em base 64
     graphic = base64.b64encode(image_png)
     graphic = graphic.decode('utf-8')
-
-    list_plots.append(graphic)
 
     plt.clf()
 
@@ -906,7 +902,7 @@ def generate_models(X, y, log_user_execution):
     lst = []
     list_algs = []
     norm_list = [MinMaxScaler(), StandardScaler()]
-    resample_list = [ RandomUnderSampler(random_state=42), SMOTE( random_state = 42)]
+    resample_list = [ RandomUnderSampler(random_state=42), SMOTE(random_state=42)]
     list_alg_clas = [ GaussianNB(), SVC(), KNeighborsClassifier(), LogisticRegression(), tree.DecisionTreeClassifier(), MLPClassifier(), GaussianProcessClassifier(), LinearDiscriminantAnalysis(), QuadraticDiscriminantAnalysis()]
     list_alg_reg = [linear_model.LinearRegression(), tree.DecisionTreeRegressor(), MLPRegressor(), SVR(), GaussianProcessRegressor()]
 
@@ -942,9 +938,6 @@ def generate_models(X, y, log_user_execution):
         resample = resample_list[0]
 
     for alg in algorythms:
-        print("-----------------")
-        print(alg)
-        print("-----------------")
         parameters = {}
         iter1 = list(alg.get_params().keys())
         iter2 = list(alg.get_params().values())
@@ -958,19 +951,19 @@ def generate_models(X, y, log_user_execution):
         d = {}
         d["algorythm"] = alg
         d["best_parameters"] = best_parameters
-        
+
         if "accuracy_score" in log_user_execution["metrics_list"]:
             d["accuracy_score"] = accuracy_score(y_test, y_pred)
 
         if "confusion_matrix" in log_user_execution["metrics_list"]:
-            d["confusion_matrix"] = confusion_matrix(y_test, y_pred)    
+            d["confusion_matrix"] = plot_cf_matrix(confusion_matrix(y_test, y_pred))    
 
         if "f1_score" in log_user_execution["metrics_list"]:
             d["f1_score"] = f1_score(y_test, y_pred)
         
         if "roc_curve" in log_user_execution["metrics_list"]:
-            d["roc_curve"] = roc_curve(y_test, y_pred)
-
+            d["roc_curve"] = plot_roc_curve(roc_curve(y_test, y_pred)[0], roc_curve(y_test, y_pred)[1])
+            
         if "roc_auc_score" in log_user_execution["metrics_list"]:
             d["roc_auc_score"] = roc_auc_score(y_test, y_pred)
         
@@ -995,6 +988,7 @@ def generate_models(X, y, log_user_execution):
         if "r2_score" in log_user_execution["metrics_list"]:
             d["r2_score"] = r2_score(y_test, y_pred)
 
+        
         lst.append(d)
     
     return lst

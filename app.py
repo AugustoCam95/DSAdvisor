@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import numpy as np
 # import jupyter
 import io
 import re
@@ -9,6 +10,7 @@ import warnings
 import manipulate_csv
 from flask import Flask, render_template, request, flash, send_file, url_for, redirect
 from werkzeug.utils import secure_filename
+from sklearn.metrics import roc_auc_score, roc_curve 
 
 warnings.filterwarnings('ignore') 
 
@@ -371,11 +373,12 @@ def resemple_techniques():
     manipulate_csv.before_reasample(y_train,file_name)
     if request.method == "POST":
         resampling_choice = request.form["radiobutton"]
-        log_user_execution["resample_technique_choiced"] = resampling_choice
         if resampling_choice == "oversampling":
+            log_user_execution["resample_technique_choiced"] = "SMOTE(random_state=42)"
             manipulate_csv.after_oversampling(X_train, y_train,file_name)
             return render_template("resemple_techniques.html" , message = "Success to choice" , resampling_choice = resampling_choice, path2 = "static/samples/"+file_name+"_after_over.csv")
         if resampling_choice == "undersampling":
+            log_user_execution["resample_technique_choiced"] = "RandomUnderSampler(random_state=42)"
             manipulate_csv.after_undersampling(X_train, y_train,file_name)
             return render_template("resemple_techniques.html" , message = "Success to choice" , resampling_choice = resampling_choice, path2 = "static/samples/"+file_name+"_after_under.csv")
         if resampling_choice == "without":
@@ -404,11 +407,8 @@ def generate_models():
 @app.route('/metrics')
 def metrics():
     global log_user_execution, dict_exec_models
-    fpr, tpr, thresholds = dict_exec_models['roc_curve']
-    roc_curve_64 = manipulate_csv.plot_roc_curve(fpr, tpr)
-    cf_matrix_64 = manipulate_csv.confusion_matrix(dict_exec_models['confusion_matrix'])
     manipulate_csv.convertdict(log_user_execution)
-    return render_template("metrics.html", dict_exec_models = dict_exec_models, cf_matrix_64 = cf_matrix_64, roc_curve_64 = roc_curve_64,  metrics = log_user_execution["metrics_list"])
+    return render_template("metrics.html", dict_exec_models = dict_exec_models,  metrics = log_user_execution["metrics_list"])
 
 @app.route('/reproducibility')
 def reproducibility():
