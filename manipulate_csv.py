@@ -340,11 +340,15 @@ def plot_cf_matrix(cf_matrix):
 
     labels = np.asarray(labels).reshape(2,2)
 
-    fig, ax = plt.subplots(figsize=(15,10))
-    map4 = sns.heatmap(cf_matrix, annot=labels, fmt="", cmap='Blues')
-    bottom, top = ax.get_ylim()
-    ax.set_ylim(bottom + 0.5, top - 0.5)
-    figure4 = map4.get_figure()
+    plt.figure(figsize=(15,10))
+ 
+    ax = sns.heatmap(cf_matrix, annot=labels, fmt="", cmap='Blues')
+
+    ax.set(title="Confusion Matrix",
+        xlabel="Class",
+        ylabel="Class",)
+
+    sns.set(font_scale=3)
     
     # bufferiza a imagem
     buffer = BytesIO()
@@ -364,11 +368,12 @@ def plot_cf_matrix(cf_matrix):
 
 
 def plot_roc_curve( fpr, tpr):
+    plt.figure(figsize=(15,10))
     plt.plot(fpr, tpr, color='orange', label='ROC')
     plt.plot([0, 1], [0, 1], color='darkblue', linestyle='--')
-    plt.xlabel('False Positive Rate')
-    plt.ylabel('True Positive Rate')
-    plt.title('Receiver Operating Characteristic (ROC) Curve')
+    plt.xlabel('False Positive Rate', fontsize = 30)
+    plt.ylabel('True Positive Rate', fontsize = 30)
+    plt.title('Receiver Operating Characteristic (ROC) Curve', fontsize = 30)
     plt.legend()
 
     # bufferiza a imagem

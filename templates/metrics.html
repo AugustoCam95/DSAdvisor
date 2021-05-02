@@ -7,6 +7,8 @@
   <div class="card-body">
       <div align="center">
         <h3 class="card-title"> Result Metrics </h3>
+        <p>On this page we will find the performance metrics for the algorithms and metrics selected on the previous page. 
+          In addition, the DSAdvisor tool provides the best parameters used.</p>
     
       </div>
       
@@ -42,7 +44,7 @@
             {% endif %}
 
             {% if "roc_curve" in metrics %}
-              <img width="350" height="350" src="data:image/png;base64,{{ elem["roc_curve"] |safe }}" >
+              <img width="400" height="350" src="data:image/png;base64,{{ elem["roc_curve"] |safe }}" >
             {% endif %}
             
             {% if "mean_absolute_error" in metrics %}
