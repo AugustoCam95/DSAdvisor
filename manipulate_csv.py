@@ -1043,7 +1043,7 @@ def convertdict(log_user_execution):
     start_point = os.getcwd()
     os.chdir("static/samples")
 
-    f = open("AllChoicesMade.txt", "w")
+    f = open("AllConfigurations.txt", "w")
     f.write("    ALL THE CHOICES MADE:\n")
     f.write("--------------START-------------\n")
     for k in log_user_execution.keys():

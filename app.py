@@ -416,7 +416,7 @@ def reproducibility():
 
 @app.route('/return_files_choices/')
 def return_files_choices():
-	return send_file('static/samples/AllChoicesMade.txt', attachment_filename= file_name+'AllChoicesMade.txt')
+	return send_file('static/samples/AllConfigurations.txt', attachment_filename= file_name+'AllConfigurations.txt')
 
 @app.route('/return_files_train/')
 def return_files_train():
