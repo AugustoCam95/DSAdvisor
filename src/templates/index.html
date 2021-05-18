@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block subtitulo %} Home page {% endblock %}
+
+{% block content%}
+<div class="card mb-6" >
+    <div class="card-body">
+
+      <div style="border-bottom: 2px solid black;">
+        <h3 class="card-title" align="center">Welcome to the DSAdvisor !</h3>
+      </div>
+      
+      <div style="border-bottom: 2px solid black;">
+        <br>
+        <p class="card-text"> <strong>DSAdvisor</strong> is a web tool to guide the user in the data processing steps for the correct pre-processing of the data in order to be used by machine learning models. 
+          This entire verification process occurs openly for the user along with tutoring on the concepts covered in each step of the proposed guideline, the tool seeks to bring users closer to the concepts of Machine Learning and Data Mining.</p>
+          
+          
+        <h5 class="mt-4">In this guideline, we have the following steps:</h5>
+        <ul>
+          <li>Upload data (only CSV files so far)</li>
+          <li>Descriptive statistics of the Data Set</li>
+          <li>Outliers Report</li>
+          <li>Normalization</li>
+          <li>Feature Selection</li>
+          <li>Resample Techniques</li>
+          <li>Run Models</li>
+          <li>Select Metrics</li>
+          <li>Results Representation</li>
+          <li>Guarantee Reproducibility</li>
+        </ul>
+    </div> 
+
+      <br>
+   
+
+      <div align="center">
+        <a class="btn btn-dark btn-lg"  href="{{url_for('upload_csv')}}">Let's get start here</a>
+      </div>
+      
+    
+    </div>
+  </div>
+
+
+{% endblock %}

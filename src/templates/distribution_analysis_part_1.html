@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+
+{% block subtitulo %} Distribution Analysis {% endblock %}
+
+{% block content%}
+<style>
+  .loader {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid gray;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+    visibility: hidden;
+    align-content: center;
+  }
+  
+  /* Safari */
+  @-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .externa {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    visibility: hidden;
+  }
+</style>
+
+<script>
+  function myFunction(){
+    //
+    var y = document.getElementById("myDIV");
+    var x = document.getElementById("myDIV2");
+    var z = document.getElementsByClassName("externa")
+    x.style.visibility = "hidden";
+    y.style.visibility = "visible";
+    y.style.width =  "120px";
+    y.style.height = "120px";
+    y.style.marginTop = "30%"
+    z.style.visibility = "visible";
+    
+  }
+</script>
+
+<div class="externa">
+  <div id="myDIV" class="loader"></div>
+</div>
+
+
+<div  id="myDIV2" class="card mb-6 " >
+  <div class="card-body">
+
+    {% if message == "Waiting for choice" %}
+      <div style="border-bottom: 2px solid black;">
+        <h3 class="card-title" align="center"> Distribution Analysis - Choose Distributions /h3>
+      </div>
+      
+      <div>
+        <br>
+        <p class="card-text" align="justify"> 
+          On this page we will talk about probability distributions for continuous variables, where on the next page we will use a series of tests to infer
+          the probability distribution of our quantitative variables. In probability theory and statistics, a probability distribution is the mathematical 
+          function that provides the probabilities of the occurrence of different possible outcomes for an experiment. It is a mathematical description of a 
+          random phenomenon in terms of its sample space and the probabilities of events (subsets of the sample space). The probability distributions are generally 
+          divided into two classes. </p>
+          <ul>
+            <li>
+              <strong>Discrete probability distribution</strong> is applicable to scenarios where the set of possible outcomes is discrete (for example, a 
+              coin toss or a dice roll), and the probabilities are encoded here by a discrete list of probabilities for the results, known as a function of probability 
+              mass. 
+            </li>
+            <br/>
+            <li>
+              <strong>Continuos probability distributions</strong> are applicable to scenarios where the set of possible results can assume values ​​in a 
+              continuous interval (for example, real numbers), such as the temperature on a given day. In this case, the probabilities are usually described by a 
+              probability density function. The normal distribution is a commonly found continuous probability distribution. More complex experiments, 
+              such as those involving stochastic processes defined in continuous time, may require the use of more general probability measures.
+            </li>
+          </ul>
+          <p>If you want to know more about what a probability distribution is <a href="https://en.wikipedia.org/wiki/Probability_distribution">click here</a> 
+          or about the normal distribution <a href="https://en.wikipedia.org/wiki/Normal_distribution">click here</a>.</p>
+      </div>
+      
+      
+      <div style="width: 100%; height: auto;">
+        <div class="container" style= " width: 70%; height: 100%;">
+          <form action="{{ url_for('distribution_analysis_part_1') }}" method="POST" enctype=multipart/form-data>
+            
+            <h4 align="center">List of continious distributions:</h4>
+            <div style="width: 120%; height: auto;" class="container">
+                {% for column in not_lazy%}
+                  <div class="form-check form-check-inline" >
+                      <input class="form-check-input" type="checkbox" name="checkbox" id="{{column}}" value="{{column}}" checked>
+                      <label class="form-check-label" for="{{column}}">{{column}}</label>
+                  </div>
+                {% endfor %}
+              
+            </div>
+           
+            <div style="width: 120%; height: auto;" class="container">
+                {%for column in lazy_dist%}
+                  <div class="form-check form-check-inline" >
+                      <input class="form-check-input" type="checkbox" name="checkbox" id="{{column}}" value="{{column}}" >
+                      <label class="form-check-label" for="{{column}}">{{column}}</label>
+                  </div>
+                {% endfor %}
+            </div>
+
+            <br>
+            <div style="width: 100%; height: auto;">
+              <div class="container" style= " width: 70%; height: 100px;">
+                <div align="center">
+                  <button type="submit" class="btn  btn-primary">Confirm option</button>
+                </div>
+              
+              </div>
+            </div> 
+
+          </form> 
+        
+        </div>
+      </div>
+
+        
+       
+      <div align="center" class="alert-sm alert-secondary">
+        <label>Status: {{message}} </label>
+      </div>   
+
+    {% else %}
+      <div class="mt-2" align="center">
+        <div >
+          <label class="alert alert-success" >Status: Success</label>
+        </div>
+
+        <div class="alert alert-info">
+          <h4>List of distributions: </h4>
+          <br>
+          <p>{{list_x}}</p>
+        </div>
+        
+      
+        <div class="mt-5" align="center">
+            <a onclick="myFunction()" class="btn btn-dark btn-lg" href="{{ url_for('distribution_analysis_part_2') }} ">Next</a>
+        </div>
+      </div>    
+    {% endif %}
+    
+    
+
+  </div>
+</div>
+
+
+
+{% endblock %}

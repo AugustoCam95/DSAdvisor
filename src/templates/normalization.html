@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+
+{% block subtitulo %} Step 9 {% endblock %}
+
+{% block content%}
+<div class="card mb-6" align="center">
+  <div class="card-body">
+    
+    <h3 class="card-title">Choose normalization technique</h3>
+
+    {% if message == "Waiting for choice" %}
+
+      <p align="justify"> 
+        In this step, we will normalize the data. This is a resource widely used in statistics and 
+        there are two main techniques to normalize our data.
+        <ul>
+          <li><strong>Min-Max:</strong> In Min-Max (also called min-max scaling), you transform the data such that the features are within a specific range e.g. [0, 1].
+            and it's important in the algorithms such as support vector machines (SVM) and k-nearest neighbors (KNN) where distance between the data points is important.  
+          </li>
+          <br>
+          <li><strong>Z-Score:</strong>Standardization (also called z-score normalization) transforms your data such that the resulting distribution has a mean of 0 and a 
+            standard deviation of 1.</li>
+        </ul> 
+        
+      </p>
+
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 border-right">
+            <label>Min-Max formula</label>
+            <img src="../static/logos/minmax.png">
+          </div>
+          <div class="col-md-6 border-left">
+            <label>Z-Score formula</label>
+            <br>
+            <img src="../static/logos/z_score.png">
+          </div>
+        </div>
+      </div>
+
+      
+      <br>
+
+      <form action="{{ url_for('normalization') }}" method="POST" enctype=multipart/form-data>
+        
+        
+        <div  class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="radiobutton" id="MinMaxScaler()" value="MinMaxScaler()">
+          <label style="margin: 4%;" class="form-check-label" for="MinMaxScaler()">MinMax(Scaling)</label>
+          <input class="form-check-input" type="radio" name="radiobutton" id="StandardScaler()" value="StandardScaler()">
+          <label style="margin: 4%;" class="form-check-label" for="StandardScaler()">Zscore(Standardization)</label>
+        </div>
+         
+        <br>
+        
+        <div align="center" class="alert-sm alert-secondary">
+          <label>Status: {{message}} </label>
+        </div>
+        
+        <br>
+
+        <div align="center">
+          <br>
+          <button type="submit" class="btn  btn-primary">Confirm option</button>
+        </div>
+
+      </form>
+        
+      <br>
+
+      <p align="justify">
+        But what is the importance of doing this whole process? Let's see an example!<br>
+        It is essential to check that the columns are on the same scale. For example, two columns A and B 
+        can have two different numerical ranges: the first in a range between zero and one in the realm 
+        domain, while the second is in a range in the range 1 to 1000 in the realm of integers. Evidencing 
+        similar situations like this, it is highly recommended that normalization be performed, since it 
+        improves the performance of supervised learning algorithms, facilitates algorithms to search for 
+        optimal solutions such as descending gradients among other similar algorithms.
+      </p>
+
+      
+      <h5>Before apply z-score</h5>
+      <div style="overflow-x: scroll" align="center" id = "up">
+            
+      </div>
+      <br>
+      <br>
+
+      <h5>After apply z-score</h5>
+      <div style="overflow-x: scroll" align="center" id = "down">
+              
+      </div>
+    
+
+      <div align="center" class="alert-sm alert-secondary">
+        <label>Status: {{message}} </label>
+      </div>
+
+    {% else %}
+    
+      <br>
+      <div align="center" class="alert-sm alert-success">
+        <label>Status: Sucess</label>
+      </div>
+          
+      <br>
+      <div align="center" class="alert-sm alert-info">
+        <label> <strong>Technique selected:</strong>  {{anwser}} </label>
+      </div>
+
+      <div class="mt-5">
+        <a class="btn btn-dark btn-lg" href="{{ url_for('feature_selection') }}">Next</a>
+      </div>
+      
+    {% endif %}
+
+    <script>
+      d3.text("{{path1|safe}}").then(function(datasetText) {
+      var rows  = d3.csvParseRows(datasetText), 
+          table = d3.select('#up').append('table')
+              .style("border-collapse", "collapse")
+              .style("border", "2px black solid");
+
+          // headers
+          table.append("thead").append("tr")
+          .selectAll("th")
+          .data(rows[0])
+          .enter().append("th")
+          .text(function(d) { return d; })
+          .style("border", "1px black solid")
+          .style("padding", "5px")
+          .style("background-color", "lightgray")
+          .style("font-weight", "bold")
+          .style("text-transform", "uppercase");
+
+          // data
+          table.append("tbody")
+          .selectAll("tr").data(rows.slice(1))
+          .enter().append("tr")
+          .selectAll("td")
+          .data(function(d){return d;})
+          .enter().append("td")
+          .style("border", "1px black solid")
+          .style("padding", "5px")
+          .on("mouseover", function(){
+          d3.select(this).style("background-color", "powderblue");
+          })
+          .on("mouseout", function(){
+          d3.select(this).style("background-color", "white");
+          })
+          .text(function(d){return d;})
+          .style("font-size", "12px");
+        });
+    </script>
+
+    <script>
+      d3.text("{{path2|safe}}").then(function(datasetText) {
+      var rows  = d3.csvParseRows(datasetText), 
+          table = d3.select('#down').append('table')
+              .style("border-collapse", "collapse")
+              .style("border", "2px black solid");
+
+          // headers
+          table.append("thead").append("tr")
+          .selectAll("th")
+          .data(rows[0])
+          .enter().append("th")
+          .text(function(d) { return d; })
+          .style("border", "1px black solid")
+          .style("padding", "5px")
+          .style("background-color", "lightgray")
+          .style("font-weight", "bold")
+          .style("text-transform", "uppercase");
+
+          // data
+          table.append("tbody")
+          .selectAll("tr").data(rows.slice(1))
+          .enter().append("tr")
+          .selectAll("td")
+          .data(function(d){return d;})
+          .enter().append("td")
+          .style("border", "1px black solid")
+          .style("padding", "5px")
+          .on("mouseover", function(){
+          d3.select(this).style("background-color", "powderblue");
+          })
+          .on("mouseout", function(){
+          d3.select(this).style("background-color", "white");
+          })
+          .text(function(d){return d;})
+          .style("font-size", "12px");
+          });
+    </script>
+  
+ 
+       
+  </div>  
+</div>
+{% endblock %}

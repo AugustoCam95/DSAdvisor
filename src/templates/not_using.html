@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block subtitulo %} Step 7 {% endblock %}
+
+{% block content%}
+<div class="card mb-6" align="center">
+  <div class="card-body">
+      <h3 class="card-title">Choose the type of problem</h3>
+      <p align = "justify">
+        In this section entitled "Choose the type of problem", we will talk a 
+        little about the problems that this tool aims to solve. As mentioned at 
+        the beginning, ML-TUTOR solves problems of a supervised learning character,
+        which can be described as the task of making a function that maps an input 
+        to an output based on an example input-output pair.
+      </p>
+
+      <img src="/static/logos/supervised.png" width="400" height="400">
+      <br>
+      <br>
+      <p align = "justify">
+        In supervised learning, each example is a pair consisting of an input 
+        object (usually a vector) and a desired output value (also called a 
+        supervision signal). A supervised learning algorithm analyzes training 
+        data and produces an inferred function, which can be used to map new 
+        examples. An ideal scenario will allow the algorithm to correctly 
+        determine class labels for invisible instances. This requires the 
+        learning algorithm to generalize the training data to situations not 
+        "reasonably" viewed. As shown in the figure above, the application focuses
+        on problems that the literature usually calls classification and regression 
+        problems. Below we have both options for you to select according to the 
+        dependent variable previously selected to define what type of problem you want
+        to address.
+      </p>
+      
+      {% if message == "Waiting for choice" %}
+      <form action="{{ url_for('type_problem') }}" method="POST" enctype=multipart/form-data>
+        
+        
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="radiobutton" id="Classification" value="Classification">
+          <label style="margin: 4%;" class="form-check-label" for="Classification">Classification</label>
+          <input class="form-check-input" type="radio" name="radiobutton" id="Regression" value="Regression">
+          <label style="margin: 4%;" class="form-check-label" for="Regression">Regression</label>
+        </div>
+        
+        
+        <div class="mt-3">
+          <button type="submit" class="btn  btn-primary">Confirm Option</button>
+        </div>
+        
+
+      </form>
+
+      <div class="mt-3">
+        {% if message == "Waiting for choice" %}
+            <h4 class="mt-3">Status: {{message}} </h4>
+        {% endif %}
+      </div>
+      {% else %}
+      <div class="mt-3">
+        {% if message == "Success to choice" %}
+            <h4 class="mt-3">Status: {{message}}  </h4>
+            <p>
+              Please note that the option "{{user_answer}}" was selected. 
+           </p>
+           <div class="mt-5">
+            <!-- <a class="btn btn-dark" href="{{ url_for('dependent_variable') }}">Back</a> -->
+            <a class="btn btn-dark btn-lg" href="{{ url_for('outlier_report') }}">Next</a>
+          </div>
+        {% endif %}
+      </div>
+      {% endif %}
+      
+      
+       
+       
+  </div>  
+</div>
+{% endblock %}

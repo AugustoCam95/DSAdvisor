@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+
+{% block subtitulo %} Choose Resample Techniques {% endblock %}
+
+{% block content%}
+<div class="card mb-6" align="center">
+  <div class="card-body">
+
+    {% if message == "Waiting for choice" %}
+      <h3  class="card-title">Resample Techniques</h3>
+      <div align="justify">
+        
+        <p>
+          Imbalanced datasets are those where there is a severe skew in the class distribution, such as 1:100 or 1:1000 examples
+          in the minority class to the majority class. This bias in the training dataset can influence many machine learning 
+          algorithms, leading some to ignore the minority class entirely. This is a problem as it is typically the minority 
+          class on which predictions are most important.
+        </p>
+        <p>
+          One approach to addressing the problem of class imbalance is to randomly resample the training dataset. The two main 
+          approaches to randomly resampling an imbalanced dataset are: 
+        </p>
+        <ul>
+          <li><strong>Undersampling:</strong> deletes examples from the majority class and can result in losing information 
+            invaluable to a model.</li>
+            <br>
+          <li><strong>Oversampling:</strong>duplicates examples from the minority class in the training dataset and can 
+            result in overfitting for some models.</li>
+        </ul>
+      </div>
+      
+      <div>
+
+        <h3>Which of the following techniques do you wanna choose?</h3>
+
+        <form action="{{ url_for('resemple_techniques') }}" method="POST" enctype=multipart/form-data>
+        
+        
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="radiobutton" id="oversampling" value="oversampling" checked>
+            <label style="margin: 4%;" class="form-check-label" for="oversampling">Oversampling</label>
+            <input class="form-check-input" type="radio" name="radiobutton" id="undersampling" value="undersampling">
+            <label style="margin: 4%;" class="form-check-label" for="undersampling"> Undersampling </label>
+            <input class="form-check-input" type="radio" name="radiobutton" id="without" value="without">
+            <label style="margin: 4%;" class="form-check-label" for="without"> Without resampling techniques </label>
+          </div>
+          
+          
+          <div class="mt-3">
+            <button type="submit" class="btn  btn-primary">Confirm Option</button>
+          </div>
+          
+  
+        </form>
+        
+      
+      </div>
+      
+      <br> 
+      <br> 
+
+      <h3>Before resampling</h3>
+      <div style="overflow-x: scroll" align="center" id = "up">  
+      </div>
+
+      <div align="center" class="alert-sm alert-secondary">
+        <label>Status: {{message}} </label>
+      </div>
+
+    {% else %}
+      <div class="mt-3">
+        
+
+        <div>
+          <label class="alert-sm alert-success" >Status: Success </label>
+        </div>    
+        <div align="center" class="alert-sm alert-info">
+          <label> <strong>Selected option:</strong>  {{resampling_choice}} </label>
+        </div>
+
+        <h5>After resampling</h5>
+        <div style="overflow-x: scroll" align="center" id = "down">  
+        </div>
+
+        <div class="mt-5">
+            <a class="btn btn-dark" href="{{ url_for('generate_models') }}">Next</a>
+        </div>
+        
+      </div>
+    {% endif %}  
+
+
+    <script>
+      d3.text("{{path1|safe}}").then(function(datasetText) {
+      var rows  = d3.csvParseRows(datasetText), 
+          table = d3.select('#up').append('table')
+              .style("border-collapse", "collapse")
+              .style("border", "2px black solid");
+
+          // headers
+          table.append("thead").append("tr")
+          .selectAll("th")
+          .data(rows[0])
+          .enter().append("th")
+          .text(function(d) { return d; })
+          .style("border", "1px black solid")
+          .style("padding", "5px")
+          .style("background-color", "lightgray")
+          .style("font-weight", "bold")
+          .style("text-transform", "uppercase");
+
+          // data
+          table.append("tbody")
+          .selectAll("tr").data(rows.slice(1))
+          .enter().append("tr")
+          .selectAll("td")
+          .data(function(d){return d;})
+          .enter().append("td")
+          .style("border", "1px black solid")
+          .style("padding", "5px")
+          .on("mouseover", function(){
+          d3.select(this).style("background-color", "powderblue");
+          })
+          .on("mouseout", function(){
+          d3.select(this).style("background-color", "white");
+          })
+          .text(function(d){return d;})
+          .style("font-size", "12px");
+        });
+    </script>
+
+    <script>
+      d3.text("{{path2|safe}}").then(function(datasetText) {
+      var rows  = d3.csvParseRows(datasetText), 
+          table = d3.select('#down').append('table')
+              .style("border-collapse", "collapse")
+              .style("border", "2px black solid");
+
+          // headers
+          table.append("thead").append("tr")
+          .selectAll("th")
+          .data(rows[0])
+          .enter().append("th")
+          .text(function(d) { return d; })
+          .style("border", "1px black solid")
+          .style("padding", "5px")
+          .style("background-color", "lightgray")
+          .style("font-weight", "bold")
+          .style("text-transform", "uppercase");
+
+          // data
+          table.append("tbody")
+          .selectAll("tr").data(rows.slice(1))
+          .enter().append("tr")
+          .selectAll("td")
+          .data(function(d){return d;})
+          .enter().append("td")
+          .style("border", "1px black solid")
+          .style("padding", "5px")
+          .on("mouseover", function(){
+          d3.select(this).style("background-color", "powderblue");
+          })
+          .on("mouseout", function(){
+          d3.select(this).style("background-color", "white");
+          })
+          .text(function(d){return d;})
+          .style("font-size", "12px");
+          });
+    </script>
+      
+       
+  </div>  
+</div>
+{% endblock %}
