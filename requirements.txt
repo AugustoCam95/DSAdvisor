@@ -54,7 +54,7 @@ notebook==6.0.3
 numba==0.49.0
 numpy==1.18.3
 packaging==20.3
-pandas==1.0.3
+pandas==1.1.0
 pandas-profiling==2.6.0
 pandocfilters==1.4.2
 parso==0.7.0

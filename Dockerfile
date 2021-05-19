@@ -9,9 +9,10 @@ RUN set -xe \
 # Copiar Requirements
 WORKDIR /DSAdvisor
 COPY ./requirements.txt /DSAdvisor/
+COPY ./src  /DSAdvisor/
 
 RUN pip3 install -r ./requirements.txt
 
 # Configuracao
 EXPOSE 5000
-
+CMD python3 app.py
