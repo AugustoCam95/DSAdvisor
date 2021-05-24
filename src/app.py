@@ -29,7 +29,7 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
-@app.route('/')
+@app.route('/', methods = [ "GET"])
 def index():
     delete.delete_trash()
     return render_template("index.html")
@@ -116,7 +116,7 @@ def filter_miss_values():
     return render_template("filter_miss_values.html", message = "Waiting for choice")
 
 
-@app.route('/descriptive_statistics')
+@app.route('/descriptive_statistics', methods = [ "GET"])
 def descriptive_statistics():
     dataset = dataframe
     string_set = dataframe
@@ -144,7 +144,7 @@ def descriptive_statistics():
 
     return render_template("descriptive_statistics.html", signal_1 = signal_1, signal_2 = signal_2, signal_3 = signal_3 ,filename = file_name, choices_miss = choices_miss, special_code = special_code)
 
-@app.route('/plot_variables')
+@app.route('/plot_variables', methods = [ "GET"])
 def plot_variables():
     lst = []
     temp1 = []
@@ -256,7 +256,7 @@ def distribution_analysis_part_2():
     return render_template("distribution_analysis_part_2.html", message = "Waiting for choice" , elements = lst, num = len(dataframe.columns))
 
 
-@app.route('/correlations')
+@app.route('/correlations', methods = [ "GET"])
 def correlations():
     df = dataframe
     string = dataframe
@@ -316,7 +316,7 @@ def problem_setup_part_1():
     return render_template("problem_setup_part_1.html", message = "Waiting for choice" ,columns = dataframe.columns)
 
 
-@app.route('/outlier_report')
+@app.route('/outlier_report', methods = [ "GET"])
 def outlier_report():
     boxplot_list = []
     boxplot_list = manipulate_csv.create_boxplots(X_train)
@@ -338,7 +338,7 @@ def outlier_report():
     return render_template("outlier_report.html", elements = lst , num = len(X_train.columns))
 
 
-@app.route('/table_outlier')
+@app.route('/table_outlier', methods = [ "GET"])
 def table_outlier():
     return render_template("table_outlier.html",  path1 ="static/samples/"+file_name+"outliers.csv")
 
@@ -404,25 +404,25 @@ def generate_models():
     return render_template("generate_models.html", message = "Waiting for choice", type_problem = type_problem)
 
 
-@app.route('/metrics')
+@app.route('/metrics', methods = [ "GET"])
 def metrics():
     global log_user_execution, dict_exec_models
     manipulate_csv.convertdict(log_user_execution)
     return render_template("metrics.html", dict_exec_models = dict_exec_models,  metrics = log_user_execution["metrics_list"])
 
-@app.route('/reproducibility')
+@app.route('/reproducibility', methods = [ "GET"])
 def reproducibility():
     return render_template("reproducibility.html")
 
-@app.route('/return_files_choices/')
+@app.route('/return_files_choices/', methods = [ "GET"])
 def return_files_choices():
 	return send_file('static/samples/AllConfigurations.txt', attachment_filename= file_name+'AllConfigurations.txt')
 
-@app.route('/return_files_train/')
+@app.route('/return_files_train/', methods = [ "GET"])
 def return_files_train():
 	return send_file('static/samples/'+file_name+'train_data.csv', attachment_filename= file_name+'train_data.csv')
 
-@app.route('/return_files_test/')
+@app.route('/return_files_test/', methods = [ "GET"])
 def return_files_test():
 	return send_file('static/samples/'+file_name+'test_data.csv', attachment_filename= file_name+'test_data.csv')
 
