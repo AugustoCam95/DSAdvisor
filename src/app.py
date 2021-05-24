@@ -29,7 +29,8 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
-@app.route('/', methods = [ "GET"])
+@app.route('/')
+@app.route('/index/')
 def index():
     delete.delete_trash()
     return render_template("index.html")
