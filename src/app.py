@@ -26,11 +26,9 @@ app.config['ALLOWED_EXTENSIONS'] = 'csv'
 
 
 def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
 @app.route('/')
-@app.route('/index/')
 def index():
     delete.delete_trash()
     return render_template("index.html")
@@ -429,5 +427,5 @@ def return_files_test():
 
 
 if __name__ == "__main__":    
-    app.run(debug=True)
-
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
