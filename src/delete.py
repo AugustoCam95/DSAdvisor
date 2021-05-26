@@ -9,7 +9,7 @@ def delete_trash():
     # if "output.zip" in os.listdir():
     #     os.remove("output.zip")
 
-    #remover arquivos csv's
+    #Remover arquivos csv's
     os.chdir("static/samples")
     folder1 = os.listdir()
     for i in range(len(folder1)):
@@ -33,10 +33,3 @@ def delete_trash():
     #     print(folder3[i] + " removed !")
     # os.chdir(start_point)
 
-    
-
-    
-
-    
-
-   
