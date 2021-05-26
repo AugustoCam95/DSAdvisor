@@ -10,7 +10,7 @@ def delete_trash():
     #     os.remove("output.zip")
 
     #Remover arquivos csv's
-    os.chdir("static/samples")
+    os.chdir("./static/samples")
     folder1 = os.listdir()
     for i in range(len(folder1)):
         if ".csv" in folder1[i]:
@@ -18,7 +18,7 @@ def delete_trash():
     os.chdir(start_point)
 
     #Remove csv's da dataset
-    os.chdir("static/uploads/dataset")
+    os.chdir("./static/uploads/dataset")
     folder2 = os.listdir()
     for i in range(len(folder2)):
         if ".csv" in folder2[i]:
