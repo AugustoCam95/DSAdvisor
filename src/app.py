@@ -238,7 +238,6 @@ def distribution_analysis_part_2():
     aux3 = manipulate_csv.best_fit(dist_names,df)
     aux4 = manipulate_csv.all_normal_tests(df)[0]
     aux5 = manipulate_csv.all_normal_tests(df)[1]
-    aux6 = manipulate_csv.all_normal_tests(df)[2]
     list_plots = manipulate_csv.generate_plots(aux3,df)
     lst = []
     for i in range(len(list_plots)):
@@ -246,8 +245,7 @@ def distribution_analysis_part_2():
         d['name'] = aux[i]
         d['test'] = aux2[i]
         d['shap'] = aux4[i]
-        d['von'] = aux5[i]
-        d['lillie'] = aux6[i] 
+        d['lillie'] = aux5[i] 
         d['best_fit'] = aux3[i].upper()
         d['base64'] = list_plots[i]
         lst.append(d)
@@ -428,4 +426,5 @@ def return_files_test():
 
 if __name__ == "__main__":    
     port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port, debug= True)
+    

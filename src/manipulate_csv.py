@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 import scipy.stats as st
 import statsmodels.api as sm
-from skgof import cvm_test
+# from skgof import cvm_test
 from scipy import stats
 from collections import Counter
 from dython.nominal import associations
@@ -94,13 +94,13 @@ def shapiro_test(data):
     else:
         return 'Sample does not look Gaussian (reject H0)'    
 
-def von_misses(data):
-    p = cvm_test(data, "norm").pvalue
-    alpha = 0.05
-    if p > alpha:
-        return 'Sample looks Gaussian (fail to reject H0)'
-    else:
-        return 'Sample does not look Gaussian (reject H0)'
+# def von_misses(data):
+#     p = cvm_test(data, "norm").pvalue
+#     alpha = 0.05
+#     if p > alpha:
+#         return 'Sample looks Gaussian (fail to reject H0)'
+#     else:
+#         return 'Sample does not look Gaussian (reject H0)'
 
 def lillierfos_test(data):
     D,p = sm.stats.diagnostic.lilliefors(data, dist="norm")
@@ -141,12 +141,11 @@ def kolmogorov_test(data, dist_names):
 def all_normal_tests(dataset):
     column1  = []
     column2  = []
-    column3  = []
     for col in dataset.columns:
         column1.append(shapiro_test(dataset[col]))
-        column2.append(von_misses(dataset[col]))
-        column3.append(lillierfos_test(dataset[col]))
-    return column1,column2,column3
+        # column2.append(von_misses(dataset[col]))
+        column2.append(lillierfos_test(dataset[col]))
+    return column1,column2
 
 def best_fit(dist_names,dataset):
     column  = []

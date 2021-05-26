@@ -98,13 +98,11 @@
       <div style="border-bottom: 5px solid black;">  
           <h4 class="mt-5">Column: {{dict_item['name']}}</h4>
         {% if dict_item['test'] == 0 %}
-          <p>Using the <strong>Cramér–von Mises test</strong>: {{dict_item['von']}}</p>
           <p>Using the <strong>D'Agostino's K-squared test</strong>: Sample looks Gaussian (fail to reject H0)</p>
           <p>Using the <strong>Lilliefors test</strong>: {{dict_item['lillie']}}</p>
           <p>Using the <strong>Shapiro-Wilk test</strong>: {{dict_item['shap']}}</p>
           <p>Using the <strong>Kolmogorov-Smirnov test</strong>, the best fit for this distribution is: {{dict_item['best_fit']}}</p>
         {%else%}
-          <p>Using the <strong>Cramér–von Mises test</strong>: {{dict_item['von']}}</p>
           <p>Using the <strong>D'Agostino's K-squared test</strong>: Sample does not look Gaussian (reject H0)</p>
           <p>Using the <strong>Lilliefors test</strong>: {{dict_item['lillie']}}</p>
           <p>Using the <strong>Shapiro-Wilk test</strong>: {{dict_item['shap']}}</p>
