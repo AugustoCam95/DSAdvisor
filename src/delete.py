@@ -1,5 +1,6 @@
 import os
 import shutil
+import platform
 
 def delete_trash():
     #path da pasta raiz salvo
@@ -10,7 +11,7 @@ def delete_trash():
     #     os.remove("output.zip")
 
     #Remover arquivos csv's
-    os.chdir(start_point+"/src/static/samples")
+    os.chdir(os.path.join(start_point,"static","samples"))
     folder1 = os.listdir()
     for i in range(len(folder1)):
         if ".csv" in folder1[i]:
@@ -18,7 +19,7 @@ def delete_trash():
     os.chdir(start_point)
 
     #Remove csv's da dataset
-    os.chdir(start_point+"/src/static/uploads/dataset")
+    os.chdir(os.path.join(start_point,"static","uploads","dataset"))
     folder2 = os.listdir()
     for i in range(len(folder2)):
         if ".csv" in folder2[i]:

@@ -1,9 +1,5 @@
 import os
 import pandas as pd
-import numpy as np
-# import jupyter
-import io
-import re
 import delete
 # import statistics
 import warnings
@@ -176,14 +172,14 @@ def plot_variables():
 
 
 lazy_dist = ['crystalball', 'johnsonsb', 'burr', 'fisk', 'exponweib', 'powerlognorm', 'johnsonsu',
-                 'kappa4', 'vonmises_line', 'vonmises', 'ncx2', 'gausshyper', 'argus', 'genexpon',
-                 'ncf', 'genextreme', 'gengamma', 'kappa3', 'ksone', 'skewnorm', 'powernorm', 'trapz',
-                 'burr12', 'kstwobign', 'exponpow', 'halfgennorm', 'gompertz', 'triang', 'genhalflogistic', 
-                 'mielke', 'rice']
+                'kappa4', 'vonmises_line', 'vonmises', 'ncx2', 'gausshyper', 'argus', 'genexpon',
+                'ncf', 'genextreme', 'gengamma', 'kappa3', 'ksone', 'skewnorm', 'powernorm', 'trapz',
+                'burr12', 'kstwobign', 'exponpow', 'halfgennorm', 'gompertz', 'triang', 'genhalflogistic', 
+                'mielke', 'rice']
 
 not_lazy = ['alpha', 'anglit', 'arcsine', 'beta', 'betaprime', 'bradford', 'cauchy', 'chi', 'chi2',
                 'cosine','dgamma',  'dweibull', 'erlang', 'expon', 'exponnorm', 'f', 'fatiguelife', 'foldcauchy',
-                'foldnorm', 'frechet_l', 'frechet_r', 'gamma', 'genlogistic', 'gennorm', 'genpareto', 'gilbrat',
+                'foldnorm', 'gamma', 'genlogistic', 'gennorm', 'genpareto', 'gilbrat',
                 'gumbel_l', 'gumbel_r', 'halfcauchy', 'halflogistic', 'halfnorm', 'hypsecant', 'invgamma',
                 'invweibull', 'laplace', 'levy', 'levy_l', 'loggamma', 'logistic', 'loglaplace', 'lognorm',
                 'loguniform', 'lomax', 'maxwell', 'moyal', 'nakagami', 'norm', 'pareto', 'pearson3',

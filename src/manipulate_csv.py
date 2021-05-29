@@ -6,19 +6,16 @@ from io import BytesIO
 
 import numpy as np
 import pandas as pd
-import scipy.stats as st
 import statsmodels.api as sm
-# from skgof import cvm_test
-from scipy import stats
 from collections import Counter
 from dython.nominal import associations
 from statsmodels.stats.stattools import medcouple 
+import scipy.stats as st
+from scipy import stats
 import scipy.stats as ss
 
 import matplotlib.pyplot as plt
 import seaborn as sns
-from matplotlib import cm
-from pylab import savefig
 
 #-----------------------------------------------------------------------------------------------
 #------------------Feature Selection - Filter Methods-------------------------------------------
@@ -71,7 +68,7 @@ from imblearn.over_sampling import RandomOverSampler
 #-----------------------------------------------------------------------------------------------
 #------------------Support_For_Models-----------------------------------------------------------
 #-----------------------------------------------------------------------------------------------
-from sklearn.model_selection import train_test_split, GridSearchCV, RandomizedSearchCV, KFold 
+from sklearn.model_selection import train_test_split, RandomizedSearchCV, KFold 
 from sklearn.preprocessing import MinMaxScaler, StandardScaler 
 from sklearn import preprocessing
 from imblearn.pipeline import Pipeline, make_pipeline
@@ -79,7 +76,7 @@ from imblearn.pipeline import Pipeline, make_pipeline
 def make_dataset(dataset,text):
     start_point = os.getcwd()
     os.chdir(start_point)
-    os.chdir("static/samples")
+    os.chdir(os.path.join(start_point,"static","samples"))
     aux = dataset.head(n = 10)
     aux.to_csv(text+".csv", index = False, na_rep="Nan")
     dataset.to_csv(text+"dataset.csv", index = False, na_rep="Nan")
@@ -93,14 +90,6 @@ def shapiro_test(data):
         return 'Sample looks Gaussian (fail to reject H0)'
     else:
         return 'Sample does not look Gaussian (reject H0)'    
-
-# def von_misses(data):
-#     p = cvm_test(data, "norm").pvalue
-#     alpha = 0.05
-#     if p > alpha:
-#         return 'Sample looks Gaussian (fail to reject H0)'
-#     else:
-#         return 'Sample does not look Gaussian (reject H0)'
 
 def lillierfos_test(data):
     D,p = sm.stats.diagnostic.lilliefors(data, dist="norm")
@@ -233,7 +222,6 @@ def categorical_plots(df):
         # converte em base 64
         graphic = base64.b64encode(image_png)
         graphic = graphic.decode('utf-8')
-
         pie_images.append(graphic)
         plt.clf()
 
@@ -248,10 +236,9 @@ def categorical_plots(df):
         buffer.close()
         plt.close()
 
-        # converte em base 64
+        # converte em base 64 e adiciona
         graphic = base64.b64encode(image_png)
         graphic = graphic.decode('utf-8')
-
         bar_cat_images.append(graphic)
         plt.clf()    
     
@@ -276,13 +263,10 @@ def discrete_plots(df):
         buffer.close()
         plt.close()
 
-        # converte em base 64
+        # converte em base 64 e adiciona
         graphic = base64.b64encode(image_png)
         graphic = graphic.decode('utf-8')
-
         list_images.append(graphic)
-
-        plt.clf()
     
     return list_images
 
@@ -316,13 +300,12 @@ def generate_plots(dist_list,df):
         buffer.close()
         plt.close()
 
-        # converte em base 64
+        # converte em base 64 e adiciona
         graphic = base64.b64encode(image_png)
         graphic = graphic.decode('utf-8')
-
         list_plots.append(graphic)
+        
 
-        plt.clf()
     return list_plots
     
 
@@ -340,7 +323,7 @@ def plot_cf_matrix(cf_matrix):
     labels = np.asarray(labels).reshape(2,2)
 
     plt.figure(figsize=(15,10))
- 
+
     ax = sns.heatmap(cf_matrix, annot=labels, fmt="", cmap='Blues')
 
     ax.set(title="Confusion Matrix",
@@ -360,7 +343,6 @@ def plot_cf_matrix(cf_matrix):
     # converte em base 64
     graphic = base64.b64encode(image_png)
     graphic = graphic.decode('utf-8')
-
     plt.clf()
 
     return graphic
@@ -386,7 +368,6 @@ def plot_roc_curve( fpr, tpr):
     # converte em base 64
     graphic = base64.b64encode(image_png)
     graphic = graphic.decode('utf-8')
-
     plt.clf()
 
     return graphic
@@ -433,7 +414,7 @@ def generate_correlations_pearson(dataframe,text):
     df = dataframe
     for col in df.columns:
         if df[col].dtypes == 'float64' or df[col].dtypes == 'int64' :
-           pass
+            pass
         else:
             df = df.drop( columns = [col])
     sns.set(style='white', font_scale=1.6)
@@ -456,7 +437,7 @@ def generate_correlations_pearson(dataframe,text):
     # Add titles to the diagonal axes/subplots
     for ax, col in zip(np.diag(g.axes), df.columns):
         ax.set_title(col, y=0.82, fontsize=26)
-   
+
     # bufferiza a imagem
     buffer = BytesIO()
     plt.savefig(buffer, format='png')
@@ -470,7 +451,7 @@ def generate_correlations_pearson(dataframe,text):
     graphic = graphic.decode('utf-8')
 
     return graphic
-   
+
 
 def generate_correlations_spearman(dataframe, text):
     df = dataframe
@@ -540,7 +521,7 @@ def corr_cramer_v(data,text):
 
 def sample_csv(dataframe,text):
     start_point = os.getcwd()
-    os.chdir("static/samples")
+    os.chdir(os.path.join(start_point,"static","samples"))
     df = dataframe
     # creation of datatypes.csv
     df_datatypes = pd.DataFrame(df.dtypes)
@@ -591,11 +572,9 @@ def sample_csv(dataframe,text):
 
 def miss_value(code, special, df, text):
     start_point = os.getcwd()
-    os.chdir("static/samples")
-    # print("Inside  miss_value function:",code)
+    os.chdir(os.path.join(start_point,"static","samples"))
 
     if "nan" in code:
-        # print("True NAN PASS")
         sum_of_nulls = df.isnull().sum()
         sum_of_nulls.to_csv("temp1.csv", na_rep="Nan")
         temp1 = pd.read_csv("temp1.csv", names = ["Columns","Count of miss values"], keep_default_na=False)
@@ -653,7 +632,7 @@ def split_and_norm(choiced,df, text, test_percent):
             df[col] = le.fit_transform(df[col])
     dataset = df.drop(columns= [choiced])
     label = df[[choiced]]
-    os.chdir("static/samples")
+    os.chdir(os.path.join(start_point,"static","samples"))
     X_train, X_test, y_train, y_test = train_test_split(dataset, label, test_size = test_percent)
     ### Train set
     train_set = X_train.copy()
@@ -676,7 +655,7 @@ def split_and_norm(choiced,df, text, test_percent):
 def drop_col(not_drop, dataframe, text):
     start_point = os.getcwd()
     df = dataframe
-    os.chdir("static/samples")
+    os.chdir(os.path.join(start_point,"static","samples"))
     if len(not_drop)>0:
         df = df.drop(columns = not_drop)
         df.to_csv(text+"dataset.csv", index = False, na_rep="Nan")
@@ -755,7 +734,7 @@ def adjust_iqr(df, text):
     new_df2 = new_df2[col]
     new_df2 = new_df2.replace(np.nan,"")
     start_point = os.getcwd()
-    os.chdir("static/samples")
+    os.chdir(os.path.join(start_point,"static","samples"))
     new_df2.to_csv(text+"outliers.csv", index = False)
     os.chdir(start_point)
 
@@ -785,10 +764,8 @@ def create_boxplots(df):
         # converte em base 64
         graphic = base64.b64encode(image_png)
         graphic = graphic.decode('utf-8')
-
         boxplot_list.append(graphic)
 
-        plt.clf()
     return boxplot_list
 
         
@@ -798,7 +775,7 @@ def before_reasample(target,text):
     min_value = min(counter.items(), key=lambda x: x[1])[1]
     max_value = max(counter.items(), key=lambda x: x[1])[1]
     start_point = os.getcwd()
-    os.chdir("static/samples")
+    os.chdir(os.path.join(start_point,"static","samples"))
     with open(text+'_before.csv', mode='w') as csv_file:
         fieldnames = ['Class', 'Count', 'Percentage']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
@@ -807,6 +784,7 @@ def before_reasample(target,text):
             per = round(v / len(target) * 100, 2)
             writer.writerow({'Class': k, 'Count': v, 'Percentage': per})
     os.chdir(start_point)
+
     return min_value, max_value
 
 from imblearn.under_sampling import RandomUnderSampler
@@ -815,10 +793,10 @@ def after_undersampling(dataset,labels,text):
     rus = RandomUnderSampler(random_state=0)
     data = dataset.values
     target = labels.values
-    x_res, y_res = rus.fit_sample(data, target)
+    x_res, y_res = rus.fit_resample(data, target)
     counter = Counter(y_res)
     start_point = os.getcwd()
-    os.chdir("static/samples")
+    os.chdir(os.path.join(start_point,"static","samples"))
     with open(text+'_after_under.csv', mode='w') as csv_file:
         fieldnames = ['Class', 'Count', 'Percentage']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
@@ -833,10 +811,10 @@ def after_oversampling(dataset,labels,text):
     ros = RandomOverSampler(random_state=0)
     data = dataset.values
     target = labels.values
-    x_res, y_res = ros.fit_sample(data, target)
+    x_res, y_res = ros.fit_resample(data, target)
     counter = Counter(y_res)
     start_point = os.getcwd()
-    os.chdir("static/samples")
+    os.chdir(os.path.join(start_point,"static","samples"))
     with open(text+'_after_over.csv', mode='w') as csv_file:
         fieldnames = ['Class', 'Count', 'Percentage']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
@@ -869,7 +847,7 @@ def create_table_feature_selection(dataset, labels, type_problem, text):
     feature_ranking["Sum"] = feature_ranking.sum(axis=1)
     feature_ranking = feature_ranking.sort_values(by=['Sum'], ascending = False)
     start_point = os.getcwd()
-    os.chdir("static/samples")
+    os.chdir(os.path.join(start_point,"static","samples"))
     feature_ranking.to_csv(text+"_fs.csv")
     os.chdir(start_point)
     count = 0
@@ -886,7 +864,7 @@ def create_table_feature_selection(dataset, labels, type_problem, text):
 
 def filter_on_feature_selection(col_to_remove, text):
     start_point = os.getcwd()
-    os.chdir("static/samples")
+    os.chdir(os.path.join(start_point,"static","samples"))
     dataframe1 = pd.read_csv(text+"train_data.csv", keep_default_na=False)
     dataframe3 = pd.read_csv(text+"test_data.csv", keep_default_na=False)
     
@@ -907,11 +885,10 @@ def generate_models(X, y, log_user_execution):
     list_algs = []
     norm_list = [MinMaxScaler(), StandardScaler()]
     resample_list = [ RandomUnderSampler(random_state=42), SMOTE(random_state=42)]
-    list_alg_clas = [ GaussianNB(), SVC(), KNeighborsClassifier(), LogisticRegression(), tree.DecisionTreeClassifier(), MLPClassifier(), GaussianProcessClassifier(), LinearDiscriminantAnalysis(), QuadraticDiscriminantAnalysis()]
-    list_alg_reg = [linear_model.LinearRegression(), tree.DecisionTreeRegressor(), MLPRegressor(), SVR(), GaussianProcessRegressor()]
+    # list_alg_clas = [ GaussianNB(), SVC(), KNeighborsClassifier(), LogisticRegression(), tree.DecisionTreeClassifier(), MLPClassifier(), GaussianProcessClassifier(), LinearDiscriminantAnalysis(), QuadraticDiscriminantAnalysis()]
+    # list_alg_reg = [linear_model.LinearRegression(), tree.DecisionTreeRegressor(), MLPRegressor(), SVR(), GaussianProcessRegressor()]
 
     alg_list_string = log_user_execution["predictive_alg_list"]
-   
 
     if log_user_execution["problem_type"] == "Classification":
         score = "accuracy"
@@ -1003,7 +980,7 @@ def main_framework_with_resample(X, y, normalization, resample, test_size_percen
     
     for i in range(42,43):
         
-        kf = KFold( n_splits = 5, random_state = i)
+        kf = KFold( n_splits = 5, shuffle = True)
 
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = test_size_percent, random_state = i)
         
@@ -1022,7 +999,7 @@ def main_framework_without_resample(X, y, normalization, test_size_percent, scor
     
     for i in range(42,43):
         
-        kf = KFold( n_splits = 5, random_state = i)
+        kf = KFold( n_splits = 5, shuffle = True)
 
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = test_size_percent, random_state = i)
         
@@ -1040,7 +1017,7 @@ def main_framework_without_resample(X, y, normalization, test_size_percent, scor
 # CONVERT DICT IN TEXT DATA
 def convertdict(log_user_execution):
     start_point = os.getcwd()
-    os.chdir("static/samples")
+    os.chdir(os.path.join(start_point,"static","samples"))
 
     f = open("AllConfigurations.txt", "w")
     f.write("    ALL THE CHOICES MADE:\n")
