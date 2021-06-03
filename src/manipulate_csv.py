@@ -75,7 +75,7 @@ from imblearn.pipeline import Pipeline, make_pipeline
 
 def make_dataset(dataset,text):
     start_point = os.getcwd()
-    os.chdir(os.path.join("static","samples"))
+    os.chdir(os.path.join("src","static","samples"))
     aux = dataset.head(n = 10)
     aux.to_csv(text+".csv", index = False, na_rep="Nan")
     dataset.to_csv(text+"dataset.csv", index = False, na_rep="Nan")
