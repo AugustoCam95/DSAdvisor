@@ -75,7 +75,7 @@ from imblearn.pipeline import Pipeline, make_pipeline
 
 def make_dataset(dataset,text):
     start_point = os.getcwd()
-    os.chdir(os.path.join("src","static","samples"))
+    os.chdir(os.path.join("static","samples"))
     aux = dataset.head(n = 10)
     aux.to_csv(text+".csv", index = False, na_rep="Nan")
     dataset.to_csv(text+"dataset.csv", index = False, na_rep="Nan")
@@ -509,7 +509,7 @@ def corr_cramer_v(data,text):
 
 def sample_csv(dataframe,text):
     start_point = os.getcwd()
-    os.chdir(os.path.join("src","static","samples"))
+    os.chdir(os.path.join("static","samples"))
     df = dataframe
     # creation of datatypes.csv
     df_datatypes = pd.DataFrame(df.dtypes)
@@ -559,7 +559,7 @@ def sample_csv(dataframe,text):
 
 def miss_value(code, special, df, text):
     start_point = os.getcwd()
-    os.chdir(os.path.join("src","static","samples"))
+    os.chdir(os.path.join("static","samples"))
 
     if "nan" in code:
         sum_of_nulls = df.isnull().sum()
@@ -619,7 +619,7 @@ def split_and_norm(choiced,df, text, test_percent):
             df[col] = le.fit_transform(df[col])
     dataset = df.drop(columns= [choiced])
     label = df[[choiced]]
-    os.chdir(os.path.join("src","static","samples"))
+    os.chdir(os.path.join("static","samples"))
     X_train, X_test, y_train, y_test = train_test_split(dataset, label, test_size = test_percent)
     ### Train set
     train_set = X_train.copy()
@@ -642,7 +642,7 @@ def split_and_norm(choiced,df, text, test_percent):
 def drop_col(not_drop, dataframe, text):
     start_point = os.getcwd()
     df = dataframe
-    os.chdir(os.path.join("src","static","samples"))
+    os.chdir(os.path.join("static","samples"))
     if len(not_drop)>0:
         df = df.drop(columns = not_drop)
         df.to_csv(text+"dataset.csv", index = False, na_rep="Nan")
@@ -721,7 +721,7 @@ def adjust_iqr(df, text):
     new_df2 = new_df2[col]
     new_df2 = new_df2.replace(np.nan,"")
     start_point = os.getcwd()
-    os.chdir(os.path.join("src","static","samples"))
+    os.chdir(os.path.join("static","samples"))
     new_df2.to_csv(text+"outliers.csv", index = False)
     os.chdir(start_point)
 
@@ -762,7 +762,7 @@ def before_reasample(target,text):
     min_value = min(counter.items(), key=lambda x: x[1])[1]
     max_value = max(counter.items(), key=lambda x: x[1])[1]
     start_point = os.getcwd()
-    os.chdir(os.path.join("src","static","samples"))
+    os.chdir(os.path.join("static","samples"))
     with open(text+'_before.csv', mode='w') as csv_file:
         fieldnames = ['Class', 'Count', 'Percentage']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
@@ -783,7 +783,7 @@ def after_undersampling(dataset,labels,text):
     x_res, y_res = rus.fit_resample(data, target)
     counter = Counter(y_res)
     start_point = os.getcwd()
-    os.chdir(os.path.join("src","static","samples"))
+    os.chdir(os.path.join("static","samples"))
     with open(text+'_after_under.csv', mode='w') as csv_file:
         fieldnames = ['Class', 'Count', 'Percentage']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
@@ -801,7 +801,7 @@ def after_oversampling(dataset,labels,text):
     x_res, y_res = ros.fit_resample(data, target)
     counter = Counter(y_res)
     start_point = os.getcwd()
-    os.chdir(os.path.join("src","static","samples"))
+    os.chdir(os.path.join("static","samples"))
     with open(text+'_after_over.csv', mode='w') as csv_file:
         fieldnames = ['Class', 'Count', 'Percentage']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
@@ -834,7 +834,7 @@ def create_table_feature_selection(dataset, labels, type_problem, text):
     feature_ranking["Sum"] = feature_ranking.sum(axis=1)
     feature_ranking = feature_ranking.sort_values(by=['Sum'], ascending = False)
     start_point = os.getcwd()
-    os.chdir(os.path.join("src","static","samples"))
+    os.chdir(os.path.join("static","samples"))
     feature_ranking.to_csv(text+"_fs.csv")
     os.chdir(start_point)
     count = 0
@@ -851,7 +851,7 @@ def create_table_feature_selection(dataset, labels, type_problem, text):
 
 def filter_on_feature_selection(col_to_remove, text):
     start_point = os.getcwd()
-    os.chdir(os.path.join("src","static","samples"))
+    os.chdir(os.path.join("static","samples"))
     dataframe1 = pd.read_csv(text+"train_data.csv", keep_default_na=False)
     dataframe3 = pd.read_csv(text+"test_data.csv", keep_default_na=False)
     
@@ -1004,7 +1004,7 @@ def main_framework_without_resample(X, y, normalization, test_size_percent, scor
 # CONVERT DICT IN TEXT DATA
 def convertdict(log_user_execution):
     start_point = os.getcwd()
-    os.chdir(os.path.join("src","static","samples"))
+    os.chdir(os.path.join("static","samples"))
 
     f = open("AllConfigurations.txt", "w")
     f.write("    ALL THE CHOICES MADE:\n")

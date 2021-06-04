@@ -12,7 +12,7 @@ warnings.filterwarnings('ignore')
 
 delete.delete_trash()
 
-UPLOAD_FOLDER = 'src/static/uploads/dataset'
+UPLOAD_FOLDER = 'static/uploads/dataset'
 
 app = Flask(__name__)
 app.jinja_env.filters['zip'] = zip
@@ -59,7 +59,7 @@ def upload_csv():
             # statistics.statistics_Creator(file.filename)
             # jupyter.jupyter_Creator()
             # zip.create_zip()
-            dataframe = pd.read_csv("src/static/uploads/dataset/"+filename, index_col=False, keep_default_na=False)
+            dataframe = pd.read_csv("static/uploads/dataset/"+filename, index_col=False, keep_default_na=False)
             manipulate_csv.make_dataset(dataframe,file_name)
             columns = dataframe.columns
             if len(columns) == 0:
