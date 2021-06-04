@@ -14,17 +14,17 @@ delete.delete_trash()
 
 UPLOAD_FOLDER = 'static/uploads/dataset'
 
-app = Flask(__name__)
-app.jinja_env.filters['zip'] = zip
-app.config["SECRET_KEY"] = 'secret'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['ALLOWED_EXTENSIONS'] = 'csv'
+application = Flask(__name__)
+application.jinja_env.filters['zip'] = zip
+application.config["SECRET_KEY"] = 'secret'
+application.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+application.config['ALLOWED_EXTENSIONS'] = 'csv'
 
 
 def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in application.config['ALLOWED_EXTENSIONS']
 
-@app.route('/')
+@application.route('/')
 def index():
     delete.delete_trash()
     return render_template("index.html")
@@ -33,7 +33,7 @@ log_user_execution = {}
 file_name = None
 dataframe = None
 
-@app.route('/upload_csv', methods = [ "GET", "POST"])
+@application.route('/upload_csv', methods = [ "GET", "POST"])
 def upload_csv():
     delete.delete_trash()
     global log_user_execution
@@ -71,7 +71,7 @@ def upload_csv():
         
     return render_template("upload_csv.html", message = "Waiting for upload")
 
-@app.route('/check_variables_type', methods = ["GET", "POST"])
+@application.route('/check_variables_type', methods = ["GET", "POST"])
 def check_variables_type():
     if request.method == "POST":
         global dataframe
@@ -86,7 +86,7 @@ def check_variables_type():
 choices_miss = None
 special_code = None
 
-@app.route('/filter_miss_values', methods = [ "GET", "POST"])
+@application.route('/filter_miss_values', methods = [ "GET", "POST"])
 def filter_miss_values():
     if request.method == "POST":
         global choices_miss
@@ -111,7 +111,7 @@ def filter_miss_values():
     return render_template("filter_miss_values.html", message = "Waiting for choice")
 
 
-@app.route('/descriptive_statistics', methods = [ "GET"])
+@application.route('/descriptive_statistics', methods = [ "GET"])
 def descriptive_statistics():
     dataset = dataframe
     string_set = dataframe
@@ -139,7 +139,7 @@ def descriptive_statistics():
 
     return render_template("descriptive_statistics.html", signal_1 = signal_1, signal_2 = signal_2, signal_3 = signal_3 ,filename = file_name, choices_miss = choices_miss, special_code = special_code)
 
-@app.route('/plot_variables', methods = [ "GET"])
+@application.route('/plot_variables', methods = [ "GET"])
 def plot_variables():
     lst = []
     temp1 = []
@@ -188,7 +188,7 @@ not_lazy = ['alpha', 'anglit', 'arcsine', 'beta', 'betaprime', 'bradford', 'cauc
 
 dist_names = None
 
-@app.route('/distribution_analysis_part_1', methods = [ "GET", "POST"])
+@application.route('/distribution_analysis_part_1', methods = [ "GET", "POST"])
 def distribution_analysis_part_1():
     if request.method == "POST":
         dist_list = request.form.getlist("checkbox")
@@ -204,7 +204,7 @@ def distribution_analysis_part_1():
 
 
 user_choice_dist = None
-@app.route('/distribution_analysis_part_2',  methods = [ "GET", "POST"])
+@application.route('/distribution_analysis_part_2',  methods = [ "GET", "POST"])
 def distribution_analysis_part_2():
     if request.method == "POST":
         global user_choice_dist 
@@ -249,7 +249,7 @@ def distribution_analysis_part_2():
     return render_template("distribution_analysis_part_2.html", message = "Waiting for choice" , elements = lst, num = len(dataframe.columns))
 
 
-@app.route('/correlations', methods = [ "GET"])
+@application.route('/correlations', methods = [ "GET"])
 def correlations():
     df = dataframe
     string = dataframe
@@ -292,7 +292,7 @@ X_train =  None
 y_train = None   
 X = None 
 y = None
-@app.route('/problem_setup_part_1', methods = [ "GET", "POST"])
+@application.route('/problem_setup_part_1', methods = [ "GET", "POST"])
 def problem_setup_part_1():
     if request.method == "POST":
         global X_train, y_train, type_problem, log_user_execution, X, y 
@@ -308,7 +308,7 @@ def problem_setup_part_1():
     return render_template("problem_setup_part_1.html", message = "Waiting for choice" ,columns = dataframe.columns)
 
 
-@app.route('/outlier_report', methods = [ "GET"])
+@application.route('/outlier_report', methods = [ "GET"])
 def outlier_report():
     boxplot_list = []
     boxplot_list = manipulate_csv.create_boxplots(X_train)
@@ -330,13 +330,13 @@ def outlier_report():
     return render_template("outlier_report.html", elements = lst , num = len(X_train.columns))
 
 
-@app.route('/table_outlier', methods = [ "GET"])
+@application.route('/table_outlier', methods = [ "GET"])
 def table_outlier():
     return render_template("table_outlier.html",  path1 ="static/samples/"+file_name+"outliers.csv")
 
 
 list_col = None
-@app.route('/normalization', methods = [ "GET", "POST"])
+@application.route('/normalization', methods = [ "GET", "POST"])
 def normalization():
     if request.method == "POST":
         global list_col, log_user_execution
@@ -347,7 +347,7 @@ def normalization():
     return render_template("normalization.html", message = "Waiting for choice", path1 ="static/samples/"+file_name+".csv", path2 ="static/samples/"+file_name+"train_norm_data20.csv"  )
 
 
-@app.route('/feature_selection', methods = [ "GET", "POST"] )
+@application.route('/feature_selection', methods = [ "GET", "POST"] )
 def feature_selection():
     if request.method == "POST":
         global log_user_execution
@@ -359,7 +359,7 @@ def feature_selection():
     return render_template("feature_selection.html", message = "Waiting for choice", filename = file_name, variables = list(set(X_train.columns) - set(list_col)), list_col = list_col)
 
 
-@app.route('/resemple_techniques', methods = [ "GET", "POST"])
+@application.route('/resemple_techniques', methods = [ "GET", "POST"])
 def resemple_techniques():
     global log_user_execution, X_train, y_train
     manipulate_csv.before_reasample(y_train,file_name)
@@ -379,7 +379,7 @@ def resemple_techniques():
 
 
 dict_exec_models = None
-@app.route('/generate_models', methods = [ "GET", "POST"])
+@application.route('/generate_models', methods = [ "GET", "POST"])
 def generate_models():
     global type_problem, log_user_execution, X, y, dict_exec_models 
     if request.method == "POST":
@@ -396,30 +396,30 @@ def generate_models():
     return render_template("generate_models.html", message = "Waiting for choice", type_problem = type_problem)
 
 
-@app.route('/metrics', methods = [ "GET"])
+@application.route('/metrics', methods = [ "GET"])
 def metrics():
     global log_user_execution, dict_exec_models
     manipulate_csv.convertdict(log_user_execution)
     return render_template("metrics.html", dict_exec_models = dict_exec_models,  metrics = log_user_execution["metrics_list"])
 
-@app.route('/reproducibility', methods = [ "GET"])
+@application.route('/reproducibility', methods = [ "GET"])
 def reproducibility():
     return render_template("reproducibility.html")
 
-@app.route('/return_files_choices/', methods = [ "GET"])
+@application.route('/return_files_choices/', methods = [ "GET"])
 def return_files_choices():
 	return send_file('static/samples/AllConfigurations.txt', attachment_filename= file_name+'AllConfigurations.txt')
 
-@app.route('/return_files_train/', methods = [ "GET"])
+@application.route('/return_files_train/', methods = [ "GET"])
 def return_files_train():
 	return send_file('static/samples/'+file_name+'train_data.csv', attachment_filename= file_name+'train_data.csv')
 
-@app.route('/return_files_test/', methods = [ "GET"])
+@application.route('/return_files_test/', methods = [ "GET"])
 def return_files_test():
 	return send_file('static/samples/'+file_name+'test_data.csv', attachment_filename= file_name+'test_data.csv')
 
 
 if __name__ == "__main__":    
     port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port, debug= True)
+    application.run(host='0.0.0.0', port=port, debug= True)
     
