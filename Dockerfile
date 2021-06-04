@@ -9,7 +9,7 @@ RUN set -xe \
 # Copiar Requirements
 WORKDIR /DSAdvisor
 COPY ./requirements.txt /DSAdvisor/
-COPY ./src  /DSAdvisor/
+COPY ./DSAdvisor /DSAdvisor/
 
 RUN pip3 install -r ./requirements.txt
 

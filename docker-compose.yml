@@ -5,7 +5,7 @@ services:
     container_name: dsa
     build: .
     restart: always
-    command: python3 app.py
+    command: python3 application.py
     ports:
       - "5000:5000"
     volumes:
