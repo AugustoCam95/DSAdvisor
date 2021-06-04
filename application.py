@@ -282,7 +282,6 @@ def correlations():
                 df_norm = df_norm.drop(columns = col)                
         pearson_64 = manipulate_csv.generate_correlations_pearson(df_norm,file_name)
     
-    
     spearman_64 = manipulate_csv.generate_correlations_spearman(df,file_name)
     
     return render_template("correlations.html",  filename = file_name, signal_1 = signal_1, signal_2 = signal_2, cramer_64 = cramer_64, pearson_64 = pearson_64, spearman_64 = spearman_64)

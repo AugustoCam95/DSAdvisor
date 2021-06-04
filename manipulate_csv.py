@@ -330,7 +330,6 @@ def plot_cf_matrix(cf_matrix):
         ylabel="Class",)
 
     sns.set(font_scale=3)
-    
     # bufferiza a imagem
     buffer = BytesIO()
     plt.savefig(buffer, format='png')
@@ -338,14 +337,12 @@ def plot_cf_matrix(cf_matrix):
     image_png = buffer.getvalue()
     buffer.close()
     plt.close()
-
     # converte em base 64
     graphic = base64.b64encode(image_png)
     graphic = graphic.decode('utf-8')
     plt.clf()
 
     return graphic
-
 
 def plot_roc_curve( fpr, tpr):
     plt.figure(figsize=(15,10))
@@ -355,7 +352,6 @@ def plot_roc_curve( fpr, tpr):
     plt.ylabel('True Positive Rate', fontsize = 30)
     plt.title('Receiver Operating Characteristic (ROC) Curve', fontsize = 30)
     plt.legend()
-
     # bufferiza a imagem
     buffer = BytesIO()
     plt.savefig(buffer, format='png')
@@ -363,7 +359,6 @@ def plot_roc_curve( fpr, tpr):
     image_png = buffer.getvalue()
     buffer.close()
     plt.close()
-
     # converte em base 64
     graphic = base64.b64encode(image_png)
     graphic = graphic.decode('utf-8')
@@ -436,7 +431,6 @@ def generate_correlations_pearson(dataframe,text):
     # Add titles to the diagonal axes/subplots
     for ax, col in zip(np.diag(g.axes), df.columns):
         ax.set_title(col, y=0.82, fontsize=26)
-
     # bufferiza a imagem
     buffer = BytesIO()
     plt.savefig(buffer, format='png')
@@ -444,11 +438,9 @@ def generate_correlations_pearson(dataframe,text):
     image_png = buffer.getvalue()
     buffer.close()
     plt.close()
-
     # converte em base 64
     graphic = base64.b64encode(image_png)
     graphic = graphic.decode('utf-8')
-
     return graphic
 
 
@@ -486,7 +478,6 @@ def generate_correlations_spearman(dataframe, text):
     image_png = buffer.getvalue()
     buffer.close()
     plt.close()
-
     # converte em base 64
     graphic = base64.b64encode(image_png)
     graphic = graphic.decode('utf-8')
@@ -498,7 +489,6 @@ def corr_cramer_v(data,text):
         if data[col].dtypes == 'float64' or data[col].dtypes == 'int64':
             data = data.drop( columns = [col])
     corr = associations(data)
-    
     fig, ax = plt.subplots(figsize=(15,10))
     map3 = sns.heatmap(corr['corr'], annot= True,  ax = ax, linewidth=0.5, cmap='YlGnBu')
     bottom, top = ax.get_ylim()
@@ -511,7 +501,6 @@ def corr_cramer_v(data,text):
     image_png = buffer.getvalue()
     buffer.close()
     plt.close()
-
     # converte em base 64
     graphic = base64.b64encode(image_png)
     graphic = graphic.decode('utf-8')
@@ -534,7 +523,6 @@ def sample_csv(dataframe,text):
     to_datatype = pd.read_csv("aux2.csv", keep_default_na=False)
     to_datatype.rename(columns={'index':'Columns'}, inplace=True) 
     to_datatype.to_csv(text+"datatypes.csv", index=False, na_rep="Nan")
-    
     # creation descriptive statistics and add cv row
     dataset = df
     string_set = df
