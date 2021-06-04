@@ -1,8 +1,6 @@
 .idea/
 .dsa/
-src/__pycache__/
-.ipnyb_checkpoints
+.__pycache__/
 .vscode/
-all_csvs
-docs/
+
 
