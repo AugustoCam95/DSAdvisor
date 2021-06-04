@@ -15,7 +15,6 @@ chardet==3.0.4
 click==8.0.1
 colorama==0.4.4
 confuse==1.1.0
-contextlib2==0.6.0.post1
 cupshelpers==1.0
 cycler==0.10.0
 dbus-python==1.2.16
