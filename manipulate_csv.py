@@ -15,6 +15,7 @@ from scipy import stats
 import scipy.stats as ss
 
 import matplotlib.pyplot as plt
+from matplotlib import colors as mcolors
 import seaborn as sns
 
 #-----------------------------------------------------------------------------------------------
@@ -202,7 +203,8 @@ def categorical_plots(df):
         conv = lambda j : j or "Empty"
         vetor[i] = [conv(j) for j in vetor[i]] 
 
-    my_colors = 'rgbkymc'
+    my_colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
+
     
     pie_images = []
     bar_cat_images = []
