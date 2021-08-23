@@ -5,76 +5,81 @@
 {% block content%}
 <div class="card mb-6">
     <div class="card-body">
-        <div style="border-bottom: 2px solid black;">
+        <div style="border-top: 2px solid black;">
+            <br>
             <h3 class="card-title" align="center">Upload your CSV !</h3>
         </div>
         
         {% if message == "Waiting for upload" %}
-        <div>
-            <br>
-            <p class="card-text">To start using our features, we first need you to upload the data you want to work on. Click on the button below to select the file on your computer, if you wanted to change the file just select another one. Remember that the format of your file must be of the type 'csv'. 
+        <div align="center">
+            <p align="justify" class="card-text">To start using our features, we first need you to upload the data you want to work on. Click on the button below to select the file on your computer, if you wanted to change the file just select another one. Remember that the format of your file must be of the type 'csv'. 
                 Once you have decided on the desired file, click on the 'Upload csv' button and then we will display a part of your data so that you can check that you have sent the right file.</p>
             
-            <p align="center" class="alert-sm alert-info">
+            <label text-align="center" class="alert-sm alert-info">
                Note: Check if the file name does not contain special characters, if you have, remove them so that there are no errors in this step.
-            </p>
+            </label>
+            <br>
         </div>
         
-        <form action="{{ url_for('upload_csv') }}" method="POST" enctype=multipart/form-data>
-            <div align="center" class="form-group">
-                <div class="custom-file">
-                    <div class="btn">
-                      <label id="file_name" class="custom-file-label" for="files">Choose file</label>
-                      <input type="file" class = "custom-file-input" name="file" id="files">
+        <div style="border-bottom: 2px solid black;">
+            <form action="{{ url_for('upload_csv') }}" method="POST" enctype=multipart/form-data>
+                <div align="center" class="form-group">
+                    <div class="custom-file">
+                        <div class="btn">
+                          <label id="file_name" class="custom-file-label" for="files">Choose file</label>
+                          <input type="file" class = "custom-file-input" name="file" id="files">
+                        </div>
+                    </div>
+    
+                    <br> 
+                    <br>   
+    
+                    <div>
+                        <h4 align="center">Dataset details:</h4>
+                        <label for="exampleFormControlTextarea1" class="alert-sm alert-info">Use the space below to add relevant comments to the dataset to be uploaded</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="text_details"></textarea>
                     </div>
                 </div>
-
-                <br> 
-                <br>   
-
-                <div>
-                    <label for="exampleFormControlTextarea1" class="alert-sm alert-info">Dataset details:</label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="text_details"></textarea>
+                
+                <div align="center" >
+                    <label class="alert-sm alert-secondary">Status: {{message}} </label>
                 </div>
-            </div>
-            
-            
-            <div align="center">
-                <button type="submit"  class="btn btn-primary">Upload csv</button>
-            </div>
-            
-
-        </form>
-    
-        <br>
-        <div align="center" class="alert-sm alert-secondary">
-            <label>Status: {{message}} </label>
+                <br>
+                <div align="center">
+                    <button type="submit"  class="btn btn-primary">Upload csv</button>
+                </div>
+                <br>
+            </form>
         </div>
         
-
+    
         {% else %}
             <br>
-            <div align="center" class="alert-sm alert-success">
-                <label>Status:</label>
-                <label>  File "{{filename}}" uploaded !</label>
-            </div>
-            <br>
-            <div>
-                <p class="alert alert-info" align="center"> 
-                    Below is a preview of the data that was sent, take the opportunity to check if it is really the csv file you wanted to upload.
-                </p>
+            <div style="border-bottom: 2px solid black;">
+                <div align="center" >
+                    <h5><b>Status:</b> <label class="alert-sm alert-success">  File "{{filename}}" uploaded !</label></h5>
+                </div>
+                <br>
+                <div align="center">
+                    <h3 align="center" >Preview:</h3>
+                    <label class="alert alert-info" > 
+                        Below is a preview of the data that was sent, take the opportunity to check if it is really the csv file you wanted to upload.
+                    </label>
+                </div>
+                
+                
+    
+                <div style="overflow-x: scroll" align="center" id = "up">
+                </div>
+                   
+                <br>
+    
+                <div align="center">
+                    <a class="btn btn-dark btn-lg" href="{{ url_for('check_variables_type') }}">Next</a>
+                </div>
+                <br>
             </div>
             
-            <h5 align="center" >Preview:</h5>
-
-            <div style="overflow-x: scroll" align="center" id = "up">
-            </div>
-               
-            <br>
-
-            <div align="center">
-                <a class="btn btn-dark btn-lg" href="{{ url_for('check_variables_type') }}">Next</a>
-            </div>
             
         {% endif %}
         

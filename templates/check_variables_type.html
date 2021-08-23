@@ -6,14 +6,14 @@
 <div class="card mb-6" >
   <div class="card-body">
 
-      <div style="border-bottom: 2px solid black;">
+      <div style="border-top: 2px solid black;">
+        <br>
         <h3 class="card-title" align="center"> Resume Variables</h3>
       </div>
       
       {% if message == "Waiting for choice" %}
 
       <div>
-        <br>
         <p class="card-text" align="justify"> 
           Listed below are the columns of data that can be divided into <strong>Categorical</strong> and <strong>Numeric</strong> variables.
           If you need more information, <a href="https://www.abs.gov.au/websitedbs/a3121120.nsf/home/statistical+language+-+what+are+variables#:~:text=What%20is%20a%20variable%3F,type%20are%20examples%20of%20variables.">click here</a>.  
@@ -47,12 +47,17 @@
       </div>
       
 
-      <div style="border-bottom: 2px solid black;"></div>
-      <br>
+      <div align="center" style="border-top: 2px solid black;">
+        <br>
+        <h3 class="card-title" align="center"> Do you wanna remove any column above?</h3>
+        <label class="alert alert-info" > 
+          Below are all the columns present in the submitted dataset. Select the columns you want to remove from the dataset so that they no longer appear in later steps.
+        </label>
+      </div>
 
       
       
-        <div style="width: 100%; height: auto;">
+        <div style="width: 100%; height: auto;border-bottom: 2px solid black;">
           <div class="container" style="width: 100%; height: auto; text-align:center;">
             <form action="{{ url_for('check_variables_type') }}" method="POST" enctype=multipart/form-data>
             
@@ -109,39 +114,39 @@
 
 
               </div>
+              <br>
+              <div align="center" >
+                <label class="alert-sm alert-secondary" >Status: {{message}} </label>
+              </div>
+
               <div align="center">
                 <br>
                 <button type="submit" class="btn  btn-primary">Confirm option</button>
               </div>
+              <br>
             </form>
           </div>
         </div>  
               
-        <br/>
-        
-        <div align="center" class="alert-sm alert-secondary">
-          <label>Status: {{message}} </label>
-        </div>
 
     {% else %}
-        
+      
+      <div style="border-bottom: 2px solid black;">
         <br>
-        <div align="center" class="alert-sm alert-success">
-          <label>Status: Sucess</label>
+        <div align="center" >
+          <h5><b>Status:</b> <label class="alert-sm alert-success">Sucess</label></h5>
         </div>
             
-        <br>
-        <div align="center" class="alert-sm alert-info">
-          <label> <strong>Removed columns:</strong>  {{list_x}} </label>
+        <div align="center" >
+          <h5><b>Removed columns:</b> <label class="alert-sm alert-info">{{list_x}} </label></h5>
         </div>
-
-        
-            
+    
         <div class="mt-1" align="center">
           <br>
           <a class="btn btn-dark btn-lg" href="{{ url_for('filter_miss_values') }} ">Next</a>
         </div>
-        
+        <br>
+      </div>
         
     {% endif %}
            
