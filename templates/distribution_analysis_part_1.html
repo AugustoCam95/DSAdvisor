@@ -59,13 +59,13 @@
 <div  id="myDIV2" class="card mb-6 " >
   <div class="card-body">
 
-    {% if message == "Waiting for choice" %}
-      <div style="border-bottom: 2px solid black;">
+    
+      <div style="border-top: 2px solid black;">
+        <br>
         <h3 class="card-title" align="center"> Distribution Analysis - Choose Distributions </h3>
       </div>
-      
+    {% if message == "Waiting for choice" %}  
       <div>
-        <br>
         <p class="card-text" align="justify"> 
           On this page we will talk about probability distributions for continuous variables, where on the next page we will use a series of tests to infer
           the probability distribution of our quantitative variables. In probability theory and statistics, a probability distribution is the mathematical 
@@ -105,7 +105,7 @@
                 {% endfor %}
               
             </div>
-           
+
             <div style="width: 120%; height: auto;" class="container">
                 {%for column in lazy_dist%}
                   <div class="form-check form-check-inline" >
@@ -114,16 +114,18 @@
                   </div>
                 {% endfor %}
             </div>
-
+            
             <br>
-            <div style="width: 100%; height: auto;">
-              <div class="container" style= " width: 70%; height: 100px;">
-                <div align="center">
-                  <button type="submit" class="btn  btn-primary">Confirm option</button>
-                </div>
-              
-              </div>
-            </div> 
+
+            <div align="center">
+              <h5><b>Status:</b> <label class="alert-sm alert-secondary"> {{message}} </label></h5>
+            </div>
+            
+            <br>
+
+            <div align="center">
+              <button type="submit" class="btn  btn-primary">Confirm option</button>
+            </div>
 
           </form> 
         
@@ -131,27 +133,24 @@
       </div>
 
         
-       
-      <div align="center" class="alert-sm alert-secondary">
-        <label>Status: {{message}} </label>
-      </div>   
+      
 
     {% else %}
-      <div class="mt-2" align="center">
-        <div >
-          <label class="alert alert-success" >Status: Success</label>
-        </div>
-
-        <div class="alert alert-info">
-          <h4>List of distributions: </h4>
-          <br>
-          <p>{{list_x}}</p>
+      <div  align="center">
+        <br>
+        <div align="center">
+          <h5><b>Status:</b> <label class="alert alert-success"> Success </label></h5>
         </div>
         
-      
-        <div class="mt-5" align="center">
-            <a onclick="myFunction()" class="btn btn-dark btn-lg" href="{{ url_for('distribution_analysis_part_2') }} ">Next</a>
+
+        <div>
+          <h5><b>List of distributions:</b><label class="alert alert-info">{{list_x}}</label></h5>          
         </div>
+        
+        <div class="mt-5" align="center">
+          <a onclick="myFunction()" class="btn btn-dark btn-lg" href="{{ url_for('distribution_analysis_part_2') }} ">Next</a>
+        </div>
+
       </div>    
     {% endif %}
     

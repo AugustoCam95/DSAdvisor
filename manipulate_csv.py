@@ -229,6 +229,8 @@ def categorical_plots(df):
 
     for i in range(len(array)):    
         plt.bar(vetor[i], height=array[i], color = my_colors )
+        plt.ylabel('Quantity')
+        plt.xlabel('Categories')
         # plt.savefig("bar_"+col_string[i]+"_.jpg", dpi = 500)
         buffer = BytesIO()
         plt.savefig(buffer, format='png')
@@ -255,6 +257,8 @@ def discrete_plots(df):
     list_images = []
     for col in integers.columns:
         plt.hist(integers[col])
+        plt.ylabel('Quantity')
+        plt.xlabel('Class')
 
         # bufferiza a imagem
         buffer = BytesIO()

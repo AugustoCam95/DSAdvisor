@@ -7,31 +7,31 @@
   <div class="card-body">
       <h3 class="card-title">Exploratory visualization</h3>
       <p align = "justify">
-        In this section we will show some plot of the data to 
-        continue our exploratory analises. If possible we will
-        show some graphics like bar-charts and pie-charts for 
-        the user have knowlegde of the data in the current.
+        In this section, we will display graphs for categorical variables and for discrete numerical variables in order to 
+        continue our exploratory analysis on top of the dataset. Pay attention to the information in the graphics as well 
+        as the text in each of them to foster better insights into your analysis. This page will contain depending on the 
+        data bar graphs and pie charts (this only for categorical variables with less than 3 classes).
       </p>
     
     <div>  
         {% if temp2|count > 0%}
-        <h5>Categorical variables</h5>
+        <h4>Categorical variables</h4>
             {% for dict_item in elements %}
                 {% if dict_item['cat_col']|count > 3 %}
-                  <p>[ Variable {{dict_item['temp2']}} ]</p>
                   <img width="650" height="450" src="data:image/png;base64,{{ dict_item['bar'] |safe }}" >
+                  <h5> Variable: [{{dict_item['temp2']}}]</h5>
                   <ul>
-                    <li><p>In the bar-chart graph above we have the <b>Categories: {{dict_item['cat_col']}}</b> of variable <b>{{dict_item['temp2']}}</b>, 
+                    <li><p class="alert-sm alert-info">In the bar-chart graph above we have the <b>Categories: {{dict_item['cat_col']}}</b> of variable <b>{{dict_item['temp2']}}</b>, 
                       where on the y-axis we have the quantity for each category on the x-axis.</p></li>
                   </ul>
                 {% else %}
-                  <p>[ Variable {{dict_item['temp2']}} ]</p>
                   <img width="500" height="400" src="data:image/png;base64,{{ dict_item['pie'] |safe }}" >
                   <img width="500" height="400" src="data:image/png;base64,{{ dict_item['bar'] |safe }}" >
+                  <h5> Variable: [{{dict_item['temp2']}} ]</p>
                   <ul>
-                    <li><p>In the pie-chart graph above we have the <b>Categories: {{dict_item['cat_col']}}</b>  of variable <b>{{dict_item['temp2']}}</b>, 
+                    <li><p class="alert-sm alert-info">In the pie-chart graph above we have the <b>Categories: {{dict_item['cat_col']}}</b>  of variable <b>{{dict_item['temp2']}}</b>, 
                       where each colored sector represents the percentage for that specific category.</p></li>
-                    <li><p>In the bar-chart graph above we have the <b>Categories: {{dict_item['cat_col']}}</b>  of variable <b>{{dict_item['temp2']}}</b>, 
+                    <li><p class="alert-sm alert-info">In the bar-chart graph above we have the <b>Categories: {{dict_item['cat_col']}}</b>  of variable <b>{{dict_item['temp2']}}</b>, 
                       where on the y-axis we have the quantity for each category on the x-axis.</p></li>
                   </ul>
                 {% endif %}
@@ -43,12 +43,12 @@
         {% if temp1|count > 0%}
         <div style="border-bottom: 5px solid black;"></div>
         <br>
-        <h5>Discrete variables</h5>
+        <h4>Discrete variables</h4>
             {% for i,t in list_images|zip(temp1) %}
                 <img width="650" height="450" src="data:image/png;base64,{{ i |safe }}">
-                <p>[ Variable {{t}} ] </p>
+                <h5>Variable: [{{t}}]</h5>
                 <ul>
-                  <li><p>In the graph above we show a histogram for variable {{t}}, where on the y-axis
+                  <li><p class="alert-sm alert-info">In the graph above we show a histogram for variable {{t}}, where on the y-axis
                     we have the corresponding frequencies for each value on the x-axis.</p></li>
                 </ul>
             {% endfor %}  
@@ -60,7 +60,7 @@
       <div class="alert alert-info">
         <br>
         <h3>No categorical and discrete variables found</h3>
-        <p>Your data set has no categorical or discrete variables. Right on that page we 
+        <p class="alert-sm alert-info">Your data set has no categorical or discrete variables. Right on that page we 
            don't have any graphs to show. 
         </p>
       </div>

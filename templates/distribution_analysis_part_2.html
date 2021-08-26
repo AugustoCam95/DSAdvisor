@@ -58,7 +58,8 @@
 <div  id="myDIV2" class="card mb-6" align="center">
   <div class="card-body">
     
-    <div style="border-bottom: 2px solid black;">
+    <div style="border-top: 2px solid black;">
+      <br>
       <h3>Distribution analysis - Tests Results</h3>
     </div>
 
@@ -120,33 +121,34 @@
       {% endfor %}
     </div>
     
-    <br>
-    <div class="mt-3 alert-sm alert-secondary">
-          <label>Status: {{message}} </label>
-    </div>
+    <div style="border-bottom: 2px solid black;">
 
-    <div class="mt-2" align="center">
-      <button type="submit" class="btn  btn-primary">Confirm option</button>
+      <div class="mt-3">
+        <h5><b>Status:</b> <label class="alert-sm alert-secondary"> {{message}} </label></h5>
+      </div>
+      <br>
+      <div class="mt-2" align="center" >
+        <button type="submit" class="btn  btn-primary">Confirm option</button>
+      </div>
+      <br>
+      <br>
     </div>
+    
     </form> 
+
     {% else %}
     <br>
     
-    <div class="mt-3 alert-sm alert-success">
-      <label> Status: Success </label>
+    <div class="mt-3">
+      <h5><b>Status:</b> <label class="alert-sm alert-success"> {{message}} </label></h5>
     </div>
 
     <br>
 
-    <div class="alert alert-info">
-      <p>
-        <strong>Selected distributions:</strong>   
-      </p>
-      <br>
-      <p>
-        {{user_answer}}
-      </p>
+    <div>
+      <h5><b>Selected distributions for next phase:</b><label class="alert alert-info">{{user_answer}}</label></h5>          
     </div>
+
 
     <div class="mt-5">
       <br>
