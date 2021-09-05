@@ -5,7 +5,7 @@
 {% block content%}
 <div class="card mb-6" align="center">
   <div class="card-body">
-      {% if message == "Waiting for choice" %}
+      {% if message == "Waiting for choice(s)" %}
       <h3 class="card-title">Problem Setup</h3>
       <p align="justify"> 
         On this page we will make the selection of the dependent variable, the partitioning of training sets, 
@@ -20,8 +20,8 @@
 
       <p align="justify">
         Now that a brief explanation of the importance of choosing the label has been given,
-         try to have the column that is sought to measure. This column could be the target of 
-         the prediction model, such as a certain class or a value to be estimated using the other columns.
+        try to have the column that is sought to measure. This column could be the target of 
+        the prediction model, such as a certain class or a value to be estimated using the other columns.
       </p>
       
       <form action="{{ url_for('problem_setup_part_1') }}" method="POST" enctype=multipart/form-data>

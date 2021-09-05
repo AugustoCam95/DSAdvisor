@@ -64,7 +64,7 @@
         <br>
         <h3 class="card-title" align="center"> Distribution Analysis - Choose Distributions </h3>
       </div>
-    {% if message == "Waiting for choice" %}  
+    {% if message == "Waiting for choice(s)" %}  
       <div>
         <p class="card-text" align="justify"> 
           On this page we will talk about probability distributions for continuous variables, where on the next page we will use a series of tests to infer
@@ -91,11 +91,17 @@
       </div>
       
       
-      <div style="width: 100%; height: auto;">
+      <div style="width: 100%; height: auto; border-bottom: 2px solid black;">
         <div class="container" style= " width: 70%; height: 100%;">
           <form action="{{ url_for('distribution_analysis_part_1') }}" method="POST" enctype=multipart/form-data>
             
             <h4 align="center">List of continious distributions:</h4>
+            <p align="justify" class="alert alert-info">
+              In the list below we have some distributions previously marked for a next experiment to measure the 
+              distribution of continuous variables. The reason for the marked distributions is that they have a 
+              shorter scan time than those not marked, so the analysis would be faster. However, if you wish, you 
+              can add or deselect any distribution.
+            </p>
             <div style="width: 120%; height: auto;" class="container">
                 {% for column in not_lazy%}
                   <div class="form-check form-check-inline" >
@@ -126,7 +132,7 @@
             <div align="center">
               <button type="submit" class="btn  btn-primary">Confirm option</button>
             </div>
-
+            <br>
           </form> 
         
         </div>
@@ -144,7 +150,7 @@
         
 
         <div>
-          <h5><b>List of distributions:</b><label class="alert alert-info">{{list_x}}</label></h5>          
+          <h5><b>List of selected distributions:</b><label class="alert alert-info">{{list_x}}</label></h5>          
         </div>
         
         <div class="mt-5" align="center">

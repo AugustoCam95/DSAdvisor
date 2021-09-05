@@ -81,7 +81,7 @@ def check_variables_type():
         dataframe = manipulate_csv.drop_col(drop_values, dataframe, file_name)
         return render_template("check_variables_type.html" , message = "Success to choice" , list_x = drop_values)
 
-    return render_template("check_variables_type.html", message = "Waiting for choice" , string = manipulate_csv.get_columns(dataframe)[0], float = manipulate_csv.get_columns(dataframe)[2], int = manipulate_csv.get_columns(dataframe)[1] )
+    return render_template("check_variables_type.html", message = "Waiting for choice(s)" , string = manipulate_csv.get_columns(dataframe)[0], float = manipulate_csv.get_columns(dataframe)[2], int = manipulate_csv.get_columns(dataframe)[1] )
 
 choices_miss = None
 special_code = None
@@ -108,7 +108,7 @@ def filter_miss_values():
             
 
         return render_template("filter_miss_values.html" , message = "Success to choice", miss_code = choices_miss )
-    return render_template("filter_miss_values.html", message = "Waiting for choice")
+    return render_template("filter_miss_values.html", message = "Waiting for choice(s)")
 
 
 @application.route('/descriptive_statistics', methods = [ "GET"])
@@ -200,7 +200,7 @@ def distribution_analysis_part_1():
 
     global lazy_dist
     global not_lazy
-    return render_template("distribution_analysis_part_1.html", message = "Waiting for choice"  , lazy_dist =  lazy_dist, not_lazy = not_lazy )
+    return render_template("distribution_analysis_part_1.html", message = "Waiting for choice(s)"  , lazy_dist =  lazy_dist, not_lazy = not_lazy )
 
 
 user_choice_dist = None
@@ -246,7 +246,7 @@ def distribution_analysis_part_2():
         d['base64'] = list_plots[i]
         lst.append(d)
         
-    return render_template("distribution_analysis_part_2.html", message = "Waiting for choice" , elements = lst, num = len(dataframe.columns))
+    return render_template("distribution_analysis_part_2.html", message = "Waiting for choice(s)" , elements = lst, num = len(dataframe.columns))
 
 
 @application.route('/correlations', methods = [ "GET"])
@@ -305,7 +305,7 @@ def problem_setup_part_1():
         X_train, y_train, X, y = manipulate_csv.split_and_norm(dependent_variable, dataframe, file_name, test_percent)
         return render_template("problem_setup_part_1.html" , message = "Success to choice" ,user_answer= dependent_variable, train_percent = test_percent, user_answer2 = type_problem)
 
-    return render_template("problem_setup_part_1.html", message = "Waiting for choice" ,columns = dataframe.columns)
+    return render_template("problem_setup_part_1.html", message = "Waiting for choice(s)" ,columns = dataframe.columns)
 
 
 @application.route('/outlier_report', methods = [ "GET"])
@@ -356,7 +356,7 @@ def feature_selection():
         drop_variables = list(set(X_train.columns) - set(selected_variables))
         manipulate_csv.filter_on_feature_selection(drop_variables, file_name)
         return render_template("feature_selection.html", message = "Sucess", type_problem = type_problem, selected_variables = selected_variables)
-    return render_template("feature_selection.html", message = "Waiting for choice", filename = file_name, variables = list(set(X_train.columns) - set(list_col)), list_col = list_col)
+    return render_template("feature_selection.html", message = "Waiting for choice(s)", filename = file_name, variables = list(set(X_train.columns) - set(list_col)), list_col = list_col)
 
 
 @application.route('/resemple_techniques', methods = [ "GET", "POST"])
@@ -393,7 +393,7 @@ def generate_models():
         dict_exec_models = manipulate_csv.generate_models(X, y, log_user_execution)
         return render_template("generate_models.html", message = "Success to choice", user_answer1 = predictive_alg_list,  user_answer2 = metrics_list)
 
-    return render_template("generate_models.html", message = "Waiting for choice", type_problem = type_problem)
+    return render_template("generate_models.html", message = "Waiting for choice(s)", type_problem = type_problem)
 
 
 @application.route('/metrics', methods = [ "GET"])

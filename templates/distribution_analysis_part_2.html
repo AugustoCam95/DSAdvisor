@@ -63,7 +63,7 @@
       <h3>Distribution analysis - Tests Results</h3>
     </div>
 
-    {% if message == "Waiting for choice" %}
+    {% if message == "Waiting for choice(s)" %}
     <div >
       <br>
       <p align="justify">
@@ -87,13 +87,17 @@
               <a href="https://en.wikipedia.org/wiki/Shapiro%E2%80%93Wilk_test">Shapiro-Wilk test</a>
             </li>
           </ul>
-        
+        <label class="alert alert-info">
+          For each column present in this analysis, pay attention on each test result and carefully analyze each 
+          graph to choose the distribution that you consider the data to follow. By default, the checked option will be 
+          the result of the Kolmogorov test but you can switch to the normal distribution if you think it matches your data.
+        </label>
       </p>
       
       {% for dict_item, count in elements|zip(range(num)) %}
         
       
-      <div style="border-bottom: 5px solid black;">  
+      <div style="border-top: 5px solid black;">  
           <h4 class="mt-5">Column: {{dict_item['name']}}</h4>
         {% if dict_item['test'] == 0 %}
           <p>Using the <strong>D'Agostino's K-squared test</strong>: Sample looks Gaussian (fail to reject H0)</p>
@@ -124,6 +128,7 @@
     <div style="border-bottom: 2px solid black;">
 
       <div class="mt-3">
+        <br>
         <h5><b>Status:</b> <label class="alert-sm alert-secondary"> {{message}} </label></h5>
       </div>
       <br>
@@ -146,7 +151,7 @@
     <br>
 
     <div>
-      <h5><b>Selected distributions for next phase:</b><label class="alert alert-info">{{user_answer}}</label></h5>          
+      <h5><b>Selected distributions for each continuous variable:</b><label class="alert alert-info">{{user_answer}}</label></h5>          
     </div>
 
 

@@ -11,7 +11,7 @@
         <h3 class="card-title" align="center"> Resume Variables</h3>
       </div>
       
-      {% if message == "Waiting for choice" %}
+      {% if message == "Waiting for choice(s)" %}
 
       <div>
         <p class="card-text" align="justify"> 
@@ -52,6 +52,9 @@
         <h3 class="card-title" align="center"> Do you wanna remove any column above?</h3>
         <label class="alert alert-info" > 
           Below are all the columns present in the submitted dataset. Select the columns you want to remove from the dataset so that they no longer appear in later steps.
+        </label>
+        <label class="alert alert-danger" > 
+          Make sure to do not remove any important column!
         </label>
       </div>
 
@@ -149,8 +152,6 @@
       </div>
         
     {% endif %}
-           
-       
   </div>
 </div>
 
