@@ -6,8 +6,9 @@
 <div class="card mb-12" >
   <div class="card-body">
     
-    <div style="border-bottom: 2px solid black;">
-      <h3 align="center"> Correlations </h3>
+    <div style="border-top: 2px solid black;">
+      <br>
+      <h2 align="center"> Correlations </h2>
     </div>
 
     <div align="justify">
@@ -61,65 +62,66 @@
         <li> <b> lower triangular:</b> scatter plot for each variable pair </li>
         <li> <b> diagonal:</b> simple histogram of each variable </li>
         <li> <b> upper triangular:</b> Correlation corresponding to the graph title coefficient, 
-             where each asterisk denotes the value of the p-value and can vary from three 
-             to no asterisk.
+            where each asterisk denotes the value of the p-value and can vary from three 
+            to no asterisk.
         </li>
       </ul>
     </div>
 
-        {% if signal_1 == 1 %}
-        <div style="border-bottom: 2px solid black;">
-          <h3>Pearson's correlation</h3>
-          <img width="100%" height="100%" src="data:image/png;base64,{{ pearson_64 |safe }}" >
-          <br>
-          <p> Reference values for consultation</p>
-          <ul>
-            <li>0.9 more or less indicates a very strong correlation.</li>
-            <li>0.7 to 0.9 positive or negative indicates a strong correlation.</li>
-            <li>0.5 to 0.7 positive or negative indicates a moderate correlation.</li>
-            <li>0.3 to 0.5 positive or negative indicates a weak correlation.</li>
-            <li>0 to 0.3 positive or negative indicates a negligible correlation.</li>
-          </ul>
-        </div>
-        {%endif%}
-        
-        <div style="border-bottom: 2px solid black;">
-          <h3 class="mt-3">Spearman's rank correlation</h3>
-          <img width="100%" height="100%" src="data:image/png;base64,{{ spearman_64 |safe }}" >
-          <br>
-          <p class="mt-3"> Reference values for consultation</p>
-          <ul>
-            <li>0.8 to 1.0 more or less indicates a very strong correlation.</li>
-            <li>0.6 to 0.8 positive or negative indicates a strong correlation.</li>
-            <li>0.4 to 0.6 positive or negative indicates a moderate correlation.</li>
-            <li>0.2 to 0.4 positive or negative indicates a weak correlation.</li>
-            <li>0 to 0.2 positive or negative indicates a very weak correlation.</li>
-          </ul>
-        </div>
-
-        {% if signal_2 == 1 %}
-        <div style="border-bottom: 2px solid black;">
-          <h3>Cramer's V correlation</h3>
-          <img width="100%" height="100%" src="data:image/png;base64,{{ cramer_64 |safe }}" >
-          <br>
-          <p> Reference values for consultation</p>
-          <ul>
-            <li>0.9 more or less indicates a very strong correlation.</li>
-            <li>0.7 to 0.9 positive or negative indicates a strong correlation.</li>
-            <li>0.5 to 0.7 positive or negative indicates a moderate correlation.</li>
-            <li>0.3 to 0.5 positive or negative indicates a weak correlation.</li>
-            <li>0 to 0.3 positive or negative indicates a negligible correlation.</li>
-          </ul>
-        </div>
-        {%endif%}
-    
-
-  
-    <div class="mt-5" align ="center">
-      <a class="btn btn-dark btn-lg" href="{{ url_for('problem_setup_part_1') }} ">Next</a>
+    <div style="border-bottom: 2px solid black;">
+    {% if signal_1 == 1 %}
+    <div>
+      <h3 align="center">Pearson's correlation</h3>
+      <img width="100%" height="100%" src="data:image/png;base64,{{ pearson_64 |safe }}" >
+      <br>
+      <p> Reference values for consultation</p>
+      <ul>
+        <li>0.9 to 1.0 positive or negative indicates a very strong correlation.</li>
+        <li>0.7 to 0.9 positive or negative indicates a strong correlation.</li>
+        <li>0.5 to 0.7 positive or negative indicates a moderate correlation.</li>
+        <li>0.3 to 0.5 positive or negative indicates a weak correlation.</li>
+        <li>0 to 0.3 positive or negative indicates a negligible correlation.</li>
+      </ul>
     </div>
-    
-       
+    {%endif%}
+        
+    <div>
+      <h3 align="center">Spearman's rank correlation</h3>
+      <img width="100%" height="100%" src="data:image/png;base64,{{ spearman_64 |safe }}" >
+      <br>
+      <p class="mt-3"> Reference values for consultation</p>
+      <ul>
+        <li>0.8 to 1.0 positive or negative indicates a very strong correlation.</li>
+        <li>0.6 to 0.8 positive or negative indicates a strong correlation.</li>
+        <li>0.4 to 0.6 positive or negative indicates a moderate correlation.</li>
+        <li>0.2 to 0.4 positive or negative indicates a weak correlation.</li>
+        <li>0 to 0.2 positive or negative indicates a very weak correlation.</li>
+      </ul>
+    </div>
+
+    {% if signal_2 == 1 %}
+    <div>
+      <br>
+      <h3 align="center">Cramer's V correlation</h3>
+      <img width="100%" height="100%" src="data:image/png;base64,{{ cramer_64 |safe }}" >
+      <br>
+      <p> Reference values for consultation</p>
+      <ul>
+        <li>0.9 or more indicates a very strong correlation.</li>
+        <li>0.7 to 0.9 indicates a strong correlation.</li>
+        <li>0.5 to 0.7 indicates a moderate correlation.</li>
+        <li>0.3 to 0.5 indicates a weak correlation.</li>
+        <li>0 to 0.3 indicates a negligible correlation.</li>
+      </ul>
+    </div>
+    {%endif%}
+      <br>
+      <div align ="center">
+        <a class="btn btn-dark btn-lg" href="{{ url_for('problem_setup_part_1') }} ">Next</a>
+      </div>
+      <br>
+    </div>
+
   </div>  
 </div>
 {% endblock %}

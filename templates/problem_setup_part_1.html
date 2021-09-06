@@ -5,15 +5,19 @@
 {% block content%}
 <div class="card mb-6" align="center">
   <div class="card-body">
+    <div style="border-top: 2px solid black;">
+      <h2 class="card-title">Problem Setup</h2>
+    </div>
+    
       {% if message == "Waiting for choice(s)" %}
-      <h3 class="card-title">Problem Setup</h3>
       <p align="justify"> 
         On this page we will make the selection of the dependent variable, the partitioning of training sets, 
-        validation, testing and the selection of the type of problem to be treated. See the instructions and tips given for selecting them.
+        validation, testing and the selection of the type of problem to be treated. See the instructions and 
+        tips given for selecting them.
       </p>
 
 
-      <div style="border-top: 5px solid black;">
+      <div >
         <br>
         <h4>Choose a column that will be the dependent variable:</h4>
       </div>
@@ -159,8 +163,6 @@
       {% endif %}
       
       
-       
-       
   </div>  
 </div>
 {% endblock %}

@@ -86,8 +86,8 @@
               such as those involving stochastic processes defined in continuous time, may require the use of more general probability measures.
             </li>
           </ul>
-          <p>If you want to know more about what a probability distribution is <a href="https://en.wikipedia.org/wiki/Probability_distribution">click here</a> 
-          or about the normal distribution <a href="https://en.wikipedia.org/wiki/Normal_distribution">click here</a>.</p>
+          <p>If you want to know more about what a probability distribution is <a href="https://en.wikipedia.org/wiki/Probability_distribution" target="_blank">click here</a> 
+          or about the normal distribution <a href="https://en.wikipedia.org/wiki/Normal_distribution" target="_blank">click here</a>.</p>
       </div>
       
       
@@ -142,7 +142,7 @@
       
 
     {% else %}
-      <div  align="center">
+      <div style="border-bottom: 2px solid black;" align="center">
         <br>
         <div align="center">
           <h5><b>Status:</b> <label class="alert alert-success"> Success </label></h5>
@@ -153,10 +153,10 @@
           <h5><b>List of selected distributions:</b><label class="alert alert-info">{{list_x}}</label></h5>          
         </div>
         
-        <div class="mt-5" align="center">
+        <div align="center">
           <a onclick="myFunction()" class="btn btn-dark btn-lg" href="{{ url_for('distribution_analysis_part_2') }} ">Next</a>
         </div>
-
+        <br>
       </div>    
     {% endif %}
     
