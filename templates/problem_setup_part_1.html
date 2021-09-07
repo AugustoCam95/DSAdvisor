@@ -6,6 +6,7 @@
 <div class="card mb-6" align="center">
   <div class="card-body">
     <div style="border-top: 2px solid black;">
+      <br>
       <h2 class="card-title">Problem Setup</h2>
     </div>
     
@@ -115,48 +116,76 @@
           <label style="margin: 4%;" class="form-check-label" for="Regression">Linear Regression</label>
         </div>
         
-        <div style="border-top: 5px solid black;" class="mt-2">
-          <br>
+        <div align="center" >
+          <h5><b>Status:</b> <label class="alert-sm alert-secondary">{{message}}</label></h5>
+        </div>
+
+        <div style="border-bottom: 2px solid black;">
           <button type="submit" class="btn  btn-primary">Confirm Option</button>
+          <br>
+          <br>
         </div>
         
 
       </form>
 
-      <div align="center" class="mt-3 alert-sm alert-secondary">
-        <label>Status: {{message}} </label>
-      </div>   
+      
       
       {% else %}
-      <div class="mt-2" align="center">
+      <div style="border-bottom: 2px solid black;" align="center">
+
         <div>
-          <label class="alert-sm alert-success" >Status: Success </label>
-        </div>    
+          <h5><b>Status:</b> <label class="alert-sm alert-success">Sucess</label></h5>
+        </div>   
         
         <br>
 
-        <div class="alert alert-info" style="border-top: 5px solid black; border-bottom: 5px solid black;">
-          <br>
-          <p>Please note that the column <strong>"{{user_answer}}"</strong> will be separated from the dataset and join a new dataset for only the labels . </p>
-          {% if train_percent == 0.50 %}
-            The proportion of the data set partitioning choiced: <strong> 50% train - 50% test</strong>
+        <div>
+          <p>
+            <label class="alert alert-info"> 
+              Please note that the column <strong>"{{user_answer}}"</strong> will 
+              be separated from the dataset and join a new dataset for only the labels. 
+            </label> 
+          </p>
+          {% if train_percent == 0.50 %}  
+          <p>
+            <label class="alert alert-info"> 
+              The proportion choiced for the experiment: <strong> 50% train - 50% test.</strong>
+            </label> 
+          </p>  
           {% endif %}
-          {% if train_percent == 0.40 %}
-            The proportion of the data set partitioning choiced: <strong> 60% train - 40% test.</strong>
+          {% if train_percent == 0.40 %} 
+          <p>
+            <label class="alert alert-info"> 
+              The proportion choiced for the experiment: <strong> 60% train - 40% test.</strong>
+            </label> 
+          </p>  
           {%endif%}
-          {% if train_percent == 0.30 %}
-            The proportion of the data set partitioning choiced: <strong> 70% train - 30% test. </strong> 
+          {% if train_percent == 0.30 %}   
+          <p>
+            <label class="alert alert-info"> 
+              The proportion choiced for the experiment: <strong> 70% train - 30% test. </strong>
+            </label> 
+          </p>  
           {%endif%}
           {% if train_percent == 0.20 %}
-            The proportion of the data set partitioning choiced: <strong> 80% train - 20% test. </strong> 
+          <p>
+            <label class="alert alert-info"> 
+              The proportion choiced for the experiment:<strong>80% train - 20% test.</strong>
+            </label> 
+          </p>   
           {%endif%}
-          <br>
-          <br>
-          <p>The type of problem choiced to be treated: <strong>{{user_answer2}}.</strong> </p>
+          <p>
+            <label class="alert alert-info">
+              Type of problem choiced: <strong>{{user_answer2}}.</strong>
+            </label>
+          </p>
         </div>
             
-        <div class="mt-5">
+        <div class="mt-1">
           <a class="btn btn-dark btn-lg" href="{{ url_for('outlier_report') }} ">Next</a>
+          <br>
+          <br>
         </div>
 
       </div>

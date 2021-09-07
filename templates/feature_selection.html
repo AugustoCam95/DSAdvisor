@@ -5,12 +5,11 @@
 {% block content%}
 <div class="card mb-6" align="center">
   <div class="card-body">
-    {% if message == "Waiting for choice(s)" %}
-      <div style="border-bottom: 2px solid black;">
-        <h3 class="card-title">Feature Selection</h3>
-      </div>
-      
+    <div style="border-top: 2px solid black;">
       <br>
+      <h2 class="card-title">Feature Selection</h2>
+    </div>
+    {% if message == "Waiting for choice(s)" %} 
       <p>
         In the table below we list the ranking according to each feature selection method for 
         each variable in the dataset.The pre-selected variables are indicated to be chosen according 
@@ -19,7 +18,7 @@
     
       <div style="width: 100%; height: auto; text-align:center">
         <br>
-          <div style="width: 100%; height: auto; border-bottom: 2px solid black" class="container">
+          <div style="width: 100%; height: auto" class="container">
               <div class="row">
                 <div class="col">
                   <ul style="list-style: none;padding: 0; margin: 0; display: flex; justify-content: space-around;">
@@ -41,17 +40,24 @@
       <div class="row">
         <div style="width: 100%; height: auto;">
           <div class="container" style= " width: 95%; height: 100%;">
-            <div style="overflow-y: scroll;" id="fea">
+            <div id="fea">
             </div>
           </div>
         </div>
       </div>
 
-      <div style="width: 100%; height: auto;">
+      <div style="width: 100%; height: auto; border-bottom: 2px solid black;">
         <div class="container" style= " width: 100%; height: auto;text-align:center;">
           <form action="{{ url_for('feature_selection') }}" method="POST" enctype=multipart/form-data>
             <br>
             <h3>Variables:</h3>
+            <p>
+              <label class="alert alert-info">
+                The variables listed below follow the calculation of the largest sum from the 
+                table divided by 2 to define the exclusion threshold. Values below this value 
+                will not be marked because no relationship was found between the other variables.
+              </label>
+            </p>
             
             <div style="width: 100%; height: auto;" class="container">
               {% for column in list_col %}
@@ -68,47 +74,49 @@
                 </div>
               {% endfor %}
             </div>
-          
+            
+            <div class="mt-4" align="center" >
+              <h5><b>Status:</b> <label class="alert-sm alert-secondary">{{message}}</label></h5>
+            </div>      
+
             <div align="center">
-              <br>
               <button type="submit" class="btn  btn-primary">Confirm option</button>
             </div>
+            <br>
+
           </form>
         </div>     
-      </div>    
+      </div>   
+
       
-      <br/> 
-
-      <div align="center" class="alert-sm alert-secondary">
-        <label>Status: {{message}} </label>
-      </div>
-
 
     {% else %}
-      <div align="center">
-        <br>
-        <div>
-          <label class="alert-sm alert-success" >Status: Success </label>
-        </div>    
-        <div align="center" class="alert-sm alert-info">
-          <label> <strong>Selected columns:</strong>  {{selected_variables}} </label>
-        </div>
 
-      </div> 
-
+    <div style="border-bottom: 2px solid black;">
+      
+      <br>
+      <div align="center" >
+        <h5><b>Status:</b> <label class="alert-sm alert-success">Sucess</label></h5>
+      </div>
+          
+      <div align="center" >
+        <h5><b>Selected columns:</b> <label class="alert-sm alert-info">{{selected_variables}} </label></h5>
+      </div>
       {% if type_problem == "Classification"%}
-        <div class="mt-5">
+        <div>
           <a class="btn btn-dark btn-lg" href="{{ url_for('resemple_techniques') }}">Next</a>
         </div>
       {%else%}
-        <div class="mt-5">
+        <div>
           <a class="btn btn-dark btn-lg" href="{{ url_for('generate_models') }}">Next</a>
         </div>
       {%endif%}
+      <br>
+      
+    </div>
 
     {%endif%}
     
-
     <script>
       d3.text("../static/samples/{{filename}}_fs.csv").then(function(datasetText) {
                   var rows  = d3.csvParseRows(datasetText),

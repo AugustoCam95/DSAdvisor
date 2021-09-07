@@ -5,19 +5,26 @@
 {% block content%}
 <div class="card mb-6" align="center">
   <div class="card-body">
-      <h3 class="card-title">Outliers Detection</h3>
-      <p align = "justify">
-        In this step, we will show a report of the outliers of the data set we are working on. 
-        In statistics, outlier is an observation that presents a considerable difference compared to 
-        other observations in the data, in some cases this outlier may indicate anomalies in the data 
-        resulting from errors in data collection, as at the time of typing an incorrect value is inserted 
-        or in other cases these values are captured by a defective sensor, for example in addition to 
-        other adverse factors.
+
+    <div style="border-top:2px solid black;">
+      <br>
+      <h2 class="card-title">Outliers Detection</h2>
+      <p>
+        <label align="justify" class="alert alert-info">
+          In this step, we will show a report of the outliers of the data set we are working on. 
+          In statistics, outlier is an observation that presents a considerable difference compared to 
+          other observations in the data, in some cases this outlier may indicate anomalies in the data 
+          resulting from errors in data collection, as at the time of typing an incorrect value is inserted 
+          or in other cases these values are captured by a defective sensor, for example in addition to 
+          other adverse factors.
+        </label>
       </p>
 
       <img src="../static/logos/outlier.png" width="300" height="300">
       <br>
       <br>
+    </div>
+      
       
 
       {% for dict_item, count in elements|zip(range(num)) %}
@@ -46,17 +53,20 @@
         
 
       {% endfor %}
-
-      <div style="border-top: 5px solid black;">
+      <div style="border-bottom: 2px solid black;">
+        <div>
+          <a class="btn btn-dark btn-lg" href="{{ url_for('table_outlier') }}" target="_blank" rel="noopener noreferrer">Table of outliers</a>
+        </div>
         <br>
-        <a class="btn btn-dark btn-lg" href="{{ url_for('table_outlier') }}" target="_blank" rel="noopener noreferrer">Table of outliers</a>
+        <div>
+          <a class="btn btn-dark btn-lg" href="{{ url_for('normalization') }}">Next</a>
+        </div>
+        <br>
+        
       </div>
+      
 
       
-      
-      <div class="mt-3">
-        <a class="btn btn-dark btn-lg" href="{{ url_for('normalization') }}">Next</a>
-      </div>
 
   </div>  
 </div>

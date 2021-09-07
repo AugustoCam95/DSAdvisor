@@ -5,13 +5,18 @@
 {% block content%}
 <div class="card mb-6" align="center">
   <div class="card-body">
-      <h3 class="card-title">Exploratory visualization</h3>
+
+    <div style="border-top: 2px solid black;">
+      <br>
+      <h2 class="card-title">Exploratory visualization</h2>
       <p align = "justify">
         In this section, we will display graphs for categorical variables and for discrete numerical variables in order to 
         continue our exploratory analysis on top of the dataset. Pay attention to the information in the graphics as well 
         as the text in each of them to foster better insights into your analysis. This page will contain depending on the 
         data bar graphs and pie charts (this only for categorical variables with less than 3 classes).
       </p>
+    </div>
+      
     
     <div>  
         {% if temp2|count > 0%}
@@ -61,21 +66,19 @@
         <br>
         <h3>No categorical and discrete variables found</h3>
         <p class="alert-sm alert-info">Your data set has no categorical or discrete variables. Right on that page we 
-           don't have any graphs to show. 
+          don't have any graphs to show. 
         </p>
       </div>
       {% endif %}
     </div>     
       
       
-
-      
-      
-    <div class="mt-5">
+    <div style="border-bottom: 2px solid black;" class="mt-5">
       <a  class="btn btn-dark btn-lg" href="{{ url_for('distribution_analysis_part_1') }}">Next</a>
+      <br>
+      <br>
     </div>
-      
-       
+    
   </div>  
 </div>
 {% endblock %}

@@ -5,8 +5,11 @@
 {% block content%}
 <div class="card mb-6" align="center">
   <div class="card-body">
+    <div style="border-top: 2px solid black;">
+      <br>
+      <h3 class="card-title">Choose normalization technique</h3>
+    </div>
     
-    <h3 class="card-title">Choose normalization technique</h3>
 
     {% if message == "Waiting for choice" %}
 
@@ -52,14 +55,11 @@
         </div>
         <br>
         
-        <div align="center" class="alert-sm alert-secondary">
-          <label>Status: {{message}} </label>
+        <div align="center" >
+          <h5><b>Status:</b> <label class="alert-sm alert-secondary">{{message}}</label></h5>
         </div>
-        
-        <br>
 
         <div align="center">
-          <br>
           <button type="submit" class="btn  btn-primary">Confirm option</button>
         </div>
 
@@ -68,7 +68,9 @@
       <br>
 
       <p align="justify">
-        But what is the importance of doing this whole process? Let's see an example!<br>
+        But what is the importance of doing this whole process?<br> 
+        Let's see an example!<br>
+        <br>
         It is essential to check that the columns are on the same scale. For example, two columns A and B 
         can have two different numerical ranges: the first in a range between zero and one in the realm 
         domain, while the second is in a range in the range 1 to 1000 in the realm of integers. Evidencing 
@@ -80,35 +82,37 @@
       
       <h5>Before apply z-score</h5>
       <div style="overflow-x: scroll" align="center" id = "up">
-            
       </div>
       <br>
       <br>
 
       <h5>After apply z-score</h5>
       <div style="overflow-x: scroll" align="center" id = "down">
-              
       </div>
-    
+      <br>
+      
+      <div class="mt-2" style="border-bottom: 2px solid">
 
-      <div align="center" class="alert-sm alert-secondary">
-        <label>Status: {{message}} </label>
       </div>
+  
 
     {% else %}
-    
-      <br>
-      <div align="center" class="alert-sm alert-success">
-        <label>Status: Sucess</label>
-      </div>
-          
-      <br>
-      <div align="center" class="alert-sm alert-info">
-        <label> <strong>Technique selected:</strong>  {{anwser}} </label>
-      </div>
 
-      <div class="mt-5">
-        <a class="btn btn-dark btn-lg" href="{{ url_for('feature_selection') }}">Next</a>
+      <div style="border-bottom: 2px solid black;">
+        <br>
+        <div align="center" >
+          <h5><b>Status:</b> <label class="alert-sm alert-success">Sucess</label></h5>
+        </div>
+            
+        <div align="center" >
+          <h5><b>Technique selected:</b> <label class="alert-sm alert-info">{{anwser}} </label></h5>
+        </div>
+    
+        <div class="mt-1" align="center">
+          <br>
+          <a class="btn btn-dark btn-lg" href="{{ url_for('feature_selection') }}">Next</a>
+        </div>
+        <br>
       </div>
       
     {% endif %}
