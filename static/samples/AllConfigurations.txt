@@ -10,7 +10,7 @@
 'test_size_percent':'0.3'
 'problem_type':'Classification'
 'normalization':'MinMaxScaler()'
-'feature_selection_variables':'[' Excess kurtosis of the integrated profile', ' Skewness of the integrated profile', ' Mean of the integrated profile', ' Standard deviation of the DM-SNR curve', ' Skewness of the DM-SNR curve', ' Standard deviation of the integrated profile', ' Excess kurtosis of the DM-SNR curve', ' Mean of the DM-SNR curve']'
+'feature_selection_variables':'[' Excess kurtosis of the integrated profile', ' Skewness of the integrated profile', ' Standard deviation of the DM-SNR curve', ' Skewness of the DM-SNR curve', ' Mean of the integrated profile', ' Excess kurtosis of the DM-SNR curve', ' Mean of the DM-SNR curve', ' Standard deviation of the integrated profile']'
 'resample_technique_choiced':'SMOTE(random_state=42)'
 'predictive_alg_list':'['LogisticRegression()', 'KNeighborsClassifier()', 'tree.DecisionTreeClassifier()', 'SVC()', 'GaussianNB()', 'MLPClassifier()']'
 'metrics_list':'['confusion_matrix', 'roc_curve', 'roc_auc_score', 'accuracy_score', 'f1_score', 'precision_score', 'recall_score']'

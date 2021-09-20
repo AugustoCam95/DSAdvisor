@@ -795,7 +795,7 @@ def after_undersampling(dataset,labels,text):
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
         for k,v in counter.items():
-            per = round(v / len(target) * 100, 2)
+            per = round(v / len(y_res) * 100, 2)
             writer.writerow({'Class': k, 'Count': v, 'Percentage': per})
     os.chdir(start_point)
 
@@ -813,7 +813,7 @@ def after_oversampling(dataset,labels,text):
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
         for k,v in counter.items():
-            per = round(v / len(target) * 100, 2)
+            per = round(v / len(y_res) * 100, 2)
             writer.writerow({'Class': k, 'Count': v, 'Percentage': per})
     os.chdir(start_point)
 
