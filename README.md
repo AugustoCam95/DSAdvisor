@@ -5,7 +5,7 @@ This entire verification process occurs openly for the user along with tutoring 
 
 ## Features:
 - Upload data (only CSV files so far)
-- Descriptive statistics of the Data Set
+- Descriptive statistics on Datasets
 - Outliers Report
 - Normalization
 - Feature Selection
@@ -18,5 +18,5 @@ This entire verification process occurs openly for the user along with tutoring 
 ## Requirements:
  - Linux ( UBUNTU )
  - Python 3 
- - Install requiments.txt on the project folder with a propealy Venv
+ - Install requiments.txt in the project folder with a propealy Venv
  
