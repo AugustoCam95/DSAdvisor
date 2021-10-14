@@ -18,5 +18,4 @@ This entire verification process occurs openly for the user along with tutoring 
 ## Requirements:
  - Linux ( UBUNTU )
  - Python 3 
- - Install requiments.txt in the project folder with a propealy Venv
- 
+ - Install requirements.txt in the project folder with a properly Venv
